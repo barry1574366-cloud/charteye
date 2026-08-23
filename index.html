@@ -18,6 +18,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .app-container{max-width:480px;margin:0 auto;min-height:100vh;position:relative}
 .page{display:none;min-height:100vh;padding-bottom:80px}.page.active{display:block}.page-quiz.active{display:flex}
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--bg-secondary);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:1000}
+.app-container.quiz-active .bottom-nav{display:none!important}
 .nav-item{display:flex;flex-direction:column;align-items:center;padding:4px 8px;color:var(--text-muted);font-size:10px;cursor:pointer;transition:all .2s;border:none;background:none}
 .nav-item.active{color:var(--accent-gold)}.nav-item svg{width:22px;height:22px;margin-bottom:2px}
 .onboarding-hero{text-align:center;padding:calc(40px + env(safe-area-inset-top)) 24px 30px;background:linear-gradient(180deg,rgba(99,91,255,.12) 0%,transparent 70%)}
@@ -140,20 +141,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
    palette with terminal tabular numerals as the signature element.
    Palette: ink #070B12 · panel #121926 · mint #00E58F · coral #FF4D67 · amber #FFC53D
    ===================================================================== */
-#page-quiz.kq-immersive{background:radial-gradient(1100px 720px at 50% -12%,#121d31 0%,#070b12 58%,#04070c 100%)}
-#page-quiz.kq-immersive .chart-container{position:absolute;top:0;left:0;right:0;height:calc(100vh - 330px);max-height:480px;padding:0;margin:0;min-height:0;z-index:1}
+#page-quiz.kq-immersive{background:#04070c;position:relative}
+#page-quiz.kq-immersive::before{content:'';position:absolute;top:0;left:0;right:0;height:60%;background:radial-gradient(1100px 480px at 50% -12%,#121d31 0%,#070b12 58%,rgba(7,11,18,0) 100%);pointer-events:none;z-index:0}
+.beginner-shield{display:none}
+#page-quiz.kq-immersive .chart-container{position:absolute;top:0;left:0;right:0;bottom:280px;padding:0;margin:0;min-height:0;z-index:1}
 #page-quiz.kq-immersive .kline-canvas{width:100%;height:100%;min-height:0;border-radius:0;background:transparent;max-height:none}
 #page-quiz.kq-immersive .chart-container>div:first-child{position:absolute;top:calc(48px + env(safe-area-inset-top));right:14px;z-index:11;min-height:0}
 #page-quiz.kq-immersive #chart-toggle-btn{background:rgba(255,255,255,.07)!important;border:1px solid rgba(255,255,255,.14)!important;border-radius:999px!important;color:#b9c2d2!important;font-size:10px!important;padding:5px 12px!important;cursor:pointer!important;backdrop-filter:blur(8px)}
 #page-quiz.kq-immersive .quiz-progress-bar{position:absolute;top:0;left:0;right:0;height:4px;z-index:30;background:rgba(255,255,255,.05);border-radius:0}
 #page-quiz.kq-immersive .quiz-progress-fill{height:100%;border-radius:0;background:linear-gradient(90deg,#ffc53d,#ffe08a);box-shadow:0 0 14px rgba(255,197,61,.55);transition:width .35s cubic-bezier(.2,.8,.2,1)}
-#page-quiz.kq-immersive .beginner-shield{position:absolute;top:calc(54px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:25;background:linear-gradient(135deg,rgba(34,197,94,.18),rgba(22,163,74,.12));border:1px solid rgba(34,197,94,.3);border-radius:12px;padding:6px 14px;font-size:12px;font-weight:700;color:#22c55e;text-align:center;white-space:nowrap;pointer-events:none;animation:fadeIn .4s}
+#page-quiz.kq-immersive .beginner-shield{position:absolute;top:calc(48px + env(safe-area-inset-top));left:14px;z-index:25;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:3px 8px;font-size:10px;font-weight:600;color:#9ae6b4;text-align:center;white-space:nowrap;pointer-events:none;animation:fadeIn .4s;backdrop-filter:blur(6px)}
 #page-quiz.kq-immersive .quiz-header{position:absolute;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:calc(12px + env(safe-area-inset-top)) 18px 6px;background:none}
 #page-quiz.kq-immersive .quiz-progress{font-size:12px;font-weight:700;color:#8a94a6;font-variant-numeric:tabular-nums;letter-spacing:1.5px}
 #page-quiz.kq-immersive .hearts-quiz{font-size:14px;font-weight:800;color:#ff4d67;text-shadow:0 0 12px rgba(255,77,103,.4)}
 #page-quiz.kq-immersive .quit-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:#8a94a6;font-size:14px;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center}
 #page-quiz.kq-immersive .combo-display{position:absolute;top:calc(26px + env(safe-area-inset-top));left:0;right:0;text-align:center;z-index:35;font-size:54px;font-weight:900;color:#ffc53d;font-family:"SF Mono","Cascadia Mono",Consolas,"Courier New",monospace;font-variant-numeric:tabular-nums;text-shadow:0 0 32px rgba(255,197,61,.45);pointer-events:none;background:rgba(0,0,0,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:6px 0;border-radius:0 0 14px 14px}
-#page-quiz.kq-immersive .question-section{position:absolute;left:0;right:0;bottom:calc(340px + env(safe-area-inset-bottom));z-index:10;padding:8px 20px 12px;text-align:center;pointer-events:none;background:linear-gradient(to bottom,rgba(5,8,14,0) 0%,rgba(5,8,14,.55) 40%,rgba(5,8,14,.85) 100%)}
+#page-quiz.kq-immersive .question-section{position:absolute;left:0;right:0;bottom:260px;z-index:10;padding:8px 20px 12px;text-align:center;pointer-events:none;background:linear-gradient(to bottom,rgba(5,8,14,0) 0%,rgba(5,8,14,.7) 50%,rgba(5,8,14,.95) 100%)}
 #page-quiz.kq-immersive .question-text{font-size:clamp(19px,5.2vw,26px);font-weight:800;color:#f2f6fc;line-height:1.35;letter-spacing:-.2px;text-shadow:0 2px 16px rgba(0,0,0,.7),0 0 40px rgba(0,0,0,.35)}
 #page-quiz.kq-immersive .q-type-badge{border-radius:999px;padding:3px 12px;font-size:10px;font-weight:700;background:rgba(255,255,255,.08);color:#b9c2d2;letter-spacing:.5px;backdrop-filter:blur(6px)}
 #page-quiz.kq-immersive .q-type-identify{background:rgba(168,85,247,.2);color:#d8b4fe}
@@ -164,7 +167,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 #page-quiz.kq-immersive .q-type-trap{background:rgba(255,77,103,.2);color:#fda4af}
 #page-quiz.kq-immersive .volume-label{color:#00e58f;font-size:12px;font-weight:600;text-shadow:0 1px 8px rgba(0,0,0,.6)}
 #page-quiz.kq-immersive #pattern-hint-zone{pointer-events:auto;display:flex;justify-content:center;margin-top:10px}
-#page-quiz.kq-immersive .options-container{position:absolute;left:0;right:0;bottom:0;z-index:15;padding:24px 16px calc(20px + env(safe-area-inset-bottom));gap:10px;background:linear-gradient(to top,rgba(5,8,14,.96) 38%,rgba(5,8,14,0));display:flex;flex-direction:column;flex-shrink:0}
+#page-quiz.kq-immersive .options-container{position:absolute;left:0;right:0;bottom:0;z-index:15;padding:20px 16px calc(20px + env(safe-area-inset-bottom));gap:10px;background:linear-gradient(to top,rgba(5,8,14,.98) 45%,rgba(5,8,14,.85) 65%,rgba(5,8,14,0));display:flex;flex-direction:column;flex-shrink:0}
 #page-quiz.kq-immersive .option-btn{min-height:66px;padding:14px 18px;font-size:17px;font-weight:800;letter-spacing:.2px;border-radius:22px;border:2px solid rgba(255,255,255,.1);background:rgba(18,25,38,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#f2f6fc;box-shadow:0 10px 30px rgba(0,0,0,.38);text-align:left;display:flex;align-items:center;gap:12px;transition:transform .12s ease,box-shadow .2s ease}
 #page-quiz.kq-immersive .option-btn:active{transform:scale(.965)}
 #page-quiz.kq-immersive .option-letter{width:42px;height:42px;border-radius:14px;font-size:15px;font-weight:800;background:rgba(255,255,255,.09);color:#f2f6fc;flex-shrink:0;display:flex;align-items:center;justify-content:center}
@@ -175,7 +178,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 #page-quiz.kq-immersive .inline-feedback{border-radius:18px;padding:14px 18px;backdrop-filter:blur(10px);margin-top:12px}
 #page-quiz.kq-immersive .inline-feedback.wrong{background:rgba(255,77,103,.12);border:1px solid rgba(255,77,103,.35)}
 #page-quiz.kq-immersive .inline-feedback.correct{background:rgba(0,229,143,.1);border:1px solid rgba(0,229,143,.3)}
-#page-quiz.kq-immersive .inline-feedback.teach{background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.3)}
+#page-quiz.kq-immersive .inline-feedback.teach{background:rgba(59,130,246,.25);border:1px solid rgba(96,165,250,.5)}
+#page-quiz.kq-immersive .inline-feedback.teach .inline-feedback-explain{color:#ffffff!important;font-weight:700!important;font-size:15px}
+#page-quiz.kq-immersive .inline-feedback-explain{color:#e2e8f0}
 #page-quiz.kq-immersive .feedback-overlay{position:absolute;left:16px;right:16px;bottom:calc(340px + env(safe-area-inset-bottom));z-index:18;border-radius:22px;background:rgba(18,25,38,.92);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(12px);color:#f2f6fc}
 #page-quiz.kq-immersive .swipe-hint{position:absolute;top:calc(74px + env(safe-area-inset-top));left:0;right:0;text-align:center;z-index:12;color:#8a94a6;font-size:13px;pointer-events:none;text-shadow:0 1px 8px rgba(0,0,0,.6)}
 #page-quiz.kq-immersive #kline-canvas-desc{color:#8a94a6}
@@ -603,6 +608,11 @@ button:focus-visible,.option-btn:focus-visible,.nav-item:focus-visible,.level-ca
 </div>
 <div class="coins-display" id="home-coins" style="font-size:14px;display:none">&#129689; 50</div>
 </div>
+<div style="display:flex;justify-content:space-around;margin-top:10px;padding:10px 16px;background:var(--bg-elevated);border-radius:12px">
+<div style="text-align:center"><div style="font-size:16px;font-weight:800;color:var(--accent-green)" id="home-stat-correct">0</div><div style="font-size:10px;color:var(--text-muted)" id="home-stat-correct-label">Correct</div></div>
+<div style="text-align:center"><div style="font-size:16px;font-weight:800;color:var(--text-primary)" id="home-stat-total">0</div><div style="font-size:10px;color:var(--text-muted)" id="home-stat-total-label">Total</div></div>
+<div style="text-align:center"><div style="font-size:16px;font-weight:800;color:var(--accent-gold)" id="home-stat-streak">0</div><div style="font-size:10px;color:var(--text-muted)" id="home-stat-streak-label">Streak</div></div>
+</div>
 </div>
 <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px 20px">
 <div class="mascot-stage" id="mascot-stage" style="margin-bottom:12px"></div>
@@ -712,7 +722,7 @@ button:focus-visible,.option-btn:focus-visible,.nav-item:focus-visible,.level-ca
 <button class="nav-item" onclick="showPage('levels')" aria-label="Path"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>Path</button>
 <button class="nav-item" onclick="showPage('profile')" aria-label="Profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</button>
 </div>
-<div class="modal-overlay" id="paywall-modal"><div class="paywall-modal"><div class="pw-icon">&#11088;</div><h3>Unlock Lifetime Access</h3><p class="pw-sub" id="pw-sub">You have used all 5 free rounds!</p><div class="pw-price" id="pw-price"><span class="dollar">$</span>19<span id="pw-cents">.99</span><span class="per" id="pw-period"> once</span></div><div class="pw-trial">&#11088; Founding Member &#183; One-time purchase</div><div class="pw-features"><div>&#9989; All current &amp; future levels</div><div>&#9989; Unlimited rounds &amp; hearts</div><div>&#9989; All game modes &amp; patterns</div><div>&#9989; No recurring fees &#8212; ever</div></div><button onclick="handlePayPalSubscribe()" aria-label="Get Lifetime Access" style="width:100%;padding:16px;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,var(--accent-gold),#d97706);color:#000;box-shadow:0 4px 20px rgba(245,158,11,.3);margin-bottom:8px">&#11088; Get Lifetime Access &#8594;</button><p style="font-size:10px;color:var(--text-muted);text-align:center;margin-top:4px;line-height:1.4">&#128293; Launch price &#183; Price increases as we add more levels</p><div class="pw-guarantee">&#128274; 30-day money-back guarantee</div><p style="text-align:center;margin-top:14px"><span onclick="closePaywall()" role="button" tabindex="0" aria-label="Continue for free" style="font-size:13px;color:var(--text-muted);cursor:pointer">Not now</span></p><p style="font-size:10px;color:var(--text-muted);text-align:center;margin-top:4px">Keep practicing for free &#8212; upgrade anytime</p></div></div>
+<div class="modal-overlay" id="paywall-modal"><div class="paywall-modal"><div class="pw-icon">&#11088;</div><h3>Unlock Lifetime Access</h3><p class="pw-sub" id="pw-sub">You have used all 5 free rounds!</p><div class="pw-price" id="pw-price"><span class="dollar">$</span>19<span id="pw-cents">.99</span><span class="per" id="pw-period"> once</span></div><div class="pw-trial">&#11088; Founding Member &#183; One-time purchase</div><div class="pw-features"><div>&#9989; All current &amp; future levels</div><div>&#9989; Unlimited rounds &amp; hearts</div><div>&#9989; All game modes &amp; patterns</div><div>&#9989; No recurring fees &#8212; ever</div></div><button onclick="handlePayPalSubscribe()" aria-label="Get Lifetime Access" style="width:100%;padding:16px;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,var(--accent-gold),#d97706);color:#000;box-shadow:0 4px 20px rgba(245,158,11,.3);margin-bottom:8px">&#11088; Get Lifetime Access &#8594;</button><p style="font-size:10px;color:var(--text-muted);text-align:center;margin-top:4px;line-height:1.4">&#128293; Launch price &#183; Price increases as we add more levels</p><div class="pw-guarantee">&#128274; 30-day money-back guarantee</div><p style="text-align:center;margin-top:14px"><span onclick="closePaywall()" role="button" tabindex="0" aria-label="Maybe later" style="font-size:13px;color:var(--text-muted);cursor:pointer;text-decoration:none">Maybe Later</span></p><p style="font-size:10px;color:var(--text-muted);text-align:center;margin-top:4px">Keep practicing for free &#8212; upgrade anytime</p></div></div>
 <div class="modal-overlay" id="no-hearts-modal"><div class="modal"><h3>&#128148;</h3><h3 id="modal-no-hearts-title">No Hearts Left</h3><p id="modal-no-hearts-desc">Choose an option to continue learning</p><div class="modal-actions"><button class="btn-gray" onclick="closeModal('no-hearts-modal');startReviewMode()" aria-label="Practice to recover">📖 Practice</button><button class="btn-gold" onclick="closeModal('no-hearts-modal');showPage('subscription')" aria-label="Go Pro">Go Pro</button></div></div></div>
 <div class="modal-overlay" id="pro-modal"><div class="modal"><h3>&#128274;</h3><h3 id="modal-pro-title">Pro Required</h3><p id="modal-pro-desc">Upgrade to unlock this content</p><div class="modal-actions"><button class="btn-gray" onclick="closeModal('pro-modal')" aria-label="Cancel">Cancel</button><button class="btn-gold" onclick="closeModal('pro-modal');showPage('subscription')" aria-label="View Plans">View Plans</button></div></div></div>
 </div>
@@ -2146,6 +2156,15 @@ try {
       console.log('[Migration] charteye_state → klinegame_state');
     }
   }
+  /* Migrate from klineGameState (camelCase) to klinegame_state (lowercase) */
+  if (!saved) {
+    saved = localStorage.getItem('klineGameState');
+    if (saved) {
+      localStorage.setItem('klinegame_state', saved);
+      localStorage.removeItem('klineGameState');
+      console.log('[Migration] klineGameState → klinegame_state');
+    }
+  }
   if (saved) {
     appState = JSON.parse(saved);
     for (var k in defaultState) {
@@ -2575,6 +2594,11 @@ function showPage(name) {
     p.classList.remove('active')
   });
   document.getElementById('page-' + name).classList.add('active');
+  /* Show/hide bottom nav based on quiz page */
+  var _bn = document.querySelector('.bottom-nav');
+  if (_bn) {
+    _bn.style.display = (name === 'quiz') ? 'none' : 'flex';
+  }
   document.querySelectorAll('.nav-item').forEach(function(n, i) {
     var pages = ['home', 'levels', 'profile'];
     n.classList.toggle('active', pages[i] === name)
@@ -3453,6 +3477,8 @@ function playSound(type) {
 }
 
 function selectAnswer(idx) {
+  if (!currentQuiz || !currentQuiz.questions || currentQuiz.currentIndex >= currentQuiz.questions.length) return;
+  if (currentQuiz.currentIndex < 0) return;
   if (questionTimer) {
     clearInterval(questionTimer);
     questionTimer = null
@@ -3869,6 +3895,11 @@ function timeUp() {
 }
 
 function nextQuestion() {
+  if (!currentQuiz || !currentQuiz.questions) return;
+  if (currentQuiz.currentIndex >= currentQuiz.questions.length - 1) {
+    endQuiz();
+    return;
+  }
   var inlineFb = document.getElementById('inline-fb');
   if (inlineFb) inlineFb.remove();
   closeFeedback();
@@ -3989,13 +4020,18 @@ function renderResultPage() {
   if (subEl) subEl.textContent = sub;
   if (btnEl) {
     var replayBtn = document.getElementById('btn-replay');
+    /* Always hide replay button on success (accuracy >= 60%) */
+    if (replayBtn) {
+      replayBtn.style.display = 'none';
+    }
+    var lvlNum = r.level30Num;
     /* If failed level30: retry same level; otherwise: next level or new quiz */
-    if (currentQuiz.level30Num && r.accuracy < 60) {
+    if (lvlNum && r.accuracy < 60) {
       btnEl.textContent = zh ? '再试一次' : 'Try Again';
-      btnEl.onclick = function() { startLevel30(currentQuiz.level30Num); };
+      btnEl.onclick = (function(lvl) { return function() { startLevel30(lvl); }; })(lvlNum);
       if (replayBtn) replayBtn.style.display = 'none';
-    } else if (currentQuiz.level30Num) {
-      var nextLvl = currentQuiz.level30Num + 1;
+    } else if (lvlNum) {
+      var nextLvl = Number(lvlNum) + 1;
       if (nextLvl > 30) {
         btnEl.textContent = zh ? '重新开始' : 'Start Over';
         btnEl.onclick = function() { startLevel30(1); };
@@ -4003,12 +4039,15 @@ function renderResultPage() {
       } else {
         /* Main button: Next Level (people prefer new questions) */
         btnEl.textContent = zh ? '下一关 →' : 'Next Level →';
-        btnEl.onclick = function() { startLevel30(nextLvl); };
-        /* Tiny secondary option: replay current level */
+        btnEl.onclick = (function(nl) { return function() { startLevel30(nl); }; })(nextLvl);
         if (replayBtn) {
           replayBtn.style.display = 'none';
         }
       }
+    } else if (r.accuracy >= 60) {
+      btnEl.textContent = zh ? '完成 ✓' : 'Done ✓';
+      btnEl.onclick = function() { showPage('home'); };
+      if (replayBtn) replayBtn.style.display = 'none';
     } else {
       btnEl.textContent = zh ? '再刷一组' : 'Play Again';
       btnEl.onclick = function() { startQuickQuiz(); };
@@ -4428,17 +4467,31 @@ function startQuestionTimer() {
 function updateHeartsDisplay() {
   var he = document.getElementById('home-hearts');
   if (he) {
-    var h = '';
-    for (var i = 0; i < appState.maxHearts; i++) h += '<span class="' + (i < appState.hearts ? 'heart-full' : 'heart-empty') + '">❤️</span>';
-    he.innerHTML = h
+    if (appState.isPro) {
+      he.innerHTML = '<span class="heart-full">♾️</span>';
+    } else {
+      var h = '';
+      for (var i = 0; i < appState.maxHearts; i++) h += '<span class="' + (i < appState.hearts ? 'heart-full' : 'heart-empty') + '">❤️</span>';
+      he.innerHTML = h
+    }
   }
   var hc = document.getElementById('home-hearts-count');
-  if (hc) hc.textContent = appState.hearts;
+  if (hc) {
+    if (appState.isPro) {
+      hc.textContent = currentLang === 'zh' ? '无限' : 'Unlimited';
+    } else {
+      hc.textContent = appState.hearts;
+    }
+  }
   var qh = document.getElementById('quiz-hearts');
   if (qh) {
-    var h2 = '';
-    for (var i = 0; i < Math.min(appState.maxHearts, 5); i++) h2 += i < appState.hearts ? '❤️' : '🖤';
-    qh.textContent = h2
+    if (appState.isPro) {
+      qh.textContent = '♾️';
+    } else {
+      var h2 = '';
+      for (var i = 0; i < Math.min(appState.maxHearts, 5); i++) h2 += i < appState.hearts ? '❤️' : '🖤';
+      qh.textContent = h2
+    }
   }
 }
 
@@ -4512,8 +4565,9 @@ function endQuiz() {
   /* P0: Exclude 'teach' type questions from accuracy calculation */
   var realQuestions = currentQuiz.questions.filter(function(q) { return q.type !== 'teach'; });
   var tot = realQuestions.length,
+    answeredCount = currentQuiz.answers.length,
     cor = currentQuiz.correctCount,
-    acc = tot > 0 ? Math.round(cor / tot * 100) : 0,
+    acc = answeredCount > 0 ? Math.round(cor / answeredCount * 100) : 0,
     el = currentQuiz.startTime ? Math.floor((Date.now() - currentQuiz.startTime) / 1000) : 0,
     mn = Math.floor(el / 60),
     sc = el % 60;
@@ -4590,7 +4644,9 @@ function endQuiz() {
     accuracy: acc,
     xp: currentQuiz.totalXP,
     time: el,
-    level: currentQuiz.level
+    level: currentQuiz.level,
+    level30Num: currentQuiz.level30Num,
+    isReview: currentQuiz.isReview
   };
   appState.currentSessionMaxCombo = 0;
   if (!appState.isPro && !currentQuiz.isReview) {
@@ -5822,6 +5878,13 @@ function updateUI() {
   var coinsEl = document.getElementById('home-coins');
   if (coinsEl) coinsEl.textContent = '\u{1FA99} ' + appState.coins;
   updateHeartsDisplay();
+  /* Update home page stats bar */
+  var hsc = document.getElementById('home-stat-correct');
+  if (hsc) hsc.textContent = appState.totalCorrect;
+  var hst = document.getElementById('home-stat-total');
+  if (hst) hst.textContent = appState.totalAnswered;
+  var hss = document.getElementById('home-stat-streak');
+  if (hss) hss.textContent = appState.streak;
   var frEl = document.getElementById('free-remaining');
   if (frEl) {
     if (appState.isPro) {
@@ -6198,6 +6261,9 @@ function showPaywall() {
 function closePaywall() {
   document.getElementById('paywall-modal').classList.remove('show');
   modalFocusOut();
+  /* Ensure paywallSeen is saved so it doesn't reappear */
+  appState.paywallSeen = true;
+  saveState();
   if (appState.isPro) {
     showPage('home');
     return;
@@ -6205,7 +6271,11 @@ function closePaywall() {
   /* P2: After paywall close, always enter review mode (non-blocking) */
   var zh = currentLang === 'zh';
   showToast(zh ? '📖 进入复习模式，继续练习不扣心' : '📖 Entering review mode — keep practicing, no hearts lost');
-  startReviewMode();
+  try {
+    startReviewMode();
+  } catch (e) {
+    showPage('home');
+  }
 }
 
 function showNoHeartsModal() {
@@ -7017,16 +7087,20 @@ function drawRSISubchart(ctx, data, pad, indTop, indH, candleW, chartW, displayL
   ctx.fillText('RSI', pad.left + 2, indTop + 10);
 }
 
-function drawKlineCanvas(canvasId, candles, maLines, highlights, indicator) {
+function drawKlineCanvas(canvasId, candles, maLines, highlights, indicator, retryCount) {
   var canvas = document.getElementById(canvasId);
   if (!canvas) return;
+  if (!candles || !candles.length) return;
   var ctx = canvas.getContext('2d');
   var dpr = window.devicePixelRatio || 1;
   var rect = canvas.getBoundingClientRect();
+  var retries = retryCount || 0;
   if (rect.width < 10 || rect.height < 10) {
-    requestAnimationFrame(function() {
-      drawKlineCanvas(canvasId, candles, maLines, highlights, indicator)
-    });
+    if (retries < 30) {
+      setTimeout(function() {
+        drawKlineCanvas(canvasId, candles, maLines, highlights, indicator, retries + 1)
+      }, 30 + retries * 10);
+    }
     return
   }
   canvas.width = rect.width * dpr;
