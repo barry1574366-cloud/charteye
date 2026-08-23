@@ -7,10 +7,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Kandoo">
+<meta name="apple-mobile-web-app-title" content="Kline Game">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 192 192%27%3E%3Crect width=%27192%27 height=%27192%27 rx=%2740%27 fill=%27%23131722%27/%3E%3Crect x=%2740%27 y=%2760%27 width=%2716%27 height=%2780%27 fill=%27%2322c55e%27/%3E%3Crect x=%2788%27 y=%2740%27 width=%2716%27 height=%27100%27 fill=%27%23ef4444%27/%3E%3Crect x=%27136%27 y=%2770%27 width=%2716%27 height=%2760%27 fill=%27%2322c55e%27/%3E%3C/svg%3E">
-<link rel="manifest" href='data:application/json,{"name":"Kandoo","short_name":"Kandoo","start_url":"/","display":"standalone","background_color":"%23FFFFFF","theme_color":"%2358CC02","icons":[{"src":"data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 192 192%27%3E%3Crect width=%27192%27 height=%27192%27 rx=%2740%27 fill=%27%23131722%27/%3E%3Crect x=%2740%27 y=%2760%27 width=%2716%27 height=%2780%27 fill=%27%2322c55e%27/%3E%3Crect x=%2788%27 y=%2740%27 width=%2716%27 height=%27100%27 fill=%27%23ef4444%27/%3E%3Crect x=%27136%27 y=%2770%27 width=%2716%27 height=%2760%27 fill=%27%2322c55e%27/%3E%3C/svg%3E","sizes":"any","type":"image/svg+xml"}]}'>
-<title>Kandoo - Master Candlestick Patterns</title>
+<link rel="manifest" href='data:application/json,{"name":"Kline Game","short_name":"Kline Game","start_url":"/","display":"standalone","background_color":"%23FFFFFF","theme_color":"%2358CC02","icons":[{"src":"data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 192 192%27%3E%3Crect width=%27192%27 height=%27192%27 rx=%2740%27 fill=%27%23131722%27/%3E%3Crect x=%2740%27 y=%2760%27 width=%2716%27 height=%2780%27 fill=%27%2322c55e%27/%3E%3Crect x=%2788%27 y=%2740%27 width=%2716%27 height=%27100%27 fill=%27%23ef4444%27/%3E%3Crect x=%27136%27 y=%2770%27 width=%2716%27 height=%2760%27 fill=%27%2322c55e%27/%3E%3C/svg%3E","sizes":"any","type":"image/svg+xml"}]}'>
+<title>Kline Game - Master Candlestick Patterns</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--bg-primary:#FFFFFF;--bg-secondary:#FFFFFF;--bg-card:#FFFFFF;--bg-elevated:#F5F5F5;--text-primary:#1a1a1a;--text-secondary:#666666;--text-muted:#999999;--accent-green:#22c55e;--accent-red:#ef4444;--accent-gold:#f59e0b;--accent-blue:#3b82f6;--accent-purple:#a855f7;--border:#E5E5E5;--stripe:#58CC02}
@@ -114,7 +114,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .q-type-truefalse{background:rgba(99,102,241,.15);color:#6366f1}
 .q-type-trap{background:rgba(239,68,68,.15);color:var(--accent-red)}
 .question-text{font-size:14px;font-weight:600;margin-bottom:2px;line-height:1.4}
-.volume-label{font-size:10px;color:var(--accent-green);margin-bottom:6px;min-height:14px}
+.volume-label{font-size:11px;color:var(--accent-green);font-weight:600;margin-bottom:6px;min-height:16px;background:rgba(34,197,94,.08);border-radius:6px;padding:3px 8px;display:inline-block}
 .options-container{padding:10px 16px calc(18px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px;flex-shrink:0;position:sticky;bottom:0;background:linear-gradient(to top,var(--bg-primary) 60%,rgba(255,255,255,0));z-index:5}
 .option-btn{padding:12px 16px;background:var(--bg-card);border:2px solid var(--border);border-radius:12px;color:var(--text-primary);font-size:14px;text-align:left;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:10px}
 .option-btn:active{transform:scale(.97)}
@@ -134,25 +134,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .inline-feedback-explain{font-size:13px;color:var(--text-secondary);line-height:1.5}
 .inline-feedback-tap{font-size:12px;color:var(--text-muted);margin-top:8px;text-align:center}
 /* =====================================================================
-   Kandoo Quiz — Immersive Terminal Redesign
+   Kline Game Quiz — Immersive Terminal Redesign
    Full-bleed glowing candlestick chart (TikTok rhythm) + floating glass
    bottom buttons (Duolingo clarity). High-contrast dark "trading desk"
    palette with terminal tabular numerals as the signature element.
    Palette: ink #070B12 · panel #121926 · mint #00E58F · coral #FF4D67 · amber #FFC53D
    ===================================================================== */
 #page-quiz.kq-immersive{background:radial-gradient(1100px 720px at 50% -12%,#121d31 0%,#070b12 58%,#04070c 100%)}
-#page-quiz.kq-immersive .chart-container{position:absolute;inset:0;padding:0;margin:0;max-height:none;min-height:0;z-index:1}
+#page-quiz.kq-immersive .chart-container{position:absolute;top:0;left:0;right:0;height:calc(100vh - 330px);max-height:480px;padding:0;margin:0;min-height:0;z-index:1}
 #page-quiz.kq-immersive .kline-canvas{width:100%;height:100%;min-height:0;border-radius:0;background:transparent;max-height:none}
 #page-quiz.kq-immersive .chart-container>div:first-child{position:absolute;top:calc(48px + env(safe-area-inset-top));right:14px;z-index:11;min-height:0}
 #page-quiz.kq-immersive #chart-toggle-btn{background:rgba(255,255,255,.07)!important;border:1px solid rgba(255,255,255,.14)!important;border-radius:999px!important;color:#b9c2d2!important;font-size:10px!important;padding:5px 12px!important;cursor:pointer!important;backdrop-filter:blur(8px)}
 #page-quiz.kq-immersive .quiz-progress-bar{position:absolute;top:0;left:0;right:0;height:4px;z-index:30;background:rgba(255,255,255,.05);border-radius:0}
 #page-quiz.kq-immersive .quiz-progress-fill{height:100%;border-radius:0;background:linear-gradient(90deg,#ffc53d,#ffe08a);box-shadow:0 0 14px rgba(255,197,61,.55);transition:width .35s cubic-bezier(.2,.8,.2,1)}
+#page-quiz.kq-immersive .beginner-shield{position:absolute;top:calc(54px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:25;background:linear-gradient(135deg,rgba(34,197,94,.18),rgba(22,163,74,.12));border:1px solid rgba(34,197,94,.3);border-radius:12px;padding:6px 14px;font-size:12px;font-weight:700;color:#22c55e;text-align:center;white-space:nowrap;pointer-events:none;animation:fadeIn .4s}
 #page-quiz.kq-immersive .quiz-header{position:absolute;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:calc(12px + env(safe-area-inset-top)) 18px 6px;background:none}
 #page-quiz.kq-immersive .quiz-progress{font-size:12px;font-weight:700;color:#8a94a6;font-variant-numeric:tabular-nums;letter-spacing:1.5px}
 #page-quiz.kq-immersive .hearts-quiz{font-size:14px;font-weight:800;color:#ff4d67;text-shadow:0 0 12px rgba(255,77,103,.4)}
 #page-quiz.kq-immersive .quit-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:#8a94a6;font-size:14px;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center}
-#page-quiz.kq-immersive .combo-display{position:absolute;top:calc(26px + env(safe-area-inset-top));left:0;right:0;text-align:center;z-index:25;font-size:54px;font-weight:900;color:#ffc53d;font-family:"SF Mono","Cascadia Mono",Consolas,"Courier New",monospace;font-variant-numeric:tabular-nums;text-shadow:0 0 32px rgba(255,197,61,.45)}
-#page-quiz.kq-immersive .question-section{position:absolute;left:0;right:0;bottom:248px;z-index:10;padding:0 20px;text-align:center;pointer-events:none}
+#page-quiz.kq-immersive .combo-display{position:absolute;top:calc(26px + env(safe-area-inset-top));left:0;right:0;text-align:center;z-index:35;font-size:54px;font-weight:900;color:#ffc53d;font-family:"SF Mono","Cascadia Mono",Consolas,"Courier New",monospace;font-variant-numeric:tabular-nums;text-shadow:0 0 32px rgba(255,197,61,.45);pointer-events:none;background:rgba(0,0,0,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:6px 0;border-radius:0 0 14px 14px}
+#page-quiz.kq-immersive .question-section{position:absolute;left:0;right:0;bottom:calc(340px + env(safe-area-inset-bottom));z-index:10;padding:8px 20px 12px;text-align:center;pointer-events:none;background:linear-gradient(to bottom,rgba(5,8,14,0) 0%,rgba(5,8,14,.55) 40%,rgba(5,8,14,.85) 100%)}
 #page-quiz.kq-immersive .question-text{font-size:clamp(19px,5.2vw,26px);font-weight:800;color:#f2f6fc;line-height:1.35;letter-spacing:-.2px;text-shadow:0 2px 16px rgba(0,0,0,.7),0 0 40px rgba(0,0,0,.35)}
 #page-quiz.kq-immersive .q-type-badge{border-radius:999px;padding:3px 12px;font-size:10px;font-weight:700;background:rgba(255,255,255,.08);color:#b9c2d2;letter-spacing:.5px;backdrop-filter:blur(6px)}
 #page-quiz.kq-immersive .q-type-identify{background:rgba(168,85,247,.2);color:#d8b4fe}
@@ -163,7 +164,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 #page-quiz.kq-immersive .q-type-trap{background:rgba(255,77,103,.2);color:#fda4af}
 #page-quiz.kq-immersive .volume-label{color:#00e58f;font-size:12px;font-weight:600;text-shadow:0 1px 8px rgba(0,0,0,.6)}
 #page-quiz.kq-immersive #pattern-hint-zone{pointer-events:auto;display:flex;justify-content:center;margin-top:10px}
-#page-quiz.kq-immersive .options-container{position:absolute;left:0;right:0;bottom:0;z-index:15;padding:32px 16px calc(22px + env(safe-area-inset-bottom));gap:12px;background:linear-gradient(to top,rgba(5,8,14,.94) 30%,rgba(5,8,14,0));display:flex;flex-direction:column;flex-shrink:0}
+#page-quiz.kq-immersive .options-container{position:absolute;left:0;right:0;bottom:0;z-index:15;padding:24px 16px calc(20px + env(safe-area-inset-bottom));gap:10px;background:linear-gradient(to top,rgba(5,8,14,.96) 38%,rgba(5,8,14,0));display:flex;flex-direction:column;flex-shrink:0}
 #page-quiz.kq-immersive .option-btn{min-height:66px;padding:14px 18px;font-size:17px;font-weight:800;letter-spacing:.2px;border-radius:22px;border:2px solid rgba(255,255,255,.1);background:rgba(18,25,38,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#f2f6fc;box-shadow:0 10px 30px rgba(0,0,0,.38);text-align:left;display:flex;align-items:center;gap:12px;transition:transform .12s ease,box-shadow .2s ease}
 #page-quiz.kq-immersive .option-btn:active{transform:scale(.965)}
 #page-quiz.kq-immersive .option-letter{width:42px;height:42px;border-radius:14px;font-size:15px;font-weight:800;background:rgba(255,255,255,.09);color:#f2f6fc;flex-shrink:0;display:flex;align-items:center;justify-content:center}
@@ -175,7 +176,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 #page-quiz.kq-immersive .inline-feedback.wrong{background:rgba(255,77,103,.12);border:1px solid rgba(255,77,103,.35)}
 #page-quiz.kq-immersive .inline-feedback.correct{background:rgba(0,229,143,.1);border:1px solid rgba(0,229,143,.3)}
 #page-quiz.kq-immersive .inline-feedback.teach{background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.3)}
-#page-quiz.kq-immersive .feedback-overlay{position:absolute;left:16px;right:16px;bottom:260px;z-index:18;border-radius:22px;background:rgba(18,25,38,.92);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(12px);color:#f2f6fc}
+#page-quiz.kq-immersive .feedback-overlay{position:absolute;left:16px;right:16px;bottom:calc(340px + env(safe-area-inset-bottom));z-index:18;border-radius:22px;background:rgba(18,25,38,.92);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(12px);color:#f2f6fc}
 #page-quiz.kq-immersive .swipe-hint{position:absolute;top:calc(74px + env(safe-area-inset-top));left:0;right:0;text-align:center;z-index:12;color:#8a94a6;font-size:13px;pointer-events:none;text-shadow:0 1px 8px rgba(0,0,0,.6)}
 #page-quiz.kq-immersive #kline-canvas-desc{color:#8a94a6}
 @media (prefers-reduced-motion:reduce){#page-quiz.kq-immersive .option-btn{transition:none}}
@@ -247,17 +248,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .plan-toggle{display:flex;background:var(--bg-card);border-radius:12px;padding:4px;margin-bottom:20px;position:relative}
 .plan-toggle-btn{flex:1;padding:12px;text-align:center;font-size:14px;font-weight:600;cursor:pointer;border-radius:10px;z-index:1;transition:color .2s;color:var(--text-muted);border:none;background:none}
 .plan-toggle-btn.active{color:#fff}
-.plan-toggle-slider{position:absolute;top:4px;left:4px;width:calc(50% - 4px);height:calc(100% - 8px);background:var(--stripe);border-radius:10px;transition:transform .3s}
-.plan-toggle-slider.yearly{transform:translateX(100%)}
-.save-badge{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:var(--accent-green);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;z-index:2}
+.plan-toggle-slider{position:absolute;top:4px;left:4px;width:calc(33.33% - 4px);height:calc(100% - 8px);background:linear-gradient(135deg,var(--accent-gold),#d97706);border-radius:10px;transition:transform .3s}
+.plan-toggle-slider.yearly{transform:translateX(100%)}.plan-toggle-slider.lifetime{transform:translateX(200%)}
+.save-badge{position:absolute;left:50%;top:-6px;transform:translateX(-50%);background:var(--accent-green);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;z-index:2;transition:opacity .2s}
 .pricing-card{background:var(--bg-card);border:2px solid var(--border);border-radius:16px;padding:28px 20px;text-align:center;margin-bottom:16px;position:relative}
-.pricing-card.featured{border-color:var(--stripe)}
+.pricing-card.featured{border-color:var(--accent-gold)}
 .plan-name{font-size:14px;color:var(--text-secondary);margin-bottom:8px;font-weight:500}
 .plan-price{font-size:42px;font-weight:800}
 .plan-price .dollar{font-size:22px;vertical-align:super}
 .plan-period{font-size:14px;font-weight:400;color:var(--text-muted)}
 .plan-original{font-size:13px;color:var(--text-muted);text-decoration:line-through;margin-top:2px}
-.subscribe-btn{width:100%;padding:16px;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;margin-top:16px;background:var(--stripe);color:#fff;box-shadow:0 4px 20px rgba(99,91,255,.3)}
+.subscribe-btn{width:100%;padding:16px;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;margin-top:16px;background:linear-gradient(135deg,var(--accent-gold),#d97706);color:#000;box-shadow:0 4px 20px rgba(245,158,11,.3)}
 .guarantee{text-align:center;margin-top:16px;font-size:13px;color:var(--text-muted)}.guarantee span{color:var(--accent-green)}
 .features-list{text-align:left;margin-top:20px;font-size:13px;color:var(--text-secondary)}.features-list div{padding:5px 0;display:flex;align-items:center;gap:8px}
 .brokers-section{margin-top:28px}
@@ -269,6 +270,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .enc-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px;cursor:pointer;transition:all .2s}
 .enc-card:hover{border-color:var(--accent-blue)}.enc-card.active{border-color:var(--accent-blue)}
 .enc-card h3{font-size:15px;margin-bottom:6px}.enc-card p{font-size:12px;color:var(--text-secondary);line-height:1.5}
+.enc-card:not(.locked){border-left:3px solid var(--accent-green)}
+.enc-card.locked{opacity:.55;background:var(--bg-secondary)}
+.enc-card.locked h3{color:var(--text-muted)}
+.enc-card.locked:hover{border-color:var(--border)}
 .enc-detail{display:none;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px}
 .enc-detail.show{display:block}
 .enc-detail h3{font-size:17px;margin-bottom:10px;color:var(--accent-blue)}.enc-detail .desc{font-size:13px;line-height:1.7;color:var(--text-secondary)}
@@ -300,7 +305,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .paywall-modal .pw-price .per{font-size:14px;font-weight:400;color:var(--text-muted)}
 .paywall-modal .pw-trial{color:var(--accent-green);font-size:13px;font-weight:600;margin-bottom:4px}
 .paywall-modal .pw-features{text-align:left;margin:16px 0;font-size:12px;color:var(--text-secondary)}.paywall-modal .pw-features div{padding:3px 0}
-.paywall-modal .pw-btn{width:100%;padding:16px;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;background:var(--stripe);color:#fff;box-shadow:0 4px 20px rgba(99,91,255,.3);margin-bottom:8px}
+.paywall-modal .pw-btn{width:100%;padding:16px;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,var(--accent-gold),#d97706);color:#000;box-shadow:0 4px 20px rgba(245,158,11,.3);margin-bottom:8px}
 .paywall-modal .pw-guarantee{font-size:11px;color:var(--text-muted)}
 .paywall-modal .pw-close{margin-top:10px;background:none;border:none;color:var(--text-muted);font-size:12px;cursor:pointer}
 .toast{position:fixed;top:calc(60px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:12px;font-size:13px;z-index:500;animation:toastIn .3s ease;box-shadow:0 4px 20px rgba(0,0,0,.15)}
@@ -343,18 +348,11 @@ button:focus-visible,.option-btn:focus-visible,.nav-item:focus-visible,.level-ca
 .profile-entry-text{flex:1;font-size:14px;font-weight:500}
 .profile-entry-arrow{color:var(--text-muted);font-size:16px}
 
-/* Bull & Bear mascots */
+/* Bull & Bear mascots — bull is primary, bear is story character */
 .mascot{font-size:50px;text-align:center;margin-bottom:8px;animation:mascotBounce .6s ease}
 .mascot.bull{filter:drop-shadow(0 4px 12px rgba(34,197,94,.4))}
 .mascot.bear{filter:drop-shadow(0 4px 12px rgba(239,68,68,.4))}
 @keyframes mascotBounce{0%{transform:scale(0) rotate(-10deg)}50%{transform:scale(1.2) rotate(5deg)}100%{transform:scale(1) rotate(0)}}
-/* Home IP characters — 牛熊 IP */
-.home-characters{display:flex;justify-content:center;align-items:flex-end;gap:20px;margin:20px 0 10px;position:relative}
-.home-char{width:100px;height:125px;cursor:pointer;transition:transform .25s ease;animation:charIdle 3s ease-in-out infinite}
-.home-char:nth-child(2){animation-delay:1.5s}
-.home-char:hover{transform:translateY(-6px) scale(1.06)}
-.home-char img{width:100%;height:100%;object-fit:contain}
-.home-char svg{width:100%;height:100%}
 @keyframes charIdle{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 .home-mascot-bubble{display:none;background:#1a1a1a;border:none;border-radius:18px;padding:12px 18px;font-size:14px;color:#fff;max-width:340px;margin:0 auto 12px;line-height:1.6;position:relative;animation:bubbleIn .35s ease;box-shadow:0 4px 20px rgba(0,0,0,.12)}
 .home-mascot-bubble::after{content:'';position:absolute;bottom:-7px;left:50%;transform:translateX(-50%) rotate(45deg);width:14px;height:14px;background:#1a1a1a}
@@ -508,15 +506,15 @@ button:focus-visible,.option-btn:focus-visible,.nav-item:focus-visible,.level-ca
 .checkin-entry .ce-arrow{color:var(--text-muted)}
 /* === Viral / Share styles === */
 .share-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px 20px;border:none;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s}
-.share-btn-primary{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;box-shadow:0 4px 0 #15803d}
-.share-btn-primary:active{transform:translateY(2px);box-shadow:0 2px 0 #15803d}
+.share-btn-primary{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;box-shadow:0 4px 0 #1d4ed8}
+.share-btn-primary:active{transform:translateY(2px);box-shadow:0 2px 0 #1d4ed8}
 .share-btn-secondary{background:var(--bg-card);color:var(--text-primary);border:1px solid var(--border)}
 .share-btn-secondary:active{transform:translateY(1px)}
 @keyframes slideDownIn{0%{transform:translate(-50%,-100%);opacity:0}100%{transform:translate(-50%,0);opacity:1}}
-.share-card-preview{position:fixed;top:calc(56px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:380px;background:linear-gradient(135deg,#f0fdf4,#ecfdf5);border:2px solid #22c55e;border-radius:20px;z-index:1100;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;box-shadow:0 8px 32px rgba(34,197,94,.2);animation:slideDownIn .35s cubic-bezier(.175,.885,.32,1.275)}
+.share-card-preview{position:fixed;top:calc(56px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:380px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border:2px solid #3b82f6;border-radius:20px;z-index:1100;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;box-shadow:0 8px 32px rgba(59,130,246,.2);animation:slideDownIn .35s cubic-bezier(.175,.885,.32,1.275)}
 .share-card-preview img{max-width:90%;max-height:50vh;border-radius:16px;box-shadow:0 4px 16px rgba(0,0,0,.15)}
 .share-card-actions{display:flex;gap:12px;margin-top:16px}
-.invite-modal{position:fixed;top:calc(56px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:380px;background:#fff;border:2px solid #22c55e;border-radius:20px;z-index:1100;display:flex;align-items:center;justify-content:center;padding:20px;box-shadow:0 8px 32px rgba(0,0,0,.1);animation:slideDownIn .35s cubic-bezier(.175,.885,.32,1.275)}
+.invite-modal{position:fixed;top:calc(56px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:380px;background:#fff;border:2px solid #3b82f6;border-radius:20px;z-index:1100;display:flex;align-items:center;justify-content:center;padding:20px;box-shadow:0 8px 32px rgba(0,0,0,.1);animation:slideDownIn .35s cubic-bezier(.175,.885,.32,1.275)}
 .invite-modal-content{background:#fff;border-radius:24px;padding:32px 24px;max-width:360px;text-align:center;width:100%}
 .invite-modal-icon{font-size:56px;margin-bottom:12px}
 .invite-modal-title{font-size:20px;font-weight:800;margin-bottom:8px;color:#1a1a1a}
@@ -560,7 +558,8 @@ button:focus-visible,.option-btn:focus-visible,.nav-item:focus-visible,.level-ca
 <script async src="https://www.paypal.com/sdk/js?client-id=BAAOXqzVG5EcSkaVx-Klr_a5RwBCCTX4woeGrDCU1RJPM0jMBmOW1eEVxZYXP0_EK33GEybjBnmHQw59X8&components=hosted-buttons&disable-funding=venmo&currency=USD"></script>
 </head>
 <body>
-<div class="auth-overlay hidden" id="auth-overlay" role="dialog" aria-label="Login or Register"><div class="auth-card"><div class="auth-logo" aria-hidden="true">📈</div><div class="auth-title">Kandoo — Charts, as Easy as Learning to Speak</div><div class="auth-sub">The daily 5-minute practice app for crypto and stock technical analysis. No trading advice. Just chart literacy.</div><div class="auth-tab-row" role="tablist"><button class="auth-tab active" id="auth-tab-login" onclick="switchAuthTab('login')" role="tab" aria-selected="true">Login</button><button class="auth-tab" id="auth-tab-register" onclick="switchAuthTab('register')" role="tab" aria-selected="false">Sign Up</button></div><div class="auth-input-group"><label class="auth-label" for="auth-email">Email</label><input class="auth-input" type="email" id="auth-email" placeholder="you@example.com" autocomplete="email" aria-required="true" aria-label="Email address"></div><div class="auth-input-group"><label class="auth-label" for="auth-password">Password</label><input class="auth-input" type="password" id="auth-password" placeholder="At least 6 characters" autocomplete="current-password" aria-required="true" aria-label="Password"></div><button class="auth-btn" id="auth-submit-btn" onclick="handleAuthSubmit()" aria-label="Submit"><span id="auth-btn-text">Login</span></button><div class="auth-error" id="auth-error"></div><button class="auth-guest-btn" onclick="enterGuestMode()">🎮 Continue as Guest</button><div class="auth-notice">Guest mode: progress saved locally only. Clearing cache or switching devices will lose data.</div></div></div>
+<div class="auth-overlay hidden" id="auth-overlay" role="dialog" aria-label="Login or Register"><div class="auth-card"><div class="auth-logo" aria-hidden="true">📈</div><div class="auth-title">Kline Game — Charts, as Easy as Learning to Speak</div><div class="auth-sub">The daily 5-minute practice app for crypto and stock technical analysis. No trading advice. Just chart literacy.</div><div class="auth-tab-row" role="tablist"><button class="auth-tab active" id="auth-tab-login" onclick="switchAuthTab('login')" role="tab" aria-selected="true">Login</button><button class="auth-tab" id="auth-tab-register" onclick="switchAuthTab('register')" role="tab" aria-selected="false">Sign Up</button></div><div class="auth-input-group"><label class="auth-label" for="auth-email">Email</label><input class="auth-input" type="email" id="auth-email" placeholder="you@example.com" autocomplete="email" aria-required="true" aria-label="Email address"></div><div class="auth-input-group"><label class="auth-label" for="auth-password">Password</label><input class="auth-input" type="password" id="auth-password" placeholder="At least 6 characters" autocomplete="current-password" aria-required="true" aria-label="Password"></div><button class="auth-btn" id="auth-submit-btn" onclick="handleAuthSubmit()" aria-label="Submit"><span id="auth-btn-text">Login</span></button><div class="auth-error" id="auth-error"></div><button class="auth-guest-btn" onclick="enterGuestMode()">🎮 Continue as Guest</button><div class="auth-notice">Guest mode: progress saved locally only. Clearing cache or switching devices will lose data.</div></div></div>
+<div id="feedback-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;background:rgba(0,0,0,.5);align-items:center;justify-content:center" onclick="if(event.target===this)closeFeedbackModal()"><div style="background:var(--bg-secondary);border-radius:20px;padding:28px 24px;max-width:360px;width:90%;text-align:center"><div style="font-size:44px;margin-bottom:12px">📣</div><div style="font-size:20px;font-weight:800;margin-bottom:8px" id="feedback-modal-title">Got a Great Idea?</div><div style="font-size:14px;color:var(--text-secondary);line-height:1.6;margin-bottom:16px" id="feedback-modal-desc">Help us improve Kline Game! Send bug reports, feature ideas, or suggestions. If we adopt yours, you'll get <b style="color:var(--accent-red)">+5 hearts</b> + <b style="color:var(--accent-gold)">500 coins</b> as a thank-you!</div><button onclick="sendFeedbackEmail()" style="width:100%;padding:15px;border-radius:14px;border:none;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:10px" id="feedback-email-btn">📧 Email Us</button><button onclick="closeFeedbackModal()" style="width:100%;padding:13px;border-radius:14px;border:none;background:var(--bg-card);color:var(--text-muted);font-size:14px;cursor:pointer">Maybe Later</button></div></div>
 <div class="user-info-bar" id="user-info-bar" style="display:none"><span class="user-email" id="user-email-display"></span><span class="sync-status" id="sync-status-display">⚠️</span><button class="logout-btn" onclick="handleLogout()">Logout</button></div>
 <div class="app-container">
 <div class="page" id="page-onboarding">
@@ -626,7 +625,7 @@ button:focus-visible,.option-btn:focus-visible,.nav-item:focus-visible,.level-ca
 <div class="lp-finish" id="lp-finish" style="display:none">
 <div class="lp-finish-icon">&#127942;</div>
 <div class="lp-finish-text" id="lp-finish-text">All Levels Complete!</div>
-<div class="lp-finish-sub">You've mastered all 30 levels</div>
+<div class="lp-finish-sub">You've mastered all 60 lessons</div>
 </div>
 </div>
 </div>
@@ -636,11 +635,7 @@ button:focus-visible,.option-btn:focus-visible,.nav-item:focus-visible,.level-ca
 <div class="tutorial-title" id="tut-title">Candlestick Basics</div>
 <div class="tutorial-sub" id="tut-sub">Learn the fundamentals in 2 minutes</div>
 
-<div class="tutorial-step">
-<div class="tutorial-step-num">1</div>
-<div class="tutorial-step-title" id="tut-s1-title">What is a Candlestick?</div>
-<div class="tutorial-step-desc" id="tut-s1-desc">A candlestick shows the price movement of a time period. One candle = one story of buyers vs sellers.</div>
-</div>
+<div class="tutorial-step"><div class="tutorial-step-num">1</div><div class="tutorial-step-title" id="tut-s1-title">What is a Candlestick?</div><div class="tutorial-step-desc" id="tut-s1-desc">A candlestick shows the price movement of a time period. One candle = one story of buyers vs sellers.</div><div style="display:flex;gap:8px;justify-content:center;margin:12px 0"><div style="width:20px;height:60px;position:relative;display:flex;flex-direction:column;align-items:center"><div style="width:2px;height:16px;background:#22c55e"></div><div style="width:14px;height:24px;background:#22c55e;border-radius:2px"></div><div style="width:2px;height:20px;background:#22c55e"></div><div style="font-size:10px;color:#22c55e;margin-top:4px;font-weight:600">Bull</div></div><div style="width:20px;height:60px;position:relative;display:flex;flex-direction:column;align-items:center"><div style="width:2px;height:18px;background:#ef4444"></div><div style="width:14px;height:20px;background:#ef4444;border-radius:2px"></div><div style="width:2px;height:22px;background:#ef4444"></div><div style="font-size:10px;color:#ef4444;margin-top:4px;font-weight:600">Bear</div></div></div></div>
 
 <div class="tutorial-step">
 <div class="tutorial-step-num">2</div>
@@ -694,6 +689,7 @@ button:focus-visible,.option-btn:focus-visible,.nav-item:focus-visible,.level-ca
 <div class="page page-quiz kq-immersive" id="page-quiz" style="flex-direction:column;height:100vh;overflow:hidden">
 <div class="quiz-header"><span class="quiz-progress" id="quiz-progress"></span><div class="hearts-quiz" id="quiz-hearts"></div><button class="quit-btn" onclick="quitQuiz()" aria-label="Quit quiz">&#10005;</button></div>
 <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-progress-fill"></div></div>
+<div class="beginner-shield" id="beginner-shield" style="display:none">&#128737;&#65039; <span id="shield-text">Levels 1-10: No hearts lost — learn freely!</span></div><div class="review-mode-banner" id="review-mode-banner" style="display:none;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);border-radius:10px;padding:6px 14px;font-size:11px;font-weight:600;color:#f59e0b;text-align:center;margin:4px 16px">&#128260; <span id="review-banner-text">Review Mode — Upgrade Pro to unlock new patterns</span></div>
 <div class="combo-display hidden" id="combo-display"></div>
 <div class="chart-container"><div style="display:flex;justify-content:flex-end;padding:0 2px 4px;min-height:20px"><button id="chart-toggle-btn" onclick="toggleChartView()" style="display:none;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;color:var(--text-secondary);font-size:10px;padding:3px 10px;cursor:pointer" aria-label="Toggle chart view">All candles</button></div><canvas class="kline-canvas" id="kline-canvas" role="img" aria-describedby="kline-canvas-desc"></canvas><div class="sr-only" id="kline-canvas-desc" aria-live="polite">K-line chart showing candlestick pattern</div></div>
 <div class="question-section"><div class="q-type-badge q-type-identify" id="q-type-badge">&#128269; Identify</div><div class="question-text" id="question-text"></div><div class="volume-label" id="volume-label"></div><div id="pattern-hint-zone"></div></div>
@@ -702,13 +698,13 @@ button:focus-visible,.option-btn:focus-visible,.nav-item:focus-visible,.level-ca
 <div class="swipe-hint" id="swipe-hint">Swipe up for next</div>
 </div>
 <div class="page" id="page-result"><div class="result-page"><div class="result-emoji" id="result-emoji" style="font-size:64px;margin-bottom:8px">🎉</div><div class="result-title" id="result-title" style="font-size:32px;font-weight:800;color:var(--text-primary)">太棒了</div><div class="result-subtitle" id="result-subtitle" style="font-size:18px;color:var(--text-secondary);margin:8px 0 32px">+50 XP · 准确率 80%</div><button class="btn-primary" id="btn-again" style="font-size:22px;padding:22px 0;width:100%;max-width:340px;border-radius:20px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;box-shadow:0 6px 0 #15803d,0 8px 20px rgba(34,197,94,.3);margin-bottom:8px" aria-label="Next Level">下一关 →</button><button id="btn-replay" style="display:none;background:none;border:none;color:var(--text-muted);font-size:13px;cursor:pointer;text-decoration:underline;margin-bottom:16px" aria-label="Play Again">↻ 再刷一次</button><div style="text-align:center"><button onclick="toggleMistakeExplain()" id="mistake-toggle-btn" style="background:none;border:none;color:var(--text-muted);font-size:13px;cursor:pointer;text-decoration:underline" aria-label="View mistake explanations">查看错题解释</button><div id="mistake-explain-area" style="display:none;margin-top:12px;max-height:300px;overflow-y:auto;text-align:left;background:var(--bg-secondary);border-radius:12px;padding:14px 16px"></div></div></div></div>
-<div class="page" id="page-profile"><div class="profile-header"><div class="profile-xp" id="profile-xp">0</div><div class="profile-level" id="profile-level">Newbie Trader</div></div><div class="profile-section"><div class="profile-entry" id="profile-login-entry" onclick="showAuthOverlay()" role="button" tabindex="0" aria-label="Login or create account"><span class="profile-entry-icon">&#128100;</span><span class="profile-entry-text" id="login-entry-text">Login / Cloud Sync</span><span class="profile-entry-arrow">&#8250;</span></div></div><div style="padding:0 20px"></div></div><div class="profile-stats"><div class="profile-stat"><div class="profile-stat-value" id="stat-correct">0</div><div class="profile-stat-label" id="stat-correct-label">Correct</div></div><div class="profile-stat"><div class="profile-stat-value" id="stat-total">0</div><div class="profile-stat-label" id="stat-total-label">Total</div></div><div class="profile-stat"><div class="profile-stat-value" id="stat-streak">0</div><div class="profile-stat-label" id="stat-streak-label">Streak</div></div></div><div class="profile-section"><div class="profile-entry" onclick="showPage('mistakes')" role="button" tabindex="0" aria-label="Mistake Log"><span class="profile-entry-icon">&#128128;</span><span class="profile-entry-text" id="mistakes-entry-text">Mistake Log</span><span id="mistakes-badge" style="font-size:12px;color:var(--accent-red);font-weight:600">0</span><span class="profile-entry-arrow">&#8250;</span></div><div class="profile-entry" onclick="showPage('encyclopedia')" role="button" tabindex="0" aria-label="Pattern Wiki"><span class="profile-entry-icon">&#128214;</span><span class="profile-entry-text" id="wiki-entry-text">Pattern Wiki</span><span class="profile-entry-arrow">&#8250;</span></div></div><div class="pro-banner" onclick="showPage('subscription')" role="button" tabindex="0" aria-label="Go Pro subscription"><div class="pro-banner-text"><div class="pro-banner-title">&#9889; Go Pro</div><div class="pro-banner-desc" id="pro-banner-desc">Unlimited hearts, full access</div></div><span style="font-size:26px">&#128081;</span></div><div class="section-title">&#10084;&#65039; <span id="hearts-title">Hearts</span></div><div id="heart-timer" style="font-size:13px;color:var(--text-secondary);margin-bottom:14px">Next heart: 29:59</div><div class="section-title">&#128201; <span id="weakness-title">Weakness</span></div><div id="weakness-list"></div><div class="section-title">&#9881;&#65039; <span id="settings-title">Settings</span></div><div style="background:var(--bg-secondary);border-radius:14px;padding:4px 16px;margin-bottom:10px"><div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)"><span style="font-size:13px;font-weight:600" id="set-cb-label">&#127912; Color-blind mode</span><button id="set-cb-btn" onclick="toggleColorBlind()" aria-label="Toggle color-blind mode" style="width:46px;height:26px;border-radius:13px;border:none;background:#ccc;position:relative;cursor:pointer;transition:background .2s"><span id="set-cb-knob" style="position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s"></span></button></div><div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)"><span style="font-size:13px;font-weight:600" id="set-sfx-label">&#128266; Sound effects</span><button id="set-sfx-btn" onclick="toggleSfx()" aria-label="Toggle sound effects" style="width:46px;height:26px;border-radius:13px;border:none;background:#ccc;position:relative;cursor:pointer"><span id="set-sfx-knob" style="position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s"></span></button></div><div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0"><span style="font-size:13px;font-weight:600" id="set-vib-label">&#128242; Vibration</span><button id="set-vib-btn" onclick="toggleVibrate()" aria-label="Toggle vibration" style="width:46px;height:26px;border-radius:13px;border:none;background:#ccc;position:relative;cursor:pointer"><span id="set-vib-knob" style="position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s"></span></button></div></div><div style="display:flex;gap:8px;margin-bottom:24px"><button class="btn-secondary" onclick="exportProgress()" aria-label="Export progress" style="flex:1;font-size:12px">&#128228; <span id="exp-label">Export Progress</span></button><button class="btn-secondary" onclick="importProgress()" aria-label="Import progress" style="flex:1;font-size:12px">&#128229; <span id="imp-label">Import Progress</span></button></div></div></div>
+<div class="page" id="page-profile"><div class="profile-header"><div class="profile-xp" id="profile-xp">0</div><div class="profile-level" id="profile-level">Newbie Trader</div></div><div style="padding:0 20px"></div><div class="profile-stats"><div class="profile-stat"><div class="profile-stat-value" id="stat-correct">0</div><div class="profile-stat-label" id="stat-correct-label">Correct</div></div><div class="profile-stat"><div class="profile-stat-value" id="stat-total">0</div><div class="profile-stat-label" id="stat-total-label">Total</div></div><div class="profile-stat"><div class="profile-stat-value" id="stat-streak">0</div><div class="profile-stat-label" id="stat-streak-label">Streak</div></div></div><div style="padding:0 20px;margin-top:16px"><div style="background:var(--bg-secondary);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px"><div style="position:relative;width:52px;height:52px;flex-shrink:0"><svg width="52" height="52" viewBox="0 0 52 52" style="transform:rotate(-90deg)"><circle cx="26" cy="26" r="22" fill="none" stroke="#e5e5e5" stroke-width="5"/><circle cx="26" cy="26" r="22" fill="none" stroke="#22c55e" stroke-width="5" stroke-linecap="round" stroke-dasharray="138.2" stroke-dashoffset="138.2" id="weekly-goal-circle"/></svg><div style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700" id="weekly-goal-pct">0%</div></div><div style="flex:1"><div style="font-size:13px;font-weight:700" id="weekly-goal-title">Weekly Goal</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px" id="weekly-goal-desc">0/100 XP this week</div></div></div></div><div style="padding:0 20px;margin-top:14px"><div style="font-size:13px;font-weight:700;margin-bottom:8px">📊 Last 7 Days</div><div id="learning-heatmap" style="display:flex;gap:4px;justify-content:space-between"></div></div><div style="padding:0 20px;margin-top:14px"><div style="font-size:13px;font-weight:700;margin-bottom:8px">🎓 Recently Learned</div><div id="recent-patterns" style="display:flex;gap:6px;flex-wrap:wrap"><span style="font-size:12px;color:var(--text-muted)">No patterns yet</span></div></div><div class="profile-section"><div class="profile-entry" onclick="showPage('mistakes')" role="button" tabindex="0" aria-label="Mistake Log"><span class="profile-entry-icon">&#128128;</span><span class="profile-entry-text" id="mistakes-entry-text">Mistake Log</span><span id="mistakes-badge" style="font-size:12px;color:var(--accent-red);font-weight:600">0</span><span class="profile-entry-arrow">&#8250;</span></div><div class="profile-entry" onclick="showPage('encyclopedia')" role="button" tabindex="0" aria-label="Pattern Wiki"><span class="profile-entry-icon">&#128214;</span><span class="profile-entry-text" id="wiki-entry-text">Pattern Wiki</span><span class="profile-entry-arrow">&#8250;</span></div><div class="profile-entry" onclick="showFeedbackModal()" role="button" tabindex="0" aria-label="Send Feedback"><span class="profile-entry-icon">&#128227;</span><span class="profile-entry-text" id="feedback-entry-text">Send Feedback</span><span class="profile-entry-arrow">&#8250;</span></div></div><div class="pro-banner" onclick="showPage('subscription')" role="button" tabindex="0" aria-label="Go Pro subscription"><div class="pro-banner-text"><div class="pro-banner-title">&#9889; Go Pro</div><div class="pro-banner-desc" id="pro-banner-desc">Unlimited hearts, full access</div></div><span style="font-size:26px">&#128081;</span></div><div class="section-title">&#10084;&#65039; <span id="hearts-title">Hearts</span></div><div id="heart-timer" style="font-size:13px;color:var(--text-secondary);margin-bottom:14px">Next heart: 29:59</div><div class="section-title">&#128201; <span id="weakness-title">Weakness</span></div><div id="weakness-list"></div><div class="section-title">&#9881;&#65039; <span id="settings-title">Settings</span></div><div style="background:var(--bg-secondary);border-radius:14px;padding:4px 16px;margin-bottom:10px"><div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)"><span style="font-size:13px;font-weight:600" id="set-cb-label">&#127912; Color-blind mode</span><button id="set-cb-btn" onclick="toggleColorBlind()" aria-label="Toggle color-blind mode" style="width:46px;height:26px;border-radius:13px;border:none;background:#ccc;position:relative;cursor:pointer;transition:background .2s"><span id="set-cb-knob" style="position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s"></span></button></div><div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)"><span style="font-size:13px;font-weight:600" id="set-sfx-label">&#128266; Sound effects</span><button id="set-sfx-btn" onclick="toggleSfx()" aria-label="Toggle sound effects" style="width:46px;height:26px;border-radius:13px;border:none;background:#ccc;position:relative;cursor:pointer"><span id="set-sfx-knob" style="position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s"></span></button></div><div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0"><span style="font-size:13px;font-weight:600" id="set-vib-label">&#128242; Vibration</span><button id="set-vib-btn" onclick="toggleVibrate()" aria-label="Toggle vibration" style="width:46px;height:26px;border-radius:13px;border:none;background:#ccc;position:relative;cursor:pointer"><span id="set-vib-knob" style="position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s"></span></button></div></div><div style="display:flex;gap:8px;margin-bottom:16px"><button class="btn-secondary" onclick="exportProgress()" aria-label="Export progress" style="flex:1;font-size:11px;padding:8px 4px">&#128228; <span id="exp-label">Export</span></button><button class="btn-secondary" onclick="importProgress()" aria-label="Import progress" style="flex:1;font-size:11px;padding:8px 4px">&#128229; <span id="imp-label">Import</span></button></div><div style="padding:0 20px 24px;text-align:center"><button onclick="showAuthOverlay()" style="font-size:12px;color:var(--text-muted);border:1px solid var(--border);border-radius:8px;padding:8px 24px;background:transparent;cursor:pointer" id="login-entry-text" aria-label="Login or create account">&#128100; Login / Cloud Sync</button></div></div></div></div>
 <div class="page" id="page-mistakes"><div class="mistakes-page"><div class="mistakes-header"><div class="section-title" style="margin:0">&#128128; <span id="mistakes-title">Mistakes</span></div><div class="mistakes-count"><span id="mistakes-count">0</span></div></div><button class="retry-btn" onclick="retryMistakes()" id="retry-btn" aria-label="Review Mistakes">&#128260; <span id="retry-text">Review Mistakes</span></button><div id="mistakes-list"></div></div></div>
-<div class="page" id="page-subscription"><div class="sub-page"><div class="sub-header"><div class="trial-badge">&#9989; 3-Day Free Trial</div><h2>Unlock Kandoo Pro</h2><p>Unlimited practice. No more waiting.</p><p style="font-size:12px;color:var(--accent-green);font-weight:600;margin-top:6px">&#128200; Thousands of traders learning now</p></div><div class="plan-toggle" id="plan-toggle"><div class="plan-toggle-slider" id="plan-slider"></div><button class="plan-toggle-btn active" id="toggle-monthly" onclick="setPlan('monthly')" aria-label="Select monthly plan">Monthly</button><button class="plan-toggle-btn" id="toggle-yearly" onclick="setPlan('yearly')" aria-label="Select yearly plan">Yearly</button><div class="save-badge">SAVE 58%</div></div><div class="pricing-card featured" id="pricing-display"><div class="plan-name" id="plan-name">Pro Monthly</div><div class="plan-price" id="plan-price"><span class="dollar">$</span>19<span id="plan-cents">.99</span><span class="per" id="plan-period">/mo</span></div><div class="plan-original hidden" id="plan-original">$119.88/year</div><div id="price-anchor" style="font-size:12px;color:var(--text-muted);margin-top:4px"></div><div id="urgency-banner" style="display:none;background:linear-gradient(135deg,#fef3c7,#fde68a);border-radius:10px;padding:8px 12px;margin:10px 0;font-size:12px;color:#92400e;text-align:center;font-weight:600"><span id="urgency-timer">⏰ Limited time offer ends in 71:59:59</span></div><p class="auto-renew-notice" style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:6px;line-height:1.5">3-day free trial, then $19.99/month auto-charged. Cancel anytime.</p><div id="paypal-container-SBJMU8U3AWKUU" style="margin-bottom:8px;min-height:50px"></div><div class="guarantee"><span>&#128274;</span> Cancel anytime. Full refund within 30 days.</div><div class="features-list"><div>&#9989; Unlimited hearts - never wait</div><div>&#9989; All 300+ questions unlocked</div><div>&#9989; All 30 levels + all question types</div><div>&#9989; Ad-free experience</div><div>&#9989; Priority new content</div><div>&#9989; Cloud sync across devices</div></div></div><div style="text-align:center;padding:12px 0"><button onclick="closeSubscription()" style="background:none;border:none;color:var(--text-muted);font-size:13px;cursor:pointer;text-decoration:underline" aria-label="Maybe later">Maybe later</button></div><div class="brokers-section"><div class="section-title">&#128279; Recommended Platforms</div><p style="font-size:10px;color:var(--text-muted);margin-bottom:8px;line-height:1.4">Affiliate disclosure: Some links may earn us a commission at no extra cost to you. Not financial advice.</p><div class="broker-card" onclick="window.open('https://www.binance.com/en/activity/referral?')" role="button" tabindex="0" aria-label="Open Binance website"><span class="broker-logo">&#129689;</span><div class="broker-info"><div class="broker-name">Binance</div><div class="broker-desc">World's largest crypto exchange</div></div><span class="broker-bonus">Get bonus &gt;</span></div><div class="broker-card" onclick="window.open('https://www.coinbase.com/join')" role="button" tabindex="0" aria-label="Open Coinbase website"><span class="broker-logo">&#128142;</span><div class="broker-info"><div class="broker-name">Coinbase</div><div class="broker-desc">NASDAQ-listed, compliant</div></div><span class="broker-bonus">Get bonus &gt;</span></div><div class="broker-card" onclick="window.open('https://www.okx.com/join')" role="button" tabindex="0" aria-label="Open OKX website"><span class="broker-logo">&#9889;</span><div class="broker-info"><div class="broker-name">OKX</div><div class="broker-desc">Derivatives &amp; futures trading</div></div><span class="broker-bonus">Get bonus &gt;</span></div><div class="broker-card" onclick="window.open('https://www.webull.com/')" role="button" tabindex="0" aria-label="Open Webull website"><span class="broker-logo">&#128176;</span><div class="broker-info"><div class="broker-name">Webull</div><div class="broker-desc">US stocks &amp; options</div></div><span class="broker-bonus">Get bonus &gt;</span></div><div class="broker-card" onclick="window.open('https://www.robinhood.com/')" role="button" tabindex="0" aria-label="Open Robinhood website"><span class="broker-logo">&#129413;</span><div class="broker-info"><div class="broker-name">Robinhood</div><div class="broker-desc">Zero-commission US stocks</div></div><span class="broker-bonus">Get bonus &gt;</span></div><div class="broker-card" onclick="window.open('https://www.tdameritrade.com/')" role="button" tabindex="0" aria-label="Open TD Ameritrade website"><span class="broker-logo">&#128202;</span><div class="broker-info"><div class="broker-name">TD Ameritrade</div><div class="broker-desc">Professional trading platform</div></div><span class="broker-bonus">Get bonus &gt;</span></div></div><div class="legal-links" style="text-align:center;padding:16px 0 100px;font-size:12px;color:var(--text-muted)"><span onclick="showPage('privacy')" role="button" tabindex="0" aria-label="Privacy Policy" style="cursor:pointer;text-decoration:underline">Privacy Policy</span> &middot; <span onclick="showPage('terms')" role="button" tabindex="0" aria-label="Terms of Service" style="cursor:pointer;text-decoration:underline">Terms of Service</span></div></div></div>
+<div class="page" id="page-subscription"><div class="sub-page"><div class="sub-header"><div class="trial-badge">&#11088; Founding Member</div><h2>Unlock Kline Game Pro</h2><p>Unlimited practice. No more waiting.</p></div><div class="plan-toggle" id="plan-toggle"><button class="plan-toggle-btn active" id="toggle-lifetime" onclick="setPlan('lifetime')" aria-label="Select lifetime plan" style="background:linear-gradient(135deg,#fef3c7,#fde68a);color:#92400e;font-weight:700">Lifetime</button></div><div class="pricing-card featured" id="pricing-display"><div class="plan-name" id="plan-name">Pro Lifetime</div><div class="plan-price" id="plan-price"><span class="dollar">$</span>19<span id="plan-cents">.99</span><span class="per" id="plan-period"> once</span></div><div id="price-anchor" style="font-size:12px;color:var(--text-muted);margin-top:4px"></div><div id="urgency-banner" style="display:none;background:linear-gradient(135deg,#fef3c7,#fde68a);border-radius:10px;padding:8px 12px;margin:10px 0;font-size:12px;color:#92400e;text-align:center;font-weight:600"><span id="urgency-timer">⏰ Limited time offer ends in 71:59:59</span></div><p class="auto-renew-notice" style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:6px;line-height:1.5">One-time payment &#183; Lifetime access &#183; No recurring fees</p><div id="paypal-container-SBJMU8U3AWKUU" style="margin-bottom:8px;min-height:50px"></div><div class="guarantee"><span>&#128274;</span> 30-day money-back guarantee. No recurring fees.</div><div class="features-list"><div>&#9989; Unlimited hearts - never wait</div><div>&#9989; All 300+ questions unlocked</div><div>&#9989; All 60 lessons + all question types</div><div>&#9989; Ad-free experience</div><div>&#9989; Priority new content</div><div>&#9989; Cloud sync across devices</div></div></div><div id="lifetime-rights" style="display:none;margin:0 20px 12px;padding:14px 16px;background:linear-gradient(135deg,#fef3c7,#fefce8);border:1px solid #fde68a;border-radius:14px"><div style="font-size:14px;font-weight:700;color:#92400e;margin-bottom:8px">&#127873; Lifetime Access Includes:</div><div style="font-size:12px;color:#78350f;line-height:1.6">&#9989; All current and future K-line pattern levels<br>&#9989; All future game modes and features<br>&#9989; Priority support</div><div style="margin-top:10px;padding-top:10px;border-top:1px solid #fde68a;font-size:12px;color:#78350f;font-weight:600">&#128274; 30-Day Money-Back Guarantee — Not satisfied? Full refund, no questions asked.</div></div><div style="text-align:center;padding:12px 0"><button onclick="closeSubscription()" style="background:none;border:none;color:var(--text-muted);font-size:13px;cursor:pointer;text-decoration:underline" aria-label="Maybe later">Maybe later</button></div><div class="brokers-section"><div class="section-title">&#128279; Recommended Platforms</div><p style="font-size:10px;color:var(--text-muted);margin-bottom:8px;line-height:1.4">Affiliate disclosure: Some links may earn us a commission at no extra cost to you. Not financial advice.</p><div class="broker-card" onclick="window.open('https://www.binance.com/en/activity/referral?', '_blank', 'noopener,noreferrer')" role="button" tabindex="0" aria-label="Open Binance website"><span class="broker-logo">&#129689;</span><div class="broker-info"><div class="broker-name">Binance</div><div class="broker-desc">World's largest crypto exchange</div></div><span class="broker-bonus">Get bonus &gt;</span></div><div class="broker-card" onclick="window.open('https://www.coinbase.com/join', '_blank', 'noopener,noreferrer')" role="button" tabindex="0" aria-label="Open Coinbase website"><span class="broker-logo">&#128142;</span><div class="broker-info"><div class="broker-name">Coinbase</div><div class="broker-desc">NASDAQ-listed, compliant</div></div><span class="broker-bonus">Get bonus &gt;</span></div><div class="broker-card" onclick="window.open('https://www.okx.com/join', '_blank', 'noopener,noreferrer')" role="button" tabindex="0" aria-label="Open OKX website"><span class="broker-logo">&#9889;</span><div class="broker-info"><div class="broker-name">OKX</div><div class="broker-desc">Derivatives &amp; futures trading</div></div><span class="broker-bonus">Get bonus &gt;</span></div><div class="broker-card" onclick="window.open('https://www.webull.com/', '_blank', 'noopener,noreferrer')" role="button" tabindex="0" aria-label="Open Webull website"><span class="broker-logo">&#128176;</span><div class="broker-info"><div class="broker-name">Webull</div><div class="broker-desc">US stocks &amp; options</div></div><span class="broker-bonus">Get bonus &gt;</span></div><div class="broker-card" onclick="window.open('https://www.robinhood.com/', '_blank', 'noopener,noreferrer')" role="button" tabindex="0" aria-label="Open Robinhood website"><span class="broker-logo">&#129413;</span><div class="broker-info"><div class="broker-name">Robinhood</div><div class="broker-desc">Zero-commission US stocks</div></div><span class="broker-bonus">Get bonus &gt;</span></div><div class="broker-card" onclick="window.open('https://www.tdameritrade.com/', '_blank', 'noopener,noreferrer')" role="button" tabindex="0" aria-label="Open TD Ameritrade website"><span class="broker-logo">&#128202;</span><div class="broker-info"><div class="broker-name">TD Ameritrade</div><div class="broker-desc">Professional trading platform</div></div><span class="broker-bonus">Get bonus &gt;</span></div></div><div class="legal-links" style="text-align:center;padding:16px 0 100px;font-size:12px;color:var(--text-muted)"><span onclick="showPage('privacy')" role="button" tabindex="0" aria-label="Privacy Policy" style="cursor:pointer;text-decoration:underline">Privacy Policy</span> &middot; <span onclick="showPage('terms')" role="button" tabindex="0" aria-label="Terms of Service" style="cursor:pointer;text-decoration:underline">Terms of Service</span></div></div></div>
 <div class="page" id="page-encyclopedia"><div class="encyclopedia-page"><div class="section-title">&#128214; <span id="enc-title">Pattern Wiki</span></div><div id="enc-list"></div><div id="enc-details"></div></div></div>
 <div class="page" id="page-checkin"><div class="checkin-page"><div class="section-title" style="justify-content:center">&#128197; <span id="checkin-title">Daily Check-in</span></div><div style="font-size:44px;margin:18px 0">&#128293;</div><div style="font-size:18px;font-weight:700" id="current-streak">0 day streak</div><div class="checkin-grid" id="checkin-grid"></div><button class="checkin-btn" id="checkin-btn" onclick="doCheckin()" aria-label="Daily check-in">&#9989; Check In</button><div style="font-size:13px;color:var(--text-secondary);margin-top:10px" id="streak-info">Check in 7 days in a row for 200 coins!</div><div id="checkin-share-area" style="display:none;margin-top:16px"><button class="share-btn share-btn-primary" onclick="shareCheckin()" aria-label="Share checkin">📤 <span id="checkin-share-text">Share My Streak</span></button></div></div></div>
-<div class="page" id="page-privacy"><div class="legal-page"><button class="legal-back" onclick="showPage('home')" aria-label="Back to Home">&larr; Back</button><h1>Privacy Policy</h1><p><strong>Last updated:</strong> July 2026</p><h2>Information We Collect</h2><p>Kandoo operates as a client-side application. All your learning data (progress, answers, settings) is stored exclusively in your browser's local storage. We do not collect, transmit, or store any personal learning data on our servers.</p><h2>Payment Information</h2><p>Payment processing is handled by <strong>PayPal</strong>, a PCI DSS Level 1 certified payment processor. We do not have access to your full credit card number.</p><h2>Analytics</h2><p>We may use privacy-preserving analytics to understand aggregate usage patterns. No individual user data is tracked or sold.</p><h2>Third-Party Services</h2><ul><li><strong>PayPal:</strong> Payment processing</li><li><strong>Broker referrals:</strong> Third-party websites with their own privacy policies</li></ul><h2>Data Retention</h2><p>All data is stored locally on your device. Clearing browser data will permanently delete your progress.</p><h2>Contact</h2><p>support@kandoo.app</p></div></div>
-<div class="page" id="page-terms"><div class="legal-page"><button class="legal-back" onclick="showPage('home')" aria-label="Back to Home">&larr; Back</button><h1>Terms of Service</h1><p><strong>Last updated:</strong> July 2026</p><h2>Subscription</h2><p>Subscriptions renew automatically unless canceled 24 hours before renewal.</p><h2>Free Trial</h2><p>New subscribers receive a 3-day free trial. Cancel anytime before the trial ends.</p><h2>Refund Policy</h2><p>Full refund within 30 days. Contact support@kandoo.app.</p><h2>Content</h2><p>Educational content only. Not financial advice. Trading involves risk.</p><h2>Broker Referrals</h2><p>Links may be affiliate links. This does not affect the price you pay.</p><h2>Contact</h2><p>support@kandoo.app</p></div></div>
+<div class="page" id="page-privacy"><div class="legal-page"><button class="legal-back" onclick="showPage('home')" aria-label="Back to Home">&larr; Back</button><h1>Privacy Policy</h1><p><strong>Last updated:</strong> August 2026</p><h2>Information We Collect</h2><p>Kline Game operates as a client-side application. All your learning data (progress, answers, settings) is stored exclusively in your browser's local storage. We do not collect, transmit, or store any personal learning data on our servers.</p><h2>Payment Information</h2><p>Payment processing is handled by <strong>PayPal</strong>, a PCI DSS Level 1 certified payment processor. We do not have access to your full credit card number.</p><h2>Analytics</h2><p>We may use privacy-preserving analytics to understand aggregate usage patterns. No individual user data is tracked or sold.</p><h2>Third-Party Services</h2><ul><li><strong>PayPal:</strong> Payment processing</li><li><strong>Broker referrals:</strong> Third-party websites with their own privacy policies</li></ul><h2>Data Retention</h2><p>All data is stored locally on your device. Clearing browser data will permanently delete your progress.</p><h2>Contact</h2><p>support@klinegame.app</p></div></div>
+<div class="page" id="page-terms"><div class="legal-page"><button class="legal-back" onclick="showPage('home')" aria-label="Back to Home">&larr; Back</button><h1>Terms of Service</h1><p><strong>Last updated:</strong> August 2026</p><h2>Payment</h2><p>Kline Game Pro is a one-time payment for lifetime access. No recurring charges, no auto-renewal.</p><h2>Refund Policy</h2><p>Full refund within 30 days. Contact support@klinegame.app.</p><h2>Content</h2><p>Educational content only. Not financial advice. Trading involves risk.</p><h2>Broker Referrals</h2><p>Links may be affiliate links. This does not affect the price you pay.</p><h2>Contact</h2><p>support@klinegame.app</p></div></div>
 <div class="page" id="page-store"><div class="sub-page"><div class="sub-header"><h2 id="store-title-text">Coin Shop</h2><p id="store-coins-display" style="color:var(--accent-gold);font-weight:700">0 coins</p></div><div id="store-items"></div><div style="margin-top:20px"><div class="section-title" id="inventory-title-text">Inventory</div><div id="inventory-list"></div></div><div style="text-align:center;padding:16px 0"><button class="btn-secondary" onclick="showPage('profile')" style="width:100%;max-width:300px" aria-label="Back to Profile">Back</button></div></div></div>
 <div class="page" id="page-league"><div class="sub-page"><div class="sub-header"><h2 id="league-title-text">Weekly League</h2><p id="league-tier-display" style="font-weight:700">Bronze</p></div><div id="league-list"></div><div style="text-align:center;margin-top:20px;font-size:12px;color:var(--text-muted)" id="league-reset-text">Resets every Monday</div><div style="padding:0 20px 8px;margin-top:16px"><button class="share-btn share-btn-primary" onclick="inviteToLeague()" aria-label="Invite friends to league">📲 <span id="league-invite-text">Invite Friends</span></button></div><div style="text-align:center;padding:8px 0"><button class="btn-secondary" onclick="showPage('profile')" style="width:100%;max-width:300px" aria-label="Back to Profile">Back</button></div></div></div>
 <div class="bottom-nav">
@@ -716,7 +712,7 @@ button:focus-visible,.option-btn:focus-visible,.nav-item:focus-visible,.level-ca
 <button class="nav-item" onclick="showPage('levels')" aria-label="Path"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>Path</button>
 <button class="nav-item" onclick="showPage('profile')" aria-label="Profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</button>
 </div>
-<div class="modal-overlay" id="paywall-modal"><div class="paywall-modal"><div class="pw-icon">&#128274;</div><h3>Free Trial Complete</h3><p class="pw-sub" id="pw-sub">You have used all 5 free rounds!</p><p style="font-size:11px;color:var(--accent-green);font-weight:600;margin-bottom:4px">&#128200; Thousands of traders learning now</p><div class="pw-price" id="pw-price"><span class="dollar">$</span>19<span id="pw-cents">.99</span><span class="per" id="pw-period">/month</span></div><div class="pw-trial">&#9989; Includes 3-day free trial</div><div class="pw-features"><div>&#9989; Unlimited rounds &amp; hearts</div><div>&#9989; All question types unlocked</div><div>&#9989; Cancel anytime</div></div><button onclick="handlePayPalSubscribe()" aria-label="Pay with PayPal" style="width:100%;padding:16px;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;background:#0070ba;color:#fff;box-shadow:0 4px 12px rgba(0,112,186,.3);margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:6px"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7.5 6h5.2c2.3 0 4.3 1.7 4.3 4.3 0 2.8-2 4.7-4.8 4.7H10l-.7 4H7.5l1.2-8.3h-1L7.5 6zm2.2 6.5h2c1.5 0 2.5-1 2.5-2.3 0-1-.8-1.5-1.8-1.5h-2l-.7 3.8z"/></svg> PayPal</button><p style="font-size:10px;color:var(--text-muted);text-align:center;margin-top:4px;line-height:1.4">3-day free trial, then $19.99/mo. Cancel anytime.</p><div class="pw-guarantee">&#128274; 30-day money-back guarantee</div><button class="pw-close" onclick="closePaywall()" aria-label="Continue for free" style="width:100%;margin-top:10px;padding:14px;border:2px solid var(--accent-green);border-radius:12px;background:transparent;color:var(--accent-green);font-size:15px;font-weight:700;cursor:pointer">&#128273; Continue Free</button><p style="font-size:10px;color:var(--text-muted);text-align:center;margin-top:6px">Keep practicing for free — upgrade anytime</p></div></div>
+<div class="modal-overlay" id="paywall-modal"><div class="paywall-modal"><div class="pw-icon">&#11088;</div><h3>Unlock Lifetime Access</h3><p class="pw-sub" id="pw-sub">You have used all 5 free rounds!</p><div class="pw-price" id="pw-price"><span class="dollar">$</span>19<span id="pw-cents">.99</span><span class="per" id="pw-period"> once</span></div><div class="pw-trial">&#11088; Founding Member &#183; One-time purchase</div><div class="pw-features"><div>&#9989; All current &amp; future levels</div><div>&#9989; Unlimited rounds &amp; hearts</div><div>&#9989; All game modes &amp; patterns</div><div>&#9989; No recurring fees &#8212; ever</div></div><button onclick="handlePayPalSubscribe()" aria-label="Get Lifetime Access" style="width:100%;padding:16px;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,var(--accent-gold),#d97706);color:#000;box-shadow:0 4px 20px rgba(245,158,11,.3);margin-bottom:8px">&#11088; Get Lifetime Access &#8594;</button><p style="font-size:10px;color:var(--text-muted);text-align:center;margin-top:4px;line-height:1.4">&#128293; Launch price &#183; Price increases as we add more levels</p><div class="pw-guarantee">&#128274; 30-day money-back guarantee</div><p style="text-align:center;margin-top:14px"><span onclick="closePaywall()" role="button" tabindex="0" aria-label="Continue for free" style="font-size:13px;color:var(--text-muted);cursor:pointer">Not now</span></p><p style="font-size:10px;color:var(--text-muted);text-align:center;margin-top:4px">Keep practicing for free &#8212; upgrade anytime</p></div></div>
 <div class="modal-overlay" id="no-hearts-modal"><div class="modal"><h3>&#128148;</h3><h3 id="modal-no-hearts-title">No Hearts Left</h3><p id="modal-no-hearts-desc">Choose an option to continue learning</p><div class="modal-actions"><button class="btn-gray" onclick="closeModal('no-hearts-modal');startReviewMode()" aria-label="Practice to recover">📖 Practice</button><button class="btn-gold" onclick="closeModal('no-hearts-modal');showPage('subscription')" aria-label="Go Pro">Go Pro</button></div></div></div>
 <div class="modal-overlay" id="pro-modal"><div class="modal"><h3>&#128274;</h3><h3 id="modal-pro-title">Pro Required</h3><p id="modal-pro-desc">Upgrade to unlock this content</p><div class="modal-actions"><button class="btn-gray" onclick="closeModal('pro-modal')" aria-label="Cancel">Cancel</button><button class="btn-gold" onclick="closeModal('pro-modal');showPage('subscription')" aria-label="View Plans">View Plans</button></div></div></div>
 </div>
@@ -1835,6 +1831,20 @@ async function onAuthSuccess(email) {
 
 function hideAuthOverlay() { var o = document.getElementById('auth-overlay'); if (o) o.classList.add('hidden'); }
 function showAuthOverlay() { var o = document.getElementById('auth-overlay'); if (o) o.classList.remove('hidden'); var b = document.getElementById('user-info-bar'); if (b) b.style.display = 'none'; }
+function showFeedbackModal() {
+  var m = document.getElementById('feedback-modal');
+  if (m) m.style.display = 'flex';
+}
+function closeFeedbackModal() {
+  var m = document.getElementById('feedback-modal');
+  if (m) m.style.display = 'none';
+}
+function sendFeedbackEmail() {
+  var zh = currentLang === 'zh';
+  var subject = zh ? 'Kline Game 反馈建议' : 'Kline Game Feedback';
+  var body = zh ? '你好！我的建议是：\n\n' : 'Hi! My suggestion is:\n\n';
+  window.location.href = 'mailto:support@klinegame.app?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+}
 
 async function handleLogout() {
   if (supabaseClient && !isGuestMode) { try { await supabaseClient.auth.signOut(); } catch(e) { console.error('[Supabase] Sign out error:', e); } }
@@ -1936,12 +1946,12 @@ var FREE_ROUNDS = 5,
   BASE_XP = 10,
   QUESTION_TIME = 0,
   QUESTIONS_PER_ROUND = 10,
-  HEART_REGEN_MS = 1800000,
+  HEART_REGEN_MS = 900000,
   DAILY_HEARTS = 5,
   TASK1_COINS = 20,
   TASK2_COINS = 30,
   TASK3_COINS = 25;
-var selectedPlan = 'monthly';
+var selectedPlan = 'lifetime';
 </script>
 
 <script>
@@ -1951,6 +1961,86 @@ var currentQuiz = null,
   questionTimer = null,
   timerInterval = null,
   heartRegenInterval = null;
+var FEATURE_FLAGS = {
+  // V1.0 — All enabled (launch features)
+  levels_1_30: true,
+  patternWiki: true,
+  hearts: true,
+  streaks: true,
+  dailyCheckin: true,
+  basicStore: true,
+  quiz: true,
+  teachingQuestions: true,
+  dynamicDifficulty: true,
+  comboSystem: true,
+  mascot: true,
+  mistakeLog: true,
+  weaknessTracking: true,
+  proSubscription: true,
+  paywall: true,
+  reviewMode: true,
+  achievements: true,
+  shareAchievements: true,
+  inviteFriends: true,
+  feedbackModal: true,
+  pathSystem: true,
+  streakRegression: true,
+
+  // V1.1 — Disabled until development complete
+  levels_31_50: false,
+  advancedPatterns: false,
+  chartAnnotation: false,
+  realMarketData: false,
+  timedChallenge: false,
+  aiWeaknessDiagnosis: false,
+  dailyCustomPlan: false,
+  darkMode: false,
+  pushNotifications: false,
+
+  // V1.2 — Disabled until development complete
+  levels_51_70: false,
+  leagueSystem: false,
+  advancedStore: false,
+  socialFeatures: false,
+  monthlySubscription: false,
+  yearlySubscription: false,
+  pvpMode: false,
+  paperTrading: false,
+  multiTimeframeTraining: false,
+  brokerLinks: false,
+
+  // V2.0 — Disabled until development complete
+  levels_71_100: false,
+  masterMode: false,
+  advancedAnalytics: false,
+  additionalLanguages: false,
+  customDifficulty: false,
+
+  // V3.0 — Disabled until development complete
+  customPatterns: false,
+  tournamentMode: false,
+  communityForum: false,
+  advancedCharting: false,
+  aiCoach: false,
+};
+
+function isFeatureEnabled(flag) {
+  return FEATURE_FLAGS[flag] === true;
+}
+
+var SEALED_PAGES = {
+  'league': { flag: 'leagueSystem', version: 'V1.2' },
+  'store': { flag: 'advancedStore', version: 'V1.2' },
+};
+
+function isPageSealed(name) {
+  var seal = SEALED_PAGES[name];
+  if (seal && !isFeatureEnabled(seal.flag)) {
+    return seal;
+  }
+  return null;
+}
+
 var defaultState = {
   onboardingDone: false,
   tutorialDone: false,
@@ -2003,6 +2093,8 @@ var defaultState = {
     streak: 0,
     days: []
   },
+  noHeartsSeenCount: 0,
+  dailyChallengeDate: '',
   inviteData: {
     totalInvites: 0,
     todayInvites: 0,
@@ -2029,18 +2121,29 @@ var defaultState = {
   lastLeagueReset: '',
   level30Progress: {},
   currentLevel30: 1,
-  skinUnlocked: false
+  pathProgress: {},
+  currentPathNode: 1,
+  skinUnlocked: false,
+  dailySeconds: 0,
+  dailySecondsDate: '',
+  patternHintsSeen: {},
+  microLessonsDone: {},
+  cryptoRiskAcknowledged: false,
+  paywallClosedCount: 0,
+  paywallSeen: false,
+  reviewRoundsCount: 0,
+  learningGoal: 'both'
 };
 var appState;
 try {
-  var saved = localStorage.getItem('kandoo_state');
-  /* Migrate from old charteye_state key if kandoo_state doesn't exist yet */
+  var saved = localStorage.getItem('klinegame_state');
+  /* Migrate from old charteye_state key if klinegame_state doesn't exist yet */
   if (!saved) {
     saved = localStorage.getItem('charteye_state');
     if (saved) {
-      localStorage.setItem('kandoo_state', saved);
+      localStorage.setItem('klinegame_state', saved);
       localStorage.removeItem('charteye_state');
-      console.log('[Migration] charteye_state → kandoo_state');
+      console.log('[Migration] charteye_state → klinegame_state');
     }
   }
   if (saved) {
@@ -2057,12 +2160,12 @@ try {
   }
 } catch (e) {
   appState = JSON.parse(JSON.stringify(defaultState));
-  localStorage.removeItem('kandoo_state')
+  localStorage.removeItem('klinegame_state')
 }
 
 /* Multi-tab sync: reload state when another tab saves progress */
 window.addEventListener('storage', function(e) {
-  if (e.key === 'kandoo_state' || e.key === null) {
+  if (e.key === 'klinegame_state' || e.key === null) {
     try {
       var fresh = JSON.parse(e.newValue || 'null');
       if (fresh && typeof fresh === 'object') {
@@ -2100,7 +2203,7 @@ window.addEventListener('storage', function(e) {
 
 function saveState() {
   try {
-    localStorage.setItem('kandoo_state', JSON.stringify(appState))
+    localStorage.setItem('klinegame_state', JSON.stringify(appState))
   } catch (e) {}
 }
 // 包装 saveState，自动触发云同步
@@ -2199,7 +2302,7 @@ var i18n = {
     heartFull: 'Hearts Full!',
     heartsFull: 'Pro: Unlimited',
     modalNoHearts: 'No Hearts Left',
-    modalNoHeartsDesc: 'Wait 30 min or go Pro for unlimited',
+    modalNoHeartsDesc: 'Wait 15 min or go Pro for unlimited',
     modalPro: 'Pro Required',
     modalProDesc: 'Upgrade to unlock',
     modalWait: 'Wait',
@@ -2219,6 +2322,7 @@ var i18n = {
     leagueResets: 'Resets every Monday',
     storeEntry: 'Coin Shop',
     leagueEntry: 'Weekly League',
+    comingSoon: 'Coming Soon',
     encProgress: 'Unlocked',
     notEnoughCoins: 'Not enough coins',
     dailyLimitReached: 'Daily limit reached',
@@ -2317,7 +2421,7 @@ var i18n = {
     heartFull: '生命值已满！',
     heartsFull: 'Pro: 无限',
     modalNoHearts: '生命值已用完',
-    modalNoHeartsDesc: '等待30分钟或升级Pro',
+    modalNoHeartsDesc: '等待15分钟或升级Pro',
     modalPro: '需要 Pro',
     modalProDesc: '升级Pro解锁',
     modalWait: '等待',
@@ -2396,6 +2500,8 @@ function renderTutorial() {
 function startFreeTest() {
   appState.onboardingDone = true;
   appState.currentLevel30 = 1;
+  appState.currentPathNode = 1;
+  appState.pathProgress = {};
   appState.tutorialDone = false;
   saveState();
   showPage('home');
@@ -2418,6 +2524,8 @@ function selectGoal(goal) {
   }
   appState.onboardingDone = true;
   appState.currentLevel30 = 1;
+  appState.currentPathNode = 1;
+  appState.pathProgress = {};
   appState.tutorialDone = false;
   saveState();
   showPage('home');
@@ -2438,6 +2546,12 @@ function initApp() {
 }
 
 function showPage(name) {
+  var seal = isPageSealed(name);
+  if (seal) {
+    var zh = currentLang === 'zh';
+    showToast(zh ? '\uD83D\uDE80 ' + seal.version + ' \u7248\u672C\u4E0A\u7EBF\uFF0C\u656C\u8BF7\u671F\u5F85\uFF01' : '\uD83D\uDE80 Coming in ' + seal.version + '!');
+    return;
+  }
   clearAllTimers();
   /* Close any open feedback overlay and modals to prevent UI freeze */
   var fbOv = document.getElementById('feedback-overlay');
@@ -2517,27 +2631,40 @@ function startQuickQuiz() {
     appState.tutorialDone = true;
     saveState();
   }
-  var lvl = appState.currentLevel30 || 1;
-  if (lvl > 30) lvl = 30; /* All done: replay last level */
+  var lvl = appState.currentPathNode || appState.currentLevel30 || 1;
+  if (lvl > 60) lvl = 60;
   startLevel30(lvl);
 }
 
 /* === Review Mode: practice without losing hearts, earn hearts back === */
+/* P2: Mix weak patterns + mastered patterns; weak patterns recover hearts faster (1 correct = 1 heart) */
 function startReviewMode() {
+  var zh = currentLang === 'zh';
   var mastered = appState.masteredPatterns || [];
+  var weakKeys = Object.keys(appState.weakPatterns || {});
   var allQs = [];
-  /* Collect questions from mastered patterns (dynamically generated) */
+  var seed0 = (Date.now() & 0xffffffff) >>> 0;
+  /* Collect questions from weak patterns first (priority for learning) */
+  if (weakKeys.length > 0 && typeof ParamQuestionGen !== 'undefined') {
+    weakKeys.slice(0, 6).forEach(function(pat, wi) {
+      if (ParamQuestionGen.patterns.some(function(pp) { return pp.name === pat; })) {
+        var t = ['predict', 'scenario', 'identify'];
+        var q = ParamQuestionGen.generate(pat, t[wi % t.length], (seed0 + wi * 7919) >>> 0);
+        if (q) { q.isWeakReview = true; allQs.push(q); }
+      }
+    });
+  }
+  /* Add mastered patterns for reinforcement */
   if (mastered.length > 0 && typeof ParamQuestionGen !== 'undefined') {
-    var seed0 = (Date.now() & 0xffffffff) >>> 0;
-    mastered.slice(0, 10).forEach(function(pat, mi) {
+    mastered.slice(0, 6).forEach(function(pat, mi) {
       if (ParamQuestionGen.patterns.some(function(pp) { return pp.name === pat; })) {
         var t2 = ['predict', 'scenario'];
-        var q = ParamQuestionGen.generate(pat, t2[mi % t2.length], (seed0 + mi * 7919) >>> 0, ParamQuestionGen.DIFFICULTY_BEGINNER);
+        var q = ParamQuestionGen.generate(pat, t2[mi % t2.length], (seed0 + mi * 7919 + 123) >>> 0, ParamQuestionGen.DIFFICULTY_BEGINNER);
         if (q) allQs.push(q);
       }
     });
   }
-  /* If no mastered patterns, generate beginner questions */
+  /* If no patterns at all, generate beginner questions */
   if (allQs.length === 0 && typeof ParamQuestionGen !== 'undefined') {
     allQs = ParamQuestionGen.generateBatch(10, 'beginner', (Date.now() & 0xffffffff) >>> 0);
   }
@@ -2562,22 +2689,30 @@ function startReviewMode() {
     consecutiveWrong: 0,
     difficultyTier: 0
   };
-  appState.freeRoundsUsed++;
+  appState.reviewRoundsCount = (appState.reviewRoundsCount || 0) + 1;
   saveState();
   showPage('quiz');
   renderQuestion();
-  showToast(currentLang === 'zh' ? '❤️ 快速恢复：答对2题+1❤️' : '❤️ Quick Recovery: +1 heart per 2 correct');
+  var reviewMsg = zh ? '📖 复习模式：薄弱形态答对1题恢复1心，已掌握2题恢复1心' : '📖 Review: weak patterns = 1 heart per correct, mastered = 2 per correct';
+  if (appState.reviewRoundsCount >= 10) {
+    reviewMsg += zh ? '\n💡 已复习' + appState.reviewRoundsCount + '轮，升级 Pro 解锁新形态' : '\n💡 ' + appState.reviewRoundsCount + ' review rounds done. Upgrade Pro for new patterns';
+  }
+  showToast(reviewMsg);
 }
 
 function checkReviewHeartReward() {
   if (!currentQuiz.isReview) return;
-  if (currentQuiz.reviewCorrectCount >= 2) {
+  /* P2: Weak pattern correct = 1 heart per 1 correct; mastered = 1 heart per 2 correct */
+  var lastQ = currentQuiz.questions[currentQuiz.currentIndex - 1];
+  var isWeak = lastQ && lastQ.isWeakReview;
+  var threshold = isWeak ? 1 : 2;
+  if (currentQuiz.reviewCorrectCount >= threshold) {
     currentQuiz.reviewCorrectCount = 0;
     if (!appState.isPro && appState.hearts < appState.maxHearts) {
       appState.hearts++;
       saveState();
       updateHeartsDisplay();
-      showToast('❤️ +1 ' + (currentLang === 'zh' ? '心已恢复！' : 'Heart recovered!'));
+      showToast('❤️ +1 ' + (currentLang === 'zh' ? (isWeak ? '心已恢复（薄弱形态）！' : '心已恢复！') : (isWeak ? 'Heart recovered (weak pattern)!' : 'Heart recovered!')));
       renderMascotState();
     }
   }
@@ -2839,7 +2974,7 @@ function startLevel(level) {
   }
   /* Early return if paywall or hearts modal will be shown */
   if (!appState.isPro && appState.freeRoundsUsed >= FREE_ROUNDS) {
-    showPaywall();
+    handleFreeRoundsExhausted();
     return;
   }
   if (!appState.isPro && appState.hearts <= 0) {
@@ -2893,7 +3028,7 @@ function startLevel(level) {
 function startQuiz(questions, level, isRetry) {
   /* P1: 免费轮次用完 → 弹 paywall，不再自动进入无限模式 */
   if (!appState.isPro && !isRetry && appState.freeRoundsUsed >= FREE_ROUNDS) {
-    showPaywall();
+    handleFreeRoundsExhausted();
     return;
   }
   /* P1: 心用完 → 弹 no-hearts modal，只能复习或付费，不再自动无限刷 */
@@ -2972,6 +3107,26 @@ function renderQuestion() {
   }
   document.getElementById('quiz-progress').textContent = t('quizProgress') + (currentQuiz.currentIndex + 1) + '/' + currentQuiz.questions.length;
   updateHeartsDisplay();
+  /* Beginner shield: show on L1-L10, hide otherwise */
+  var _shield = document.getElementById('beginner-shield');
+  if (_shield) {
+    var _show = currentQuiz.level30Num && currentQuiz.level30Num <= 10 && !currentQuiz.isReview;
+    _shield.style.display = _show ? 'block' : 'none';
+    if (_show) {
+      var _st = document.getElementById('shield-text');
+      if (_st) _st.textContent = currentLang === 'zh' ? '第1-10关：不扣心，放心学！' : 'Levels 1-10: No hearts lost — learn freely!';
+    }
+  }
+  /* Review mode banner: show when in review mode */
+  var _rmb = document.getElementById('review-mode-banner');
+  if (_rmb) {
+    var _showReview = !!currentQuiz.isReview;
+    _rmb.style.display = _showReview ? 'block' : 'none';
+    if (_showReview) {
+      var _rbt = document.getElementById('review-banner-text');
+      if (_rbt) _rbt.textContent = currentLang === 'zh' ? '🔁 复习模式 — 升级 Pro 解锁新形态' : '🔁 Review Mode — Upgrade Pro to unlock new patterns';
+    }
+  }
   document.getElementById('question-text').textContent = (q.question[currentLang] || q.question.zh);
   var vh = q.volumeHint ? (q.volumeHint[currentLang] || q.volumeHint.zh) : '';
   document.getElementById('volume-label').textContent = vh || 'Volume';
@@ -2990,35 +3145,45 @@ function renderQuestion() {
     div.className = 'inline-feedback teach';
     div.innerHTML = '<div class="inline-feedback-explain">' + ec + '</div>';
     oc.appendChild(div);
-    var gotItBtn = document.createElement('button');
-    gotItBtn.className = 'option-btn got-it-btn';
-    gotItBtn.innerHTML = '<span>' + (currentLang === 'zh' ? '明白了！继续 →' : 'Got it! Continue →') + '</span>';
-    gotItBtn.style.background = 'var(--accent-green)';
-    gotItBtn.style.color = '#fff';
-    gotItBtn.style.boxShadow = '0 4px 0 #16a34a';
-    gotItBtn.setAttribute('aria-label', 'Got it, continue');
-    gotItBtn.onclick = function() {
-      /* Mark teaching as done when completing last teaching question */
-      if (q.id === 'teach3') {
-        appState.teachingDone = appState.teachingDone || {};
-        appState.teachingDone[1] = true;
-        saveState();
+    /* P2: Maintain three-option physical structure for muscle memory consistency */
+    var teachLetters = ['A', 'B', 'C'];
+    var teachLabels = currentLang === 'zh'
+      ? ['明白了！继续 →', '跳过', '不懂']
+      : ['Got it! Continue →', 'Skip', 'Not sure'];
+    teachLabels.forEach(function(label, ti) {
+      var btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.innerHTML = '<span class="option-letter">' + teachLetters[ti] + '</span><span>' + label + '</span>';
+      if (ti === 0) {
+        btn.style.background = 'var(--accent-green)';
+        btn.style.color = '#fff';
+        btn.style.boxShadow = '0 4px 0 #16a34a';
+        btn.setAttribute('aria-label', 'Got it, continue');
+        btn.onclick = function() {
+          if (q.id === 'teach3') {
+            appState.teachingDone = appState.teachingDone || {};
+            appState.teachingDone[1] = true;
+            saveState();
+          }
+          if (q.id === 'teach_l4_3') {
+            appState.teachingDone = appState.teachingDone || {};
+            appState.teachingDone[4] = true;
+            saveState();
+          }
+          if (q.id === 'teach_l10_2') {
+            appState.teachingDone = appState.teachingDone || {};
+            appState.teachingDone[10] = true;
+            saveState();
+          }
+          nextQuestion();
+        };
+      } else {
+        btn.style.opacity = '0.3';
+        btn.style.cursor = 'default';
+        btn.disabled = true;
       }
-      /* Mark L4 teaching as done when completing last L4 teaching question */
-      if (q.id === 'teach_l4_3') {
-        appState.teachingDone = appState.teachingDone || {};
-        appState.teachingDone[4] = true;
-        saveState();
-      }
-      /* Mark L10 teaching as done when completing last L10 teaching question */
-      if (q.id === 'teach_l10_2') {
-        appState.teachingDone = appState.teachingDone || {};
-        appState.teachingDone[10] = true;
-        saveState();
-      }
-      nextQuestion();
-    };
-    oc.appendChild(gotItBtn);
+      oc.appendChild(btn);
+    });
     /* Hide timer for teach questions */
     var tcEl = document.getElementById('quiz-timer');
     if (tcEl) tcEl.innerHTML = '';
@@ -3058,18 +3223,20 @@ function renderQuestion() {
   if (qtype !== 'teach' && q.pattern && currentQuiz.level30Num >= 6 && !appState.patternHintsSeen[q.pattern] && hintZone) {
     var hintExp = (q.explain && (q.explain[currentLang] || q.explain.zh)) || '';
     if (hintExp) {
+      /* P2: Auto-display pattern hint with fade-in, no clicks required */
       hintZone.innerHTML =
-        '<div style="margin:6px 0 2px">' +
-          '<button id="pattern-hint-btn" onclick="togglePatternHint()" style="background:rgba(59,130,246,.08);border:1px dashed rgba(59,130,246,.4);border-radius:10px;color:var(--accent-green);font-size:12px;padding:6px 12px;cursor:pointer;width:100%;text-align:left">💡 ' + (zhHint ? '第一次见到这个形态？点这里看提示' : 'First time seeing this pattern? Tap for a hint') + '</button>' +
-          '<div id="pattern-hint-body" style="display:none;margin-top:6px;padding:12px;background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.2);border-radius:12px">' +
-            '<div style="font-weight:700;font-size:13px;margin-bottom:4px">' + q.pattern + '</div>' +
-            '<div style="font-size:13px;line-height:1.6;color:var(--text-secondary)">' + hintExp + '</div>' +
-            '<div style="display:flex;gap:8px;margin-top:10px">' +
-              '<button onclick="openWikiForPattern(\'' + String(q.pattern).replace(/'/g, "\\'") + '\')" style="flex:1;background:none;border:1px solid rgba(59,130,246,.4);color:var(--accent-blue);border-radius:10px;padding:10px;font-size:14px;font-weight:700;cursor:pointer">📖 ' + (zhHint ? '完整图鉴' : 'Full Wiki') + '</button>' +
-              '<button onclick="dismissPatternHint()" style="flex:1;background:var(--accent-green);color:#fff;border:none;border-radius:10px;padding:10px;font-size:14px;font-weight:700;cursor:pointer">' + (zhHint ? '知道了，开始答题' : 'Got it — start') + '</button>' +
-            '</div>' +
-          '</div>' +
+        '<div id="pattern-hint-auto" style="margin:6px 0 2px;padding:10px 14px;background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.15);border-radius:12px;animation:hintFadeIn .4s ease">' +
+          '<div style="font-weight:700;font-size:12px;margin-bottom:3px;color:var(--accent-blue)">💡 ' + q.pattern + '</div>' +
+          '<div style="font-size:12px;line-height:1.5;color:var(--text-secondary)">' + hintExp + '</div>' +
         '</div>';
+      if (!document.getElementById('pattern-hint-anim')) {
+        var ha = document.createElement('style');
+        ha.id = 'pattern-hint-anim';
+        ha.textContent = '@keyframes hintFadeIn{0%{opacity:0;transform:translateY(-4px)}100%{opacity:1;transform:translateY(0)}}';
+        document.head.appendChild(ha);
+      }
+      appState.patternHintsSeen[q.pattern] = true;
+      saveState();
     }
   }
   /* Chart toggle button: only when more candles than fit on screen */
@@ -3353,7 +3520,14 @@ function selectAnswer(idx) {
     if (appState.totalAnswered === 0 && ok) {
       showFirstCorrectCelebration();
     }
-    setTimeout(function() { nextQuestion(); }, 800)
+    /* Streak check for path nodes: if streak target met, end quiz with success */
+    if (currentQuiz.stageMode === 'streak' && currentQuiz.pathNodeNum &&
+        currentQuiz.consecutiveCorrect >= currentQuiz.stageTarget) {
+      currentQuiz.streakAchieved = true;
+      setTimeout(function() { endQuiz(); }, 1200);
+    } else {
+      setTimeout(function() { nextQuestion(); }, 800);
+    }
   } else {
     currentQuiz.combo = 0;
     /* Adaptive difficulty: track consecutive wrong */
@@ -3373,11 +3547,10 @@ function selectAnswer(idx) {
     showInlineFeedback(q);
     showSwipeHint();
     triggerMascotState('wrong', 2000);
-    /* P1#5: auto-advance after showing the one-line explanation (1.5s) */
-    setTimeout(function() { nextQuestion(); }, 1500);
+    /* P2: No auto-advance — user taps inline feedback to continue (preserves control) */
     /* Heart system: deduct 1 heart per wrong answer — skip in review mode and skip for Levels 1-10 (beginner grace period) */
     var isBeginnerLevel = currentQuiz.level30Num && currentQuiz.level30Num <= 10;
-    if (!currentQuiz.isReview && !currentQuiz.isInfinite && !appState.isPro && appState.freeRoundsUsed >= FREE_ROUNDS && !isBeginnerLevel) {
+    if (!currentQuiz.isReview && !currentQuiz.isInfinite && !currentQuiz.isDailyChallenge && !appState.isPro && appState.freeRoundsUsed >= FREE_ROUNDS && !isBeginnerLevel) {
       appState.hearts = Math.max(0, appState.hearts - 1);
       if (appState.hearts <= 0) {
         appState.lastHeartRegen = Date.now();
@@ -3512,7 +3685,7 @@ function selectAnswer(idx) {
     if (!appState.sharedAchievements) appState.sharedAchievements = [];
     if (appState.sharedAchievements.indexOf('combo10') < 0) {
       appState.sharedAchievements.push('combo10');
-      setTimeout(function() { showAchievementShare('combo', 10, 0); }, 2000);
+      setTimeout(function() { showAchievementShare('combo', 10, currentQuiz.correctCount ? Math.round(currentQuiz.correctCount / (currentQuiz.currentIndex + 1) * 100) : 0); }, 2000);
     }
   }
   saveState();
@@ -3736,23 +3909,39 @@ function adaptDifficulty() {
   }
 }
 
-/* Generate an adaptive question at the given difficulty tier */
+/* Generate an adaptive question at the given difficulty tier — dedup by recent patterns */
 function generateAdaptiveQuestion(tier, direction) {
   if (typeof ParamQuestionGen === 'undefined') return null;
   var level = currentQuiz.level30Num || 1;
   var stage = level <= 10 ? 'beginner' : level <= 20 ? 'intermediate' : 'advanced';
   /* Easy: identify only; Medium: identify+predict; Hard: scenario+predict */
   var types = direction === 'hard'
-    ? ['scenario', 'predict', 'comparison', 'reverse_identify']
-    : ['identify', 'true_false', 'fill_blank'];
+    ? ['scenario', 'predict', 'explain', 'target']
+    : ['identify', 'truefalse', 'predict'];
   var arr = stage === 'beginner' ? ParamQuestionGen.DIFFICULTY_BEGINNER
           : stage === 'intermediate' ? ParamQuestionGen.DIFFICULTY_INTERMEDIATE
           : ParamQuestionGen.DIFFICULTY_ADVANCED;
+  /* Build a set of recently-used patterns to avoid repetition */
+  var recentPatterns = {};
+  if (currentQuiz && currentQuiz.questions) {
+    for (var i = Math.max(0, currentQuiz.currentIndex - 3); i <= currentQuiz.currentIndex && i < currentQuiz.questions.length; i++) {
+      if (currentQuiz.questions[i] && currentQuiz.questions[i].pattern) {
+        recentPatterns[currentQuiz.questions[i].pattern] = true;
+      }
+    }
+  }
+  /* Sort pool: unused-recently first, preserving original order as tiebreaker */
+  var pool = arr.filter(function(p) { return !recentPatterns[p]; });
+  if (pool.length === 0) pool = arr.slice();
+  /* Seeded RNG for reproducibility within a level */
+  var seed = (level * 7919 + (currentQuiz.currentIndex || 0) * 31 + (direction === 'hard' ? 1 : 0)) >>> 0;
+  var s = seed || 1;
+  function rng() { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; }
   /* Try a few patterns to get a valid question */
   for (var attempt = 0; attempt < 5; attempt++) {
-    var pName = arr[Math.floor(Math.random() * arr.length)];
-    var qType = types[Math.floor(Math.random() * types.length)];
-    var q = ParamQuestionGen.generate(pName, qType, Math.floor(Math.random() * 99999));
+    var pName = pool[Math.floor(rng() * pool.length)];
+    var qType = types[Math.floor(rng() * types.length)];
+    var q = ParamQuestionGen.generate(pName, qType, Math.floor(rng() * 1e9));
     if (q && q.candles && q.candles.length > 0) return q;
   }
   return null;
@@ -3817,9 +4006,7 @@ function renderResultPage() {
         btnEl.onclick = function() { startLevel30(nextLvl); };
         /* Tiny secondary option: replay current level */
         if (replayBtn) {
-          replayBtn.style.display = '';
-          replayBtn.textContent = zh ? '↻ 再刷一次' : '↻ Play Again';
-          replayBtn.onclick = function() { startLevel30(currentQuiz.level30Num); };
+          replayBtn.style.display = 'none';
         }
       }
     } else {
@@ -3847,6 +4034,17 @@ function renderResultPage() {
     if (mtb) mtb.style.display = '';
   } else {
     if (mtb) mtb.style.display = 'none';
+  }
+  /* P2: Review mode upgrade hint */
+  var oldHint = document.getElementById('review-upgrade-hint');
+  if (oldHint) oldHint.remove();
+  if (currentQuiz.isReview && !appState.isPro) {
+    var reviewHint = document.createElement('div');
+    reviewHint.id = 'review-upgrade-hint';
+    reviewHint.style.cssText = 'text-align:center;margin-top:16px;padding:12px;background:linear-gradient(135deg,#fef3c7,#fde68a);border-radius:12px;font-size:13px;color:#92400e;font-weight:600';
+    reviewHint.textContent = zh ? '💡 升级 Pro 解锁 25 个新形态 + 无限心力' : '💡 Upgrade Pro for 25 new patterns + unlimited hearts';
+    var mtbParent = mtb ? mtb.parentElement : null;
+    if (mtbParent) mtbParent.appendChild(reviewHint);
   }
 }
 
@@ -3950,16 +4148,16 @@ function showInlineFeedback(q) {
   div.className = 'inline-feedback wrong';
   var html = '<div class="inline-feedback-title">❌ ' + (zh ? '正确答案：' : 'Correct: ') + correctText + '</div>';
   if (ec) html += '<div class="inline-feedback-explain" style="margin-top:6px;white-space:pre-line">' + ec + '</div>';
-  /* P0: Beginner encouragement — show "don't give up" message for Levels 1-5 */
-  if (currentQuiz.level30Num && currentQuiz.level30Num <= 5) {
+  /* P0: Beginner encouragement — show "don't give up" message for Levels 1-10 */
+  if (currentQuiz.level30Num && currentQuiz.level30Num <= 10) {
     var encouragements = zh
       ? ['没关系，刚开始都这样！💪', '记住这个特征，下次就会了！🎯', '错了也是学习的一部分，加油！🌱', '看一眼特征，再来一次！✨']
       : ['No worries, everyone starts here! 💪', 'Remember this feature, next time you\'ll nail it! 🎯', 'Mistakes are part of learning! 🌱', 'Look at the shape, try again! ✨'];
     var enc = encouragements[Math.floor(Math.random() * encouragements.length)];
     html += '<div style="margin-top:8px;font-size:13px;color:var(--text-muted);font-style:italic">' + enc + '</div>';
   }
-  if (implication) html += '<div style="margin-top:8px;padding:8px 10px;background:rgba(59,130,246,.06);border-radius:8px;font-size:12px;color:var(--text-secondary);line-height:1.4">' + implication + '</div>';
-  html += '<div class="inline-feedback-tap">' + (zh ? '点击继续 →' : 'Tap to continue →') + '</div>';
+  if (implication) html += '<div style="margin-top:6px;padding:6px 10px;background:rgba(59,130,246,.04);border-radius:8px;font-size:11px;color:var(--text-muted);line-height:1.4;opacity:.8"><span style="font-weight:600;color:var(--text-secondary)">' + (zh ? '交易启示：' : 'Trading: ') + '</span>' + implication + '</div>';
+  html += '<div style="margin-top:10px;padding:10px;border:2px solid var(--accent-green);border-radius:12px;text-align:center;font-size:15px;font-weight:700;color:var(--accent-green);cursor:pointer">' + (zh ? '点击继续 →' : 'Tap to continue →') + '</div>';
   div.innerHTML = html;
   /* Immersive layout: feedback card appears ABOVE the answer buttons,
      taking over the question area (TikTok-style). */
@@ -4337,27 +4535,49 @@ function endQuiz() {
       })
     }
     checkLevelUnlock(lv);
-    /* Track 30-level path progress */
+    /* Track path progress (12 themes x 5 stages = 60 nodes) */
     if (currentQuiz.level30Num) {
       var l30n = currentQuiz.level30Num;
-      if (!appState.level30Progress) appState.level30Progress = {};
-      var l30stars = acc === 100 ? 3 : acc >= 80 ? 2 : 1;
-      if (acc >= 60) {
-        if (!appState.level30Progress[l30n] || appState.level30Progress[l30n].stars < l30stars) {
-          appState.level30Progress[l30n] = {completed: true, stars: l30stars}
+      if (!appState.pathProgress) appState.pathProgress = {};
+      if (!appState.level30Progress) appState.level30Progress = appState.pathProgress;
+      /* Determine pass/fail based on stage mode */
+      var passed = false;
+      var pathStars = 1;
+      if (currentQuiz.stageMode === 'streak' && currentQuiz.pathNodeNum) {
+        /* Streak mode: ONLY pass if streak was achieved — accuracy doesn't matter */
+        if (currentQuiz.streakAchieved) {
+          passed = true;
+          pathStars = acc === 100 ? 3 : 2;
         }
-        if (l30n >= appState.currentLevel30) {
-          appState.currentLevel30 = l30n + 1;
-          if (appState.currentLevel30 > 30) appState.currentLevel30 = 31;
-          showToast('\u{1F389} ' + (currentLang === 'zh' ? '\u5173\u5361\u89E3\u9501\uFF01' : 'Level Unlocked!'));
+      } else if (currentQuiz.stageMode === 'accuracy') {
+        var threshold = currentQuiz.stageTarget || 8;
+        var maxQ = currentQuiz.stageMaxQ || 10;
+        if (cor >= threshold) {
+          passed = true;
+          pathStars = cor === maxQ ? 3 : cor >= threshold + 1 ? 2 : 1;
+        }
+      } else if (acc >= 60) {
+        passed = true;
+        pathStars = acc === 100 ? 3 : acc >= 80 ? 2 : 1;
+      }
+      if (passed) {
+        if (!appState.pathProgress[l30n] || appState.pathProgress[l30n].stars < pathStars) {
+          appState.pathProgress[l30n] = {completed: true, stars: pathStars}
+        }
+        appState.level30Progress = appState.pathProgress;
+        if (l30n >= (appState.currentPathNode || 1)) {
+          appState.currentPathNode = l30n + 1;
+          if (appState.currentPathNode > 60) appState.currentPathNode = 61;
+          appState.currentLevel30 = appState.currentPathNode;
+          var zh = currentLang === 'zh';
+          showToast('\u{1F389} ' + (zh ? '\u8282\u70B9\u901A\u5173\uFF01' : 'Stage Cleared!'));
           triggerMascotState('victory', 2000);
-          /* Infinite flow: no achievement share popup — auto-continues in endQuiz */
         }
       }
     }
   }
   var today = new Date().toDateString();
-  if (cor > 0 && appState.lastQuizDate !== today) {
+  if (cor > 0 && !currentQuiz.isReview && appState.lastQuizDate !== today) {
     var last = appState.lastQuizDate ? new Date(appState.lastQuizDate) : null;
     var diff = last ? Math.floor((new Date() - last) / 86400000) : 999;
     if (diff <= 1) appState.streak++;
@@ -4373,7 +4593,7 @@ function endQuiz() {
     level: currentQuiz.level
   };
   appState.currentSessionMaxCombo = 0;
-  if (!appState.isPro) {
+  if (!appState.isPro && !currentQuiz.isReview) {
     appState.freeRoundsUsed = (appState.freeRoundsUsed || 0) + 1;
     /* P1: Soft paywall push after 2nd round — ride the "aha" momentum */
     if (appState.freeRoundsUsed === 2) {
@@ -4388,7 +4608,7 @@ function endQuiz() {
     /* P1: Light hint after 3rd round — give user expectation */
     if (appState.freeRoundsUsed === 3) {
       setTimeout(function() {
-        showToast(currentLang === 'zh' ? '💡 再答2轮免费体验结束，升级Pro解锁全部内容' : '💡 2 more free rounds left. Upgrade to Pro for full access');
+        showToast(currentLang === 'zh' ? '💡 还剩 2 轮免费练习，升级 Pro 解锁全部内容' : '💡 2 more free rounds left. Upgrade to Pro for full access');
       }, 2000);
     }
     if (appState.freeRoundsUsed >= FREE_ROUNDS) {
@@ -4397,19 +4617,19 @@ function endQuiz() {
         if (currentQuiz.level30Num) {
           showPage('levels');
           renderLevelPath();
-          setTimeout(function() { showToast(currentLang === 'zh' ? '免费体验已结束，升级Pro解锁全部内容' : 'Free trial ended. Upgrade to Pro for full access'); }, 800);
+          setTimeout(function() { showToast(currentLang === 'zh' ? '免费轮次已用完，升级Pro解锁全部内容' : 'Free rounds used up. Upgrade to Pro for full access'); }, 800);
           return;
         }
       }
       var ab = document.getElementById('btn-again');
       if (ab) ab.onclick = function() {
-        showToast(currentLang === 'zh' ? '免费体验已结束，升级Pro解锁全部内容' : 'Free trial ended. Upgrade to Pro for full access')
+        showToast(currentLang === 'zh' ? '免费轮次已用完，升级Pro解锁全部内容' : 'Free rounds used up. Upgrade to Pro for full access')
       };
       saveState();
       showPage('levels');
       renderLevelPath();
       setTimeout(function() {
-        showToast(currentLang === 'zh' ? '免费体验已结束，升级Pro解锁全部内容' : 'Free trial ended. Upgrade to Pro for full access')
+        showToast(currentLang === 'zh' ? '免费轮次已用完，升级Pro解锁全部内容' : 'Free rounds used up. Upgrade to Pro for full access')
       }, 800);
       return
     }
@@ -4429,7 +4649,7 @@ function endQuiz() {
       showPage('result');
       return;
     }
-    /* All 30 levels done: show simplified result page */
+    /* All 60 lessons done: show simplified result page */
     showPage('result');
     return;
   }
@@ -4455,14 +4675,41 @@ function checkLevelUnlock(cl) {
   }
 }
 
-/* === 30-Level Path System (Duolingo-style) === */
-var QUESTIONS_PER_LEVEL_30 = 5;
+/* === 12-Theme x 5-Stage Path System (Duolingo-style) === */
+var PATH_THEMES = [
+  {name: 'Candlestick Basics', nameZh: '蜡烛基础', icon: '\u{1F525}', patterns: ['Marubozu Bullish', 'Marubozu Bearish', 'Doji']},
+  {name: 'Single Reversal', nameZh: '单根反转', icon: '\u{1F528}', patterns: ['Hammer', 'Shooting Star', 'Inverted Hammer', 'Hanging Man']},
+  {name: 'Two-Candle Patterns', nameZh: '双根组合', icon: '\u{1F4CA}', patterns: ['Bullish Engulfing', 'Bearish Engulfing', 'Piercing Line', 'Dark Cloud Cover']},
+  {name: 'Three-Candle Patterns', nameZh: '三根组合', icon: '\u{1F4C8}', patterns: ['Morning Star', 'Evening Star', 'Three White Soldiers', 'Three Black Crows']},
+  {name: 'Doji Family', nameZh: '十字星家族', icon: '\u2728', patterns: ['Long-Legged Doji', 'Dragonfly Doji', 'Gravestone Doji', 'Spinning Top']},
+  {name: 'Harami & Tweezer', nameZh: '孕线与镊子', icon: '\u{1F4CC}', patterns: ['Bullish Harami', 'Bearish Harami', 'Tweezer Top', 'Tweezer Bottom']},
+  {name: 'Inside & Abandoned', nameZh: '三内与弃婴', icon: '\u{1F50D}', patterns: ['Three Inside Up', 'Three Inside Down', 'Abandoned Baby Bullish', 'Abandoned Baby Bearish']},
+  {name: 'Indicator Patterns', nameZh: '指标形态', icon: '\u{1F4C9}', patterns: ['MACD Bullish Divergence', 'MACD Bearish Divergence', 'Bollinger Squeeze', 'Golden Cross', 'Death Cross', 'RSI Overbought', 'RSI Oversold']},
+  {name: 'Trend Continuation', nameZh: '趋势延续', icon: '\u{1F680}', patterns: ['Bull Flag', 'Bear Flag', 'Support Bounce', 'Resistance Rejection']},
+  {name: 'Reversal Structures', nameZh: '反转结构', icon: '\u{1F504}', patterns: ['Double Top', 'Double Bottom', 'Head and Shoulders', 'Inverse Head and Shoulders']},
+  {name: 'Chart Patterns', nameZh: '图表形态', icon: '\u{1F4D0}', patterns: ['Ascending Triangle', 'Descending Triangle', 'Symmetrical Triangle', 'Cup and Handle', 'Rising Wedge', 'Falling Wedge']},
+  {name: 'Comprehensive', nameZh: '综合实战', icon: '\u{1F3C6}', patterns: null}
+];
 
-function getUnlockMessage(levelNum) {
+var PATH_STAGES = [
+  {name: 'Recognize', nameZh: '认识', icon: '\u{1F441}\u{FE0F}', qType: 'identify', target: 3, maxQ: 10, mode: 'streak'},
+  {name: 'Understand', nameZh: '理解', icon: '\u{1F9E0}', qType: 'truefalse', target: 4, maxQ: 12, mode: 'streak'},
+  {name: 'Apply', nameZh: '应用', icon: '\u{1F3AF}', qType: 'predict', target: 5, maxQ: 12, mode: 'streak'},
+  {name: 'Analyze', nameZh: '分析', icon: '\u{1F50D}', qType: 'scenario', target: 6, maxQ: 15, mode: 'streak'},
+  {name: 'Master', nameZh: '大师', icon: '\u{1F3C6}', qType: 'mixed', target: 8, maxQ: 10, mode: 'accuracy'}
+];
+
+function pathNodeNum(themeIdx, stageIdx) { return themeIdx * 5 + stageIdx + 1; }
+function pathNodeTheme(nodeNum) { return Math.floor((nodeNum - 1) / 5); }
+function pathNodeStage(nodeNum) { return (nodeNum - 1) % 5; }
+
+function getUnlockMessage(nodeNum) {
   var zh = currentLang === 'zh';
-  /* Staged types: L1-10 predict/scenario, L11-20 +truefalse, L21-30 +identify */
-  if (levelNum === 11) return zh ? '🎉 解锁新题型：真假判断！' : '🎉 New question type: True/False!';
-  if (levelNum === 21) return zh ? '🎉 解锁新题型：形态识别！' : '🎉 New question type: Identify!';
+  var stage = pathNodeStage(nodeNum);
+  var theme = pathNodeTheme(nodeNum);
+  if (nodeNum === 1) return zh ? '\u{1F389} \u5F00\u59CB\u7B2C\u4E00\u4E2A\u4E3B\u9898\uFF01' : '\u{1F389} Starting your first theme!';
+  if (stage === 0 && theme > 0) return zh ? '\u{1F389} \u89E3\u9501\u65B0\u4E3B\u9898\uFF1A' + (PATH_THEMES[theme].nameZh || PATH_THEMES[theme].name) : '\u{1F389} New theme unlocked: ' + PATH_THEMES[theme].name;
+  if (stage === 4) return zh ? '\u{1F3C6} \u5927\u5E08\u9636\u6BB5\uFF01\u9700\u8FDE\u7EED\u7B54\u5BF98\u9898' : '\u{1F3C6} Master Stage! Need ' + PATH_STAGES[4].target + '/' + PATH_STAGES[4].maxQ + ' correct';
   return null;
 }
 
@@ -4504,8 +4751,16 @@ function showMicroLesson(levelNum) {
         '<div style="font-size:15px;font-weight:800;margin-bottom:4px;color:#1a1a1a">' + (zh ? '小知识' : 'Quick Tip') + '</div>' +
         '<div style="font-size:14px;line-height:1.5;color:#555">' + (zh ? lesson.zh : lesson.en) + '</div>' +
       '</div>' +
-    '</div>' +
-    '<button onclick="dismissMicroLesson(' + levelNum + ')" style="margin-top:12px;width:100%;background:#22c55e;color:#fff;border:none;border-radius:12px;padding:12px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 3px 0 #16a34a">' + (zh ? '开始做题 👍' : 'Got it! 👍') + '</button>';
+    '</div>';
+  /* P2: Auto-fade after 3.5s — no button, no blocking */
+  setTimeout(function() {
+    var ov = document.getElementById('micro-lesson-overlay');
+    if (ov) {
+      ov.style.transition = 'opacity .5s ease';
+      ov.style.opacity = '0';
+      setTimeout(function() { dismissMicroLesson(levelNum); }, 500);
+    }
+  }, 3500);
   /* Insert into quiz page if visible, otherwise body */
   var quizPage = document.getElementById('page-quiz');
   if (quizPage && quizPage.style.display !== 'none') {
@@ -4530,10 +4785,9 @@ function dismissMicroLesson(levelNum) {
   saveState();
 }
 
-function buildLevel30() {
-  var levels = [];
-  if (typeof ParamQuestionGen === 'undefined') return levels;
-  /* Deterministic LCG per level so content is stable between visits */
+function buildPath() {
+  var nodes = [];
+  if (typeof ParamQuestionGen === 'undefined') return nodes;
   function makeRng(seed) {
     var s = (seed || 1) >>> 0;
     return function() {
@@ -4541,91 +4795,88 @@ function buildLevel30() {
       return s / 0x7fffffff;
     };
   }
-  /* Track global pattern usage so no pattern repeats too often across levels */
   var usedCount = {};
-  LEVEL_STAGES_30.forEach(function(stage) {
-    for (var i = 0; i < 10; i++) {
-      var num = stage.start + i;
-      var mixed = [];
-      /* Difficulty curve: L1-9 beginner, L10-19 intermediate, L20-30 advanced (20+ patterns) */
-      var fullPool = num <= 9 ? ParamQuestionGen.DIFFICULTY_BEGINNER
-                  : num <= 19 ? ParamQuestionGen.DIFFICULTY_INTERMEDIATE
-                  : ParamQuestionGen.DIFFICULTY_ADVANCED;
-      /* P2#10: progressive release - new shapes unlock level by level instead of all at once.
-         Each stage starts with 4 shapes and adds a few more every level. */
-      var stageStart = num <= 9 ? 1 : num <= 19 ? 10 : 20;
-      var step = Math.max(1, Math.ceil((fullPool.length - 4) / 7));
-      var pool = fullPool.slice(0, Math.min(fullPool.length, 4 + Math.max(0, num - stageStart) * step));
-      /* Question types per stage (Beta): L1-10 Predict/Scenario (rise/fall/wait),
-         L11-20 add TrueFalse, L21-30 add Identify */
-      var types = num <= 10 ? ['predict', 'scenario']
-                : num <= 20 ? ['predict', 'scenario', 'truefalse']
-                : ['predict', 'scenario', 'truefalse', 'identify'];
-      var rng = makeRng(100000 + num * 7919);
-      var usedInLevel = {};
-      var sortedPool = pool.slice().sort(function(x, y) {
-        var cx = usedCount[x] || 0, cy = usedCount[y] || 0;
-        if (cx !== cy) return cx - cy;
-        return x < y ? -1 : 1;
-      });
-      /* P4#19: 5 questions per level — one of each unlocked type, rest filled randomly */
+  var allPatterns = ParamQuestionGen.DIFFICULTY_BEGINNER
+    .concat(ParamQuestionGen.DIFFICULTY_INTERMEDIATE)
+    .concat(ParamQuestionGen.DIFFICULTY_ADVANCED);
+  PATH_THEMES.forEach(function(theme, themeIdx) {
+    var pool = theme.patterns;
+    if (!pool) pool = allPatterns;
+    PATH_STAGES.forEach(function(stage, stageIdx) {
+      var nodeNum = pathNodeNum(themeIdx, stageIdx);
+      var rng = makeRng(200000 + nodeNum * 7919);
+      var usedInNode = {};
+      var questions = [];
+      var types = stage.qType === 'mixed' ? ['identify', 'truefalse', 'predict', 'scenario'] : [stage.qType];
+      var qCount = stage.mode === 'accuracy' ? stage.maxQ : Math.max(stage.maxQ, stage.target + 5);
       function pickPattern() {
-        var p = sortedPool[Math.floor(rng() * Math.min(6, sortedPool.length))];
-        if (usedInLevel[p]) {
-          for (var ai = 0; ai < sortedPool.length; ai++) {
-            if (!usedInLevel[sortedPool[ai]]) { p = sortedPool[ai]; break; }
+        var sorted = pool.slice().sort(function(x, y) {
+          var cx = usedCount[x] || 0, cy = usedCount[y] || 0;
+          return cx - cy;
+        });
+        var p = sorted[Math.floor(rng() * Math.min(6, sorted.length))];
+        if (usedInNode[p]) {
+          for (var ai = 0; ai < sorted.length; ai++) {
+            if (!usedInNode[sorted[ai]]) { p = sorted[ai]; break; }
           }
         }
         usedCount[p] = (usedCount[p] || 0) + 1;
-        usedInLevel[p] = true;
+        usedInNode[p] = true;
         return p;
       }
-      types.forEach(function(tp) {
+      while (questions.length < qCount) {
         var pName = pickPattern();
-        var q = ParamQuestionGen.generate(pName, tp, (Math.floor(rng() * 1e9) + num * 7) >>> 0, pool);
-        if (q) { q.level = num; mixed.push(q); }
-      });
-      while (mixed.length < QUESTIONS_PER_LEVEL_30) {
-        var pName2 = pickPattern();
-        var q2 = ParamQuestionGen.generate(pName2, types[Math.floor(rng() * types.length)], (Math.floor(rng() * 1e9) + 5) >>> 0, pool);
-        if (q2) { q2.level = num; mixed.push(q2); }
+        var tp = types[Math.floor(rng() * types.length)];
+        var seed = (Math.floor(rng() * 1e9) + nodeNum * 7) >>> 0;
+        var q = ParamQuestionGen.generate(pName, tp, seed, allPatterns);
+        if (q) {
+          q.level = nodeNum;
+          q.themeIdx = themeIdx;
+          q.stageIdx = stageIdx;
+          questions.push(q);
+        }
       }
-      /* Deterministic shuffle by level number */
-      var s2 = num * 137;
-      for (var j = mixed.length - 1; j > 0; j--) {
+      var s2 = nodeNum * 137;
+      for (var j = questions.length - 1; j > 0; j--) {
         s2 = (s2 * 1103515245 + 12345) & 0x7fffffff;
         var k = s2 % (j + 1);
-        var t2 = mixed[j]; mixed[j] = mixed[k]; mixed[k] = t2;
+        var t2 = questions[j]; questions[j] = questions[k]; questions[k] = t2;
       }
-      mixed = mixed.slice(0, QUESTIONS_PER_LEVEL_30);
-      levels.push({ num: num, stage: stage, cat: stage.cat, questions: mixed, title: 'Level ' + num });
-    }
+      questions = questions.slice(0, qCount);
+      nodes.push({
+        num: nodeNum, themeIdx: themeIdx, stageIdx: stageIdx,
+        theme: theme, stage: stage, questions: questions,
+        title: 'T' + (themeIdx + 1) + 'S' + (stageIdx + 1)
+      });
+    });
   });
-  return levels;
+  return nodes;
 }
 
-function getLevel30Status(num) {
-  var progress = appState.level30Progress || {};
-  if (progress[num] && progress[num].completed) return 'completed';
-  if (num === appState.currentLevel30) return 'current';
-  if (num < appState.currentLevel30) return 'unlocked';
+function getPathNodeStatus(nodeNum) {
+  var progress = appState.pathProgress || {};
+  if (progress[nodeNum] && progress[nodeNum].completed) return 'completed';
+  if (nodeNum === appState.currentPathNode) return 'current';
+  if (nodeNum < appState.currentPathNode) return 'unlocked';
   return 'locked';
 }
 
+function buildLevel30() { return buildPath(); }
+function getLevel30Status(num) { return getPathNodeStatus(num); }
+
 function renderLevelPath() {
-  var levels = buildLevel30();
+  var nodes = buildPath();
   var container = document.getElementById('level-path-list');
   if (!container) return;
   var positions = ['pos-l', 'pos-cl', 'pos-c', 'pos-cr', 'pos-r'];
   var zh = currentLang === 'zh';
   var html = '';
-  /* Level 0: Tutorial node */
   var tutDone = appState.tutorialDone;
   var tutStatus = tutDone ? 'completed' : 'current';
   html += '<div class="ln-stage-0">';
-  html += '<div class="stage-icon">📚</div>';
-  html += '<div class="stage-name">' + (zh ? '新手教学' : 'Basics') + '</div>';
-  html += '<div class="stage-range">' + (zh ? 'K线入门' : 'Candlestick Intro') + '</div>';
+  html += '<div class="stage-icon">\u{1F4DA}</div>';
+  html += '<div class="stage-name">' + (zh ? '\u65B0\u624B\u6559\u5B66' : 'Basics') + '</div>';
+  html += '<div class="stage-range">' + (zh ? 'K\u7EBF\u5165\u95E8' : 'Candlestick Intro') + '</div>';
   html += '</div>';
   html += '<div class="ln-wrap pos-c">';
   html += '<div class="ln-node tutorial-node ' + tutStatus + '" onclick="startTutorialFromPath()" role="button" tabindex="0" aria-label="Candlestick Basics Tutorial">';
@@ -4633,7 +4884,7 @@ function renderLevelPath() {
     html += '<div class="ln-check">\u2713</div>';
     html += '<div class="ln-star-row"><span class="s-on">\u2605</span><span class="s-on">\u2605</span><span class="s-on">\u2605</span></div>';
   } else {
-    html += '<div class="ln-num">' + (zh ? '教学' : 'LEARN') + '</div>';
+    html += '<div class="ln-num">' + (zh ? '\u6559\u5B66' : 'LEARN') + '</div>';
     html += '<div class="ln-start-label">START</div>';
   }
   html += '</div>';
@@ -4641,37 +4892,37 @@ function renderLevelPath() {
     html += '<div class="ln-tut-label">' + (zh ? '\u2193 \u70B9\u51FB\u5F00\u59CB' : '\u2193 TAP HERE') + '</div>';
   }
   html += '</div>';
-  /* Connection line from tutorial to Level 1 */
   html += '<div class="ln-wrap pos-c"><div class="ln-conn"></div></div>';
-  var lastStageName = '';
+  var lastThemeIdx = -1;
   var allDone = tutDone;
-  levels.forEach(function(lvl, idx) {
-    if (lvl.stage.name !== lastStageName) {
-      lastStageName = lvl.stage.name;
+  nodes.forEach(function(node, idx) {
+    if (node.themeIdx !== lastThemeIdx) {
+      lastThemeIdx = node.themeIdx;
       html += '<div class="stage-divider">';
-      html += '<div class="stage-icon">' + lvl.stage.icon + '</div>';
-      html += '<div class="stage-name">' + lvl.stage.name + '</div>';
-      html += '<div class="stage-range">Levels ' + lvl.stage.start + '-' + lvl.stage.end + '</div>';
+      html += '<div class="stage-icon">' + node.theme.icon + '</div>';
+      html += '<div class="stage-name">' + (zh ? node.theme.nameZh : node.theme.name) + '</div>';
+      html += '<div class="stage-range">' + (zh ? '\u4E3B\u9898 ' + (node.themeIdx + 1) + '/12' : 'Theme ' + (node.themeIdx + 1) + '/12') + '</div>';
       html += '</div>';
     }
-    var status = getLevel30Status(lvl.num);
+    var status = getPathNodeStatus(node.num);
     if (status !== 'completed') allDone = false;
     var posClass = positions[idx % 5];
-    var showConn = idx > 0 && levels[idx - 1].stage.name === lvl.stage.name;
+    var showConn = idx > 0 && nodes[idx - 1].themeIdx === node.themeIdx;
     html += '<div class="ln-wrap ' + posClass + '">';
     if (showConn) html += '<div class="ln-conn"></div>';
-    html += '<div class="ln-node ' + status + '" onclick="startLevel30(' + lvl.num + ')" role="button" tabindex="0" aria-label="Level ' + lvl.num + '">';
+    html += '<div class="ln-node ' + status + '" onclick="startPathNode(' + node.num + ')" role="button" tabindex="0" aria-label="' + (zh ? '\u4E3B\u9898' : 'Theme') + ' ' + (node.themeIdx + 1) + ' ' + (zh ? node.stage.nameZh : node.stage.name) + '">';
     if (status === 'completed') {
       html += '<div class="ln-check">\u2713</div>';
-      var stars = (appState.level30Progress[lvl.num] || {}).stars || 0;
+      var stars = (appState.pathProgress[node.num] || {}).stars || 0;
       var starHtml = '';
       for (var s = 0; s < 3; s++) starHtml += s < stars ? '<span class="s-on">\u2605</span>' : '<span class="s-off">\u2606</span>';
       html += '<div class="ln-star-row">' + starHtml + '</div>';
     } else if (status === 'current' || status === 'unlocked') {
-      html += '<div class="ln-num">' + lvl.num + '</div>';
-      html += '<div class="ln-start-label">START</div>';
+      html += '<div class="ln-num" style="font-size:18px">' + node.stage.icon + '</div>';
+      html += '<div class="ln-start-label">' + (zh ? node.stage.nameZh : node.stage.name).toUpperCase() + '</div>';
     } else {
       html += '<div class="ln-lock">\u{1F512}</div>';
+      html += '<div style="font-size:8px;color:var(--accent-gold);font-weight:700;margin-top:1px;letter-spacing:.5px">PRO</div>';
     }
     html += '</div></div>';
   });
@@ -4680,8 +4931,8 @@ function renderLevelPath() {
   if (finishEl) finishEl.style.display = allDone ? 'flex' : 'none';
   var currentNode = container.querySelector('.ln-node.current');
   if (currentNode) setTimeout(function() { currentNode.scrollIntoView({behavior: 'smooth', block: 'center'}); }, 100);
-  document.getElementById('lp-title').textContent = zh ? '\u95EF\u5173\u8DEF\u5F84' : 'Level Path';
-  document.getElementById('lp-sub').textContent = zh ? '\u5B8C\u6210\u5F53\u524D\u5173\u5361\u89E3\u9501\u4E0B\u4E00\u5173' : 'Complete each level to unlock the next';
+  document.getElementById('lp-title').textContent = zh ? '\u7CBE\u901A\u4E4B\u8DEF' : 'Mastery Path';
+  document.getElementById('lp-sub').textContent = zh ? '12\u4E2A\u4E3B\u9898 \u00D7 5\u4E2A\u9636\u6BB5 = 60\u4E2A\u8282\u70B9' : '12 Themes \u00D7 5 Stages = 60 Nodes';
   document.getElementById('lp-finish-text').textContent = zh ? '\u5168\u90E8\u901A\u5173\uFF01' : 'All Levels Complete!';
 }
 
@@ -4690,62 +4941,62 @@ function startTutorialFromPath() {
   setTimeout(function(){ renderTutorial(); }, 50);
 }
 
-function startLevel30(num) {
-  var status = getLevel30Status(num);
+function startPathNode(nodeNum) {
+  var status = getPathNodeStatus(nodeNum);
   if (status === 'locked') {
-    showToast(currentLang === 'zh' ? '\u{1F512} \u5B8C\u6210\u524D\u9762\u7684\u5173\u5361' : '\u{1F512} Complete previous levels first');
+    showToast(currentLang === 'zh' ? '\u{1F512} \u5B8C\u6210\u524D\u9762\u7684\u8282\u70B9' : '\u{1F512} Complete previous nodes first');
     return;
   }
-  /* Show unlock notification for new question types */
-  var unlockMsg = getUnlockMessage(num);
+  var unlockMsg = getUnlockMessage(nodeNum);
   if (unlockMsg) setTimeout(function(){ showToast(unlockMsg); }, 500);
-  /* Paywall: free rounds used up and not Pro → show paywall (can close to practice) */
   if (!appState.isPro && appState.freeRoundsUsed >= FREE_ROUNDS) {
-    showPaywall();
+    handleFreeRoundsExhausted();
     return;
   }
-  /* No hearts: show recovery options instead of silently continuing */
   if (!appState.isPro && appState.hearts <= 0) {
     showNoHeartsModal();
     return;
   }
-  var levels = buildLevel30();
-  var lvl = null;
-  for (var i = 0; i < levels.length; i++) { if (levels[i].num === num) { lvl = levels[i]; break; } }
-  if (!lvl || !lvl.questions.length) return;
-  /* All levels use the full generated set (QUESTIONS_PER_LEVEL_30) */
-  var qs = lvl.questions.slice();
-  /* P0: Prepend 3 teaching questions for Level 1 on first entry */
+  var nodes = buildPath();
+  var node = null;
+  for (var i = 0; i < nodes.length; i++) { if (nodes[i].num === nodeNum) { node = nodes[i]; break; } }
+  if (!node || !node.questions.length) return;
+  var qs = node.questions.slice();
+  var stage = node.stage;
+  var themeIdx = node.themeIdx;
+  /* Teaching questions for first node */
   appState.teachingDone = appState.teachingDone || {};
-  if (num === 1 && !appState.teachingDone[1]) {
+  if (nodeNum === 1 && !appState.teachingDone[1]) {
     var teachQs = getTeachingQuestions();
     qs = teachQs.concat(qs);
   }
-  /* P0: Prepend 3 teaching questions for Level 4 on first entry (bridge the L3→L4 cliff) */
-  if (num === 4 && !appState.teachingDone[4]) {
+  if (nodeNum === 6 && !appState.teachingDone[6]) {
     var teachQs4 = getLevel4TeachingQuestions();
     qs = teachQs4.concat(qs);
   }
-  /* L10: Prepend 2 teaching questions for truefalse + scenario transition */
-  if (num === 10 && !appState.teachingDone[10]) {
+  if (nodeNum === 11 && !appState.teachingDone[11]) {
     var teachQs10 = getLevel10TeachingQuestions();
     qs = teachQs10.concat(qs);
   }
-  /* Show micro-lesson for Levels 1-10 on first entry (per-level tracking) */
+  /* Micro-lessons for first 3 themes */
   appState.microLessonsDone = appState.microLessonsDone || {};
-  if (num <= 10 && !appState.microLessonsDone[num]) {
-    showMicroLesson(num);
+  if (themeIdx < 3 && !appState.microLessonsDone[nodeNum]) {
+    showMicroLesson(themeIdx + 1);
   }
   currentQuiz = {
     questions: qs, currentIndex: 0, correctCount: 0, startTime: Date.now(),
-    answers: [], level: lvl.cat, level30Num: num, combo: 0, totalXP: 0, isRetry: false,
-    isInfinite: false, active: true,
-    consecutiveCorrect: 0, consecutiveWrong: 0, difficultyTier: 0
+    answers: [], level: 'path', pathNodeNum: nodeNum, level30Num: nodeNum,
+    combo: 0, totalXP: 0, isRetry: false, isInfinite: false, active: true,
+    consecutiveCorrect: 0, consecutiveWrong: 0, difficultyTier: 0,
+    stageMode: stage.mode, stageTarget: stage.target, stageMaxQ: stage.maxQ,
+    streakAchieved: false, pathThemeIdx: themeIdx, pathStageIdx: node.stageIdx
   };
   showPage('quiz');
   renderQuestion();
   startOverallTimer();
 }
+
+function startLevel30(num) { startPathNode(num); }
 
 /* P0: Teaching questions for first 3 questions — visual annotations, not tests */
 function getTeachingQuestions() {
@@ -4882,7 +5133,7 @@ function homeContinueClick() {
 }
 
 function updateHomeContinueCard() {
-  var num = appState.currentLevel30 || 1;
+  var num = appState.currentPathNode || appState.currentLevel30 || 1;
   var hcTitle = document.getElementById('hc-title');
   var hcDesc = document.getElementById('hc-desc');
   if (!hcTitle) return;
@@ -4891,7 +5142,7 @@ function updateHomeContinueCard() {
   
   if (num > 30) {
     hcTitle.textContent = zh ? '全部完成！' : 'All Done!';
-    hcDesc.textContent = zh ? '30关全部通关，继续刷题巩固' : 'All 30 levels cleared. Keep practicing!';
+    hcDesc.textContent = zh ? '60关全部通关，继续刷题巩固' : 'All 60 lessons cleared. Keep practicing!';
   } else if (isReturning) {
     /* Returning user: show current level + streak + today's progress */
     var streakText = appState.streak > 0 ? (zh ? ' 🔥' + appState.streak + '天连胜' : ' 🔥' + appState.streak + 'd') : '';
@@ -4911,6 +5162,15 @@ function updateHomeContinueCard() {
   if (streakEl) streakEl.textContent = appState.streak || 0;
   var xpEl = document.getElementById('home-xp');
   if (xpEl) xpEl.textContent = appState.totalXP || 0;
+  /* P2: Change START button text when free rounds exhausted */
+  var startBtn = document.getElementById('start-btn');
+  if (startBtn) {
+    if (!appState.isPro && appState.freeRoundsUsed >= FREE_ROUNDS) {
+      startBtn.innerHTML = zh ? '🔁 巩固练习' : '🔁 Review Practice';
+    } else {
+      startBtn.innerHTML = '⚡ START';
+    }
+  }
 
   /* P2: Show today's review card if user has weak patterns */
   var weakPatterns = appState.weakPatterns || {};
@@ -5030,7 +5290,7 @@ function toggleVibrate() {
 function exportProgress() {
   var zh = currentLang === 'zh';
   var data;
-  try { data = localStorage.getItem('kandoo_state') || JSON.stringify(appState); } catch (e) { data = JSON.stringify(appState); }
+  try { data = localStorage.getItem('klinegame_state') || JSON.stringify(appState); } catch (e) { data = JSON.stringify(appState); }
   var done = function() {
     showToast(zh ? '✅ 进度已复制！请粘贴保存到安全位置' : '✅ Progress copied! Save it somewhere safe');
   };
@@ -5057,7 +5317,7 @@ function importProgress() {
   var parsed;
   try { parsed = JSON.parse(json); } catch (e) { showToast(zh ? '❌ 导入失败：不是有效的 JSON' : '❌ Import failed: invalid JSON'); return; }
   if (!parsed || typeof parsed !== 'object' || (parsed.totalAnswered === undefined && parsed.totalXP === undefined && parsed.currentLevel30 === undefined)) {
-    showToast(zh ? '❌ 导入失败：这不是 Kandoo 进度备份' : '❌ Import failed: not a Kandoo progress backup');
+    showToast(zh ? '❌ 导入失败：这不是 Kline Game 进度备份' : '❌ Import failed: not a Kline Game progress backup');
     return;
   }
   appState = parsed;
@@ -5146,7 +5406,7 @@ function renderMistakes() {
     var dueNow = (m.nextReview || 0) <= now;
     var badge = m.resolved
       ? (dueNow ? '<span style="font-size:10px;color:#f59e0b;font-weight:700;margin-left:6px">⏰ ' + (zh ? '待重测' : 'Review due') + '</span>' : '<span style="font-size:10px;color:#22c55e;font-weight:700;margin-left:6px">✅ ' + (zh ? '已复习' : 'Reviewed') + '</span>')
-      : '<span style="font-size:10px;color:#ef4444;font-weight:700;margin-left:6px">🔴 ' + (zh ? '待复习' : 'Open') + '</span>';
+      : '<span style="font-size:10px;color:#f59e0b;font-weight:700;margin-left:6px">🟠 ' + (zh ? '未复习' : 'Unreviewed') + '</span>';
     card.innerHTML = '<div class="mistake-question">' + (i + 1) + '. [' + escapeHtml(m.pattern || '?') + ']' + badge + '<br>' + escapeHtml(m.question) + '</div><div class="mistake-answer"><span class="wrong-ans">' + t('yourAnswer') + escapeHtml(m.yourAnswer) + '</span> | <span class="correct-ans">' + t('correctAnswer') + escapeHtml(m.correctAnswer) + '</span></div><div style="font-size:11px;color:var(--text-muted);margin-top:6px">' + escapeHtml(m.explain) + '</div>';
     list.appendChild(card)
   })
@@ -5158,7 +5418,7 @@ function retryMistakes() {
     return
   }
   if (!appState.isPro && appState.freeRoundsUsed >= FREE_ROUNDS) {
-    showToast(currentLang === 'zh' ? '免费体验已结束，升级Pro解锁全部内容' : 'Free trial ended. Upgrade to Pro for full access');
+    showToast(currentLang === 'zh' ? '免费轮次已用完，升级Pro解锁全部内容' : 'Free rounds used up. Upgrade to Pro for full access');
   }
   if (!appState.isPro && appState.hearts <= 0) {
     showToast(currentLang === 'zh' ? '心已用完，继续练习来恢复' : 'Hearts depleted. Keep practicing to recover!');
@@ -5386,8 +5646,8 @@ function getMascotConfig(state) {
       actionBtn: true
     },
     'wrong': {
-      char: 1, /* bear */
-      img: IMG_BEAR_HAPPY,
+      char: 0, /* bull — bear demoted to side character */
+      img: IMG_BULL_HAPPY,
       badge: '<div class="mascot-badge tr">🙈</div>',
       floatText: '',
       bubble: zh ? '没关系，看看正确答案' : 'Oops! Check the right answer',
@@ -5420,10 +5680,10 @@ function renderMascotState() {
   var state = getMascotState();
   var cfg = getMascotConfig(state);
   var zh = currentLang === 'zh';
-  var charName = cfg.char === 0 ? (zh ? '小牛' : 'Bull') : (zh ? '小熊' : 'Bear');
-  var charColor = cfg.char === 0 ? 'rgba(34,197,94,.25)' : 'rgba(239,68,68,.25)';
+  var charName = zh ? '小牛' : 'Bull';
+  var charColor = 'rgba(34,197,94,.25)';
   /* Emoji fallback in case the mascot PNG is missing on the deployed host */
-  var fallbackEmoji = cfg.char === 0 ? '\ud83d\udc02' : '\ud83d\udc3b';
+  var fallbackEmoji = '\ud83d\udc02';
   var fallbackData = 'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Ctext y=%2748%27 font-size=%2748%27%3E' + fallbackEmoji + '%3C/text%3E%3C/svg%3E';
   
   var html = '<div class="mascot-display ' + cfg.cls + '" onclick="onMascotClick()" role="button" tabindex="0" aria-label="' + charName + ' mascot">';
@@ -5459,8 +5719,8 @@ function onMascotClick() {
   var cfg = getMascotConfig(state);
   
   /* Set character icon and name */
-  icon.textContent = cfg.char === 0 ? '🐂' : '🐻';
-  name.textContent = cfg.char === 0 ? (zh ? '小牛' : 'Bull') : (zh ? '小熊' : 'Bear');
+  icon.textContent = '🐂';
+  name.textContent = zh ? '小牛' : 'Bull';
   
   /* Show trading maxim */
   var pool = tradingMaxims[currentLang] || tradingMaxims.en;
@@ -5478,11 +5738,13 @@ function onMascotClick() {
     btn.textContent = zh ? '立即补心 ❤️' : 'Refill Heart Now ❤️';
     btn.onclick = function() { refillHeartFromMascot(); closeMascotPopup(); };
     actionArea.appendChild(btn);
-    /* Invite entry removed for Beta: kandoo-charts.vercel.app domain unreachable */
+    /* Invite entry removed for Beta: klinegame.vercel.app domain unreachable */
   }
   
   popup.classList.add('show');
-}
+  var closeBtn = document.getElementById('mascot-popup-close-btn');
+  if (closeBtn) closeBtn.textContent = zh ? '谢谢教练！🙏' : 'Thanks, coach! 🙏';
+  }
 
 function closeMascotPopup() {
   var popup = document.getElementById('mascot-popup');
@@ -5636,9 +5898,61 @@ function renderProfile() {
   if (me) me.textContent = currentLang === 'zh' ? '错题本' : 'Mistake Log';
   var we = document.getElementById('wiki-entry-text');
   if (we) we.textContent = currentLang === 'zh' ? '形态百科' : 'Pattern Wiki';
+  var fe = document.getElementById('feedback-entry-text');
+  if (fe) fe.textContent = currentLang === 'zh' ? '反馈建议' : 'Send Feedback';
+  var fmt = document.getElementById('feedback-modal-title');
+  if (fmt) fmt.textContent = currentLang === 'zh' ? '有好想法？' : 'Got a Great Idea?';
+  var fmd = document.getElementById('feedback-modal-desc');
+  if (fmd) fmd.innerHTML = currentLang === 'zh' ? '帮助我们改进 Kline Game！发送 Bug 报告、功能建议或任何想法。如果采纳你的建议，你将获得 <b style="color:var(--accent-red)">+5 心</b> + <b style="color:var(--accent-gold)">500 金币</b> 作为感谢！' : 'Help us improve Kline Game! Send bug reports, feature ideas, or suggestions. If we adopt yours, you\'ll get <b style="color:var(--accent-red)">+5 hearts</b> + <b style="color:var(--accent-gold)">500 coins</b> as a thank-you!';
+  var feb = document.getElementById('feedback-email-btn');
+  if (feb) feb.textContent = currentLang === 'zh' ? '📧 邮件联系' : '📧 Email Us';
   var ce = document.getElementById('checkin-entry-text');
   if (ce) ce.textContent = t('checkinTitle');
   updateHeartTimer();
+  /* Weekly goal ring */
+  var weeklyXP = appState.dailySecondsDate === new Date().toDateString() ? appState.dailySeconds : 0;
+  var weeklyGoal = 100;
+  var weeklyPct = Math.min(100, Math.round((appState.totalXP % weeklyGoal) / weeklyGoal * 100));
+  var ring = document.getElementById('weekly-goal-circle');
+  if (ring) {
+    var circumference = 138.2;
+    ring.style.strokeDashoffset = circumference - (circumference * weeklyPct / 100);
+  }
+  var ringPct = document.getElementById('weekly-goal-pct');
+  if (ringPct) ringPct.textContent = weeklyPct + '%';
+  var ringDesc = document.getElementById('weekly-goal-desc');
+  if (ringDesc) ringDesc.textContent = (appState.totalXP % weeklyGoal) + '/' + weeklyGoal + ' XP ' + (currentLang === 'zh' ? '本周' : 'this week');
+  var ringTitle = document.getElementById('weekly-goal-title');
+  if (ringTitle) ringTitle.textContent = currentLang === 'zh' ? '本周目标' : 'Weekly Goal';
+  /* 7-day heatmap */
+  var hm = document.getElementById('learning-heatmap');
+  if (hm) {
+    var days = [];
+    var dayLabels = currentLang === 'zh' ? ['日','一','二','三','四','五','六'] : ['S','M','T','W','T','F','S'];
+    for (var d = 6; d >= 0; d--) {
+      var date = new Date();
+      date.setDate(date.getDate() - d);
+      var dateStr = date.toDateString();
+      var xp = appState.dailyHistory && appState.dailyHistory[dateStr] || 0;
+      var intensity = xp === 0 ? '#f0f0f0' : xp < 20 ? '#dcfce7' : xp < 50 ? '#86efac' : xp < 100 ? '#22c55e' : '#16a34a';
+      days.push('<div style="flex:1;text-align:center"><div style="background:' + intensity + ';border-radius:6px;width:100%;height:36px;margin-bottom:2px"></div><div style="font-size:9px;color:var(--text-muted)">' + dayLabels[date.getDay()] + '</div></div>');
+    }
+    hm.innerHTML = days.join('');
+  }
+  /* Recent patterns */
+  var rp = document.getElementById('recent-patterns');
+  if (rp) {
+    var patterns = Object.keys(appState.patternHintsSeen || {});
+    var mastered = (appState.masteredPatterns || []).slice(-5).reverse();
+    var recent = mastered.length ? mastered : patterns.slice(-5).reverse();
+    if (recent.length) {
+      rp.innerHTML = recent.map(function(p) {
+        return '<span style="background:rgba(34,197,94,.1);color:#16a34a;font-size:11px;font-weight:600;padding:4px 10px;border-radius:12px">' + escapeHtml(p) + '</span>';
+      }).join('');
+    } else {
+      rp.innerHTML = '<span style="font-size:12px;color:var(--text-muted)">' + (currentLang === 'zh' ? '暂无数据' : 'No patterns yet') + '</span>';
+    }
+  }
   var lg = getLeague();
   var ltEl = document.getElementById('league-tier-text');
   if (ltEl) {
@@ -5675,27 +5989,59 @@ function renderProfile() {
 }
 
 function setPlan(plan) {
+  if (plan !== 'lifetime' && !isFeatureEnabled(plan + 'Subscription')) {
+    plan = 'lifetime';
+  }
   selectedPlan = plan;
   var slider = document.getElementById('plan-slider');
   var tMonthly = document.getElementById('toggle-monthly');
   var tYearly = document.getElementById('toggle-yearly');
+  var tLifetime = document.getElementById('toggle-lifetime');
   var priceNum = document.querySelector('.plan-price');
   var anchor = document.getElementById('price-anchor');
   var zh = currentLang === 'zh';
+  if (tMonthly) tMonthly.style.display = isFeatureEnabled('monthlySubscription') ? '' : 'none';
+  if (tYearly) tYearly.style.display = isFeatureEnabled('yearlySubscription') ? '' : 'none';
+  if (tLifetime) tLifetime.style.flex = isFeatureEnabled('monthlySubscription') ? '1' : '1';
+  var pt = document.getElementById('plan-toggle');
+  if (pt && !isFeatureEnabled('monthlySubscription') && !isFeatureEnabled('yearlySubscription')) {
+    pt.style.display = 'none';
+  }
+  if (tMonthly) tMonthly.classList.remove('active');
+  if (tYearly) tYearly.classList.remove('active');
+  if (tLifetime) tLifetime.classList.remove('active');
   if (plan === 'monthly') {
-    slider.classList.remove('yearly');
+    if (slider) { slider.classList.remove('yearly'); slider.classList.remove('lifetime'); }
+    var sb0 = document.querySelector('.save-badge'); if (sb0) sb0.style.opacity = '0';
     tMonthly.classList.add('active');
-    tYearly.classList.remove('active');
+    var lr0 = document.getElementById('lifetime-rights');
+    if (lr0) lr0.style.display = 'none';
     document.getElementById('plan-name').textContent = zh ? 'Pro 月付' : 'Pro Monthly';
     priceNum.innerHTML = '<span class="dollar">$</span>19<span id="plan-cents">.99</span><span class="per" id="plan-period">/mo</span>';
     document.getElementById('plan-original').classList.add('hidden');
     if (anchor) anchor.innerHTML = zh
       ? '<span style="text-decoration:line-through;color:var(--text-muted)">~~$239.88/年~~</span> · 每天 $0.66 · 比线下课程省 99%'
       : '<span style="text-decoration:line-through;color:var(--text-muted)">~~$239.88/yr~~</span> · $0.66/day · 99% cheaper than in-person courses';
+  } else if (plan === 'lifetime') {
+    if (slider) { slider.classList.remove('yearly'); slider.classList.add('lifetime'); }
+    var sb2 = document.querySelector('.save-badge'); if (sb2) sb2.style.opacity = '0';
+    if (tLifetime) tLifetime.classList.add('active');
+    document.getElementById('plan-name').textContent = zh ? '⭐ Founding Member 终身会员' : '⭐ Founding Member Lifetime';
+    priceNum.innerHTML = '<span class="dollar">$</span>19<span id="plan-cents">.99</span><span class="per" id="plan-period"> once</span>';
+    var po = document.getElementById('plan-original');
+    if (po) { po.textContent = zh ? '原价 $99.99' : 'Originally $99.99'; po.classList.remove('hidden'); }
+    if (anchor) anchor.innerHTML = zh
+      ? '🔥 上线特惠 · 一次性买断 · 永久使用 · 价格将随内容增加而上涨'
+      : '🔥 Launch price · One-time purchase · Lifetime access · Price increases as we add more levels';
+    /* Show lifetime rights and guarantee for lifetime plan */
+    var lr = document.getElementById('lifetime-rights');
+    if (lr) lr.style.display = 'block';
   } else {
-    slider.classList.add('yearly');
+    if (slider) { slider.classList.remove('lifetime'); slider.classList.add('yearly'); }
+    var sb1 = document.querySelector('.save-badge'); if (sb1) sb1.style.opacity = '1';
     tYearly.classList.add('active');
-    tMonthly.classList.remove('active');
+    var lr1 = document.getElementById('lifetime-rights');
+    if (lr1) lr1.style.display = 'none';
     document.getElementById('plan-name').textContent = zh ? 'Pro 年付' : 'Pro Yearly';
     priceNum.innerHTML = '<span class="dollar">$</span>49<span id="plan-cents">.99</span><span class="per" id="plan-period">/yr</span>';
     document.getElementById('plan-original').textContent = zh ? '$119.88/年' : '$119.88/year';
@@ -5707,6 +6053,11 @@ function setPlan(plan) {
 }
 
 function renderSubscription() {
+  var brokerSection = document.querySelector('.brokers-section');
+  if (brokerSection) brokerSection.style.display = isFeatureEnabled('brokerLinks') ? '' : 'none';
+  if (!isFeatureEnabled('monthlySubscription') && !isFeatureEnabled('yearlySubscription')) {
+    selectedPlan = 'lifetime';
+  }
   setPlan(selectedPlan);
   startUrgencyCountdown();
   renderPayPalButton();
@@ -5820,17 +6171,26 @@ document.addEventListener('keydown', function(ev) {
   if (o && o.classList && !o.classList.contains('hidden')) o.classList.add('hidden');
 });
 
+/* P2: Free rounds exhausted — show paywall once, then auto-review */
+function handleFreeRoundsExhausted() {
+  var zh = currentLang === 'zh';
+  if (!appState.paywallSeen) {
+    appState.paywallSeen = true;
+    saveState();
+    showPaywall();
+  } else {
+    showToast(zh ? '📖 免费轮次已用完，进入复习模式' : '📖 Free rounds used up — entering review mode');
+    startReviewMode();
+  }
+}
+
 function showPaywall() {
   var pwSub = document.getElementById('pw-sub');
   if (pwSub) pwSub.textContent = tf('paywallSub', {
     n: FREE_ROUNDS
   });
   var pwPrice = document.querySelector('.pw-price');
-  if (selectedPlan === 'monthly') {
-    pwPrice.innerHTML = '<span class="dollar">$</span>19<span id="pw-cents">.99</span><span class="per" id="pw-period">/month</span>'
-  } else {
-    pwPrice.innerHTML = '<span class="dollar">$</span>49<span id="pw-cents">.99</span><span class="per" id="pw-period">/year</span>'
-  }
+  pwPrice.innerHTML = '<span class="dollar">$</span>19<span id="pw-cents">.99</span><span class="per" id="pw-period"> once</span>'
   document.getElementById('paywall-modal').classList.add('show');
   modalFocusIn('paywall-modal')
 }
@@ -5838,27 +6198,93 @@ function showPaywall() {
 function closePaywall() {
   document.getElementById('paywall-modal').classList.remove('show');
   modalFocusOut();
-  /* Pro users don't need paywall counting */
   if (appState.isPro) {
     showPage('home');
     return;
   }
-  /* P1: 记录 paywall 关闭次数，递增惩罚 */
-  appState.paywallClosedCount = (appState.paywallClosedCount || 0) + 1;
-  saveState();
-  if (appState.paywallClosedCount >= 3) {
-    /* 3次后：强制跳转复习模式，不能开新轮次 */
-    showToast(currentLang === 'zh' ? '🔒 免费轮次已用完，仅可复习错题或升级Pro' : '🔒 Free rounds exhausted. Review mistakes or upgrade to Pro.');
-    showPage('mistakes');
-    renderMistakes();
-  } else {
-    showPage('home');
-  }
+  /* P2: After paywall close, always enter review mode (non-blocking) */
+  var zh = currentLang === 'zh';
+  showToast(zh ? '📖 进入复习模式，继续练习不扣心' : '📖 Entering review mode — keep practicing, no hearts lost');
+  startReviewMode();
 }
 
 function showNoHeartsModal() {
-  document.getElementById('no-hearts-modal').classList.add('show');
-  modalFocusIn('no-hearts-modal')
+  handleNoHearts();
+}
+
+/* P2: No-Hearts flow — first time shows coaching card, then auto-review */
+function handleNoHearts() {
+  var zh = currentLang === 'zh';
+  showToast(zh ? '❤️ 心力已用完，自动进入复习模式（不扣心）' : '❤️ Out of hearts! Entering review mode (no hearts lost)');
+  startReviewMode();
+}
+
+/* Coaching card: explains recovery options without blocking */
+function showNoHeartsCoachCard() {
+  var zh = currentLang === 'zh';
+  var existing = document.getElementById('no-hearts-coach');
+  if (existing) existing.remove();
+  var div = document.createElement('div');
+  div.id = 'no-hearts-coach';
+  div.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:3500;display:flex;align-items:center;justify-content:center;padding:20px';
+  var mins = Math.ceil(HEART_REGEN_MS / 60000);
+  div.innerHTML = '<div style="background:#1a2030;border-radius:20px;padding:28px 24px;max-width:340px;width:100%;text-align:center;color:#f2f6fc">' +
+    '<div style="font-size:48px;margin-bottom:12px">💪</div>' +
+    '<div style="font-size:20px;font-weight:800;margin-bottom:8px">' + (zh ? '心力用完了！别担心' : 'Out of hearts! Don\'t worry') + '</div>' +
+    '<div style="font-size:14px;color:#8a94a6;line-height:1.6;margin-bottom:20px">' + (zh ?
+      '你有两种方式恢复：<br>1️⃣ 等 ' + mins + ' 分钟（已开始计时 ⏰）<br>2️⃣ 去复习模式练习薄弱形态，答对快速恢复 ❤️' :
+      'Two ways to recover:<br>1️⃣ Wait ' + mins + ' min (timer started ⏰)<br>2️⃣ Review weak patterns — recover faster ❤️') + '</div>' +
+    '<button id="coach-review-btn" style="width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 0 #15803d;margin-bottom:10px">' +
+    (zh ? '📖 去复习模式' : '📖 Start Review') + '</button>' +
+    '<button id="coach-challenge-btn" style="width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 0 #4338ca;margin-bottom:10px">' +
+    (zh ? '🎯 每日挑战（3题，不扣心）' : '🎯 Daily Challenge (3 Q, no hearts)') + '</button>' +
+    '<button id="coach-close-btn" style="background:none;border:none;color:#64748b;font-size:13px;cursor:pointer;width:100%">' +
+    (zh ? '等一会再来' : 'Maybe later') + '</button>' +
+    '</div>';
+  document.body.appendChild(div);
+  document.getElementById('coach-review-btn').onclick = function() { div.remove(); startReviewMode(); };
+  document.getElementById('coach-challenge-btn').onclick = function() { div.remove(); startDailyChallenge(); };
+  document.getElementById('coach-close-btn').onclick = function() { div.remove(); showPage('home'); };
+}
+
+/* Daily Challenge: 3 new questions, no heart cost, 1/day */
+function startDailyChallenge() {
+  var zh = currentLang === 'zh';
+  /* Check if already done today */
+  var today = new Date().toDateString();
+  if (appState.dailyChallengeDate === today) {
+    showToast(zh ? '今日每日挑战已完成，明天再来！' : 'Daily challenge already done today. Come back tomorrow!');
+    return;
+  }
+  if (typeof ParamQuestionGen === 'undefined') { showToast(zh ? '加载中，请稍后' : 'Loading...'); return; }
+  /* Generate 3 questions from current difficulty pool */
+  var level = appState.level30Num || 1;
+  var pool = level <= 10 ? ParamQuestionGen.DIFFICULTY_BEGINNER
+           : level <= 20 ? ParamQuestionGen.DIFFICULTY_INTERMEDIATE
+           : ParamQuestionGen.DIFFICULTY_ADVANCED;
+  var seed = (Date.now() & 0xffffffff) >>> 0;
+  var s = seed || 1;
+  function rng() { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; }
+  var types = ['predict', 'scenario'];
+  var qs = [];
+  for (var i = 0; i < 3; i++) {
+    var pName = pool[Math.floor(rng() * pool.length)];
+    var qType = types[Math.floor(rng() * types.length)];
+    var q = ParamQuestionGen.generate(pName, qType, Math.floor(rng() * 1e9));
+    if (q) { q.level = level; qs.push(q); }
+  }
+  if (qs.length === 0) { showToast(zh ? '生成题目失败' : 'Failed to generate questions'); return; }
+  appState.dailyChallengeDate = today;
+  saveState();
+  currentQuiz = {
+    questions: qs, currentIndex: 0, correctCount: 0, startTime: Date.now(),
+    answers: [], level: 'daily', combo: 0, totalXP: 0, isRetry: false,
+    isReview: false, isInfinite: false, isDailyChallenge: true, active: true,
+    consecutiveCorrect: 0, consecutiveWrong: 0, difficultyTier: 0
+  };
+  showPage('quiz');
+  renderQuestion();
+  showToast(zh ? '🎯 每日挑战！3题，不扣心' : '🎯 Daily Challenge! 3 questions, no hearts lost');
 }
 
 /* P1: Soft upgrade nudge — non-blocking toast card after round 2 */
@@ -5945,7 +6371,12 @@ function shuffleArray(arr) {
 function checkSubCallback() {
   var params = new URLSearchParams(window.location.search);
   if (params.get('paypal_success') === '1') {
-    showToast(currentLang === 'zh' ? '正在验证PayPal订阅...' : 'Verifying PayPal subscription...');
+    appState.isPro = true;
+    appState.hearts = appState.maxHearts;
+    appState.unlockedLevels = ['beginner', 'intermediate', 'advanced', 'crypto', 'trap', 'stock'];
+    saveState();
+    updateUI();
+    showToast(currentLang === 'zh' ? '🎉 支付成功！已解锁全部内容' : '🎉 Payment successful! All content unlocked');
     verifyProStatusFromCloud();
     history.replaceState(null, '', window.location.pathname)
   }
@@ -6176,7 +6607,7 @@ function renderCheckin() {
     if (i === 6) d.classList.add('day-7');
     if (i === 0 && appState.checkinData.lastDate === today.toISOString().split('T')[0]) d.classList.add('checked', 'today');
     else if (i === 0) d.classList.add('today');
-    var rewardText = i === 6 ? '🎨 ' + (currentLang === 'zh' ? '金色皮肤' : 'Golden Skin') : '+' + rewards[i] + ' 🪙';
+    var rewardText = i === 6 ? '<div style="font-size:28px;margin-bottom:2px">🐂✨</div>🎨 ' + (currentLang === 'zh' ? '金色皮肤' : 'Golden Skin') : '+' + rewards[i] + ' 🪙';
     d.innerHTML = '<div class="day-num">' + t('days')[(today.getDay() + i) % 7] + '</div><div class="reward">' + rewardText + '</div>';
     grid.appendChild(d)
   }
@@ -6946,11 +7377,11 @@ function inviteFriendForHeart() {
     return;
   }
   var refCode = getReferralCode();
-  var shareUrl = 'https://kandoo-charts.vercel.app/?ref=' + refCode;
+  var shareUrl = 'https://klinegame.vercel.app/?ref=' + refCode;
   var title = zh ? '跟我一起学K线！5分钟搞定交易形态' : 'Learn candlestick trading with me! 5 min a day';
   var text = zh
-    ? '我在Kandoo已经连续学习' + (appState.streak || 1) + '天了！用我的邀请码 ' + refCode + ' 注册，你也能开始学K线！'
-    : 'I have been learning K-line patterns on Kandoo for ' + (appState.streak || 1) + ' days! Use my referral code ' + refCode + ' to join!';
+    ? '我在Kline Game已经连续学习' + (appState.streak || 1) + '天了！用我的邀请码 ' + refCode + ' 注册，你也能开始学K线！'
+    : 'I have been learning K-line patterns on Kline Game for ' + (appState.streak || 1) + ' days! Use my referral code ' + refCode + ' to join!';
 
   if (navigator.share) {
     navigator.share({
@@ -7041,11 +7472,11 @@ function inviteToLeague() {
   var zh = currentLang === 'zh';
   var refCode = getReferralCode();
   var lg = getLeague();
-  var shareUrl = 'https://kandoo-charts.vercel.app/?ref=' + refCode + '&src=league';
+  var shareUrl = 'https://klinegame.vercel.app/?ref=' + refCode + '&src=league';
   var title = zh ? '我在' + lg.tier + '联赛，来挑战我！' : 'I am in ' + lg.tier + ' League. Can you beat me?';
   var text = zh
-    ? '本周我在Kandoo ' + lg.tier + '联赛，已获得' + (appState.weeklyXP || 0) + ' XP！来挑战我的排名吧！'
-    : 'I earned ' + (appState.weeklyXP || 0) + ' XP this week in ' + lg.tier + ' League on Kandoo. Come compete with me!';
+    ? '本周我在Kline Game ' + lg.tier + '联赛，已获得' + (appState.weeklyXP || 0) + ' XP！来挑战我的排名吧！'
+    : 'I earned ' + (appState.weeklyXP || 0) + ' XP this week in ' + lg.tier + ' League on Kline Game. Come compete with me!';
 
   if (navigator.share) {
     navigator.share({
@@ -7067,11 +7498,11 @@ function shareCheckin() {
   var zh = currentLang === 'zh';
   var streak = appState.checkinData.streak || 1;
   var refCode = getReferralCode();
-  var shareUrl = 'https://kandoo-charts.vercel.app/?ref=' + refCode + '&src=checkin';
+  var shareUrl = 'https://klinegame.vercel.app/?ref=' + refCode + '&src=checkin';
   var title = zh ? '我已连续打卡' + streak + '天学K线！' : 'I have studied candlesticks for ' + streak + ' days straight!';
   var text = zh
-    ? '🔥 我在Kandoo连续学习' + streak + '天了！每天5分钟，K线形态轻松学。一起来吧！'
-    : '🔥 I have been studying K-line patterns on Kandoo for ' + streak + ' consecutive days! 5 min a day. Join me!';
+    ? '🔥 我在Kline Game连续学习' + streak + '天了！每天5分钟，K线形态轻松学。一起来吧！'
+    : '🔥 I have been studying K-line patterns on Kline Game for ' + streak + ' consecutive days! 5 min a day. Join me!';
 
   if (navigator.share) {
     navigator.share({
@@ -7170,7 +7601,7 @@ function generateAchievementCard(type, value, accuracy) {
   /* Branding */
   ctx.font = 'bold 24px Arial';
   ctx.fillStyle = '#22c55e';
-  ctx.fillText('Kandoo', 300, 660);
+  ctx.fillText('Kline Game', 300, 660);
   ctx.font = '14px Arial';
   ctx.fillStyle = '#999';
   ctx.fillText(zh ? '5分钟学会K线交易' : 'Learn Candlesticks in 5 Min a Day', 300, 690);
@@ -7187,8 +7618,8 @@ function shareAchievementImage(type, value, accuracy) {
   var zh = currentLang === 'zh';
   var card = generateAchievementCard(type, value, accuracy);
   var refCode = getReferralCode();
-  var shareUrl = 'https://kandoo-charts.vercel.app/?ref=' + refCode + '&src=achievement';
-  var title = zh ? '我在Kandoo的成就！' : 'My Kandoo Achievement!';
+  var shareUrl = 'https://klinegame.vercel.app/?ref=' + refCode + '&src=achievement';
+  var title = zh ? '我在Kline Game的成就！' : 'My Kline Game Achievement!';
 
   if (navigator.share && navigator.canShare) {
     /* Convert dataURL to blob for sharing */
@@ -7199,7 +7630,7 @@ function shareAchievementImage(type, value, accuracy) {
     var u8 = new Uint8Array(n);
     for (var i = 0; i < n; i++) u8[i] = bstr.charCodeAt(i);
     var blob = new Blob([u8], { type: mime });
-    var file = new File([blob], 'kandoo-achievement.png', { type: mime });
+    var file = new File([blob], 'klinegame-achievement.png', { type: mime });
 
     if (navigator.canShare({ files: [file] })) {
       navigator.share({
@@ -7219,7 +7650,7 @@ function shareAchievementImage(type, value, accuracy) {
   /* Fallback: download image */
   var a = document.createElement('a');
   a.href = card;
-  a.download = 'kandoo-achievement.png';
+  a.download = 'klinegame-achievement.png';
   a.click();
   rewardHeartForSharing(zh ? '图片已保存，去分享给好友吧' : 'Image saved! Share it with friends');
   saveState();
@@ -7255,6 +7686,7 @@ function renderLeague() {
   })
 }
 checkSubCallback();
+
 initApp();
 /* mobile: global haptic feedback — light 10ms vibration on any button/interactive click */
 document.addEventListener('click', function(e) {
@@ -7270,7 +7702,7 @@ document.addEventListener('click', function(e) {
  * alongside this HTML, we fall back to registering the inline worker
  * (best effort — some browsers restrict blob-worker registration). */
 var INLINE_SW_CODE = [
-  'var CACHE="kandoo-v2";',
+  'var CACHE="klinegame-v2";',
   'var ASSETS=["./","./index.html"];',
   'self.addEventListener("install",function(e){e.waitUntil(caches.open(CACHE).then(function(c){return c.addAll(ASSETS).catch(function(){})}).then(function(){return self.skipWaiting()}))});',
   'self.addEventListener("activate",function(e){e.waitUntil(caches.keys().then(function(ks){return Promise.all(ks.map(function(k){if(k!==CACHE)return caches.delete(k)}))}).then(function(){return self.clients.claim()}))});',
@@ -7300,7 +7732,7 @@ if ('serviceWorker' in navigator) {
 <div style="font-size:13px;color:var(--text-secondary);font-weight:600" id="mascot-popup-name">Bull</div>
 <div class="mascot-popup-maxim" id="mascot-popup-text">Don't catch falling knives. Wait for confirmation.</div>
 <div id="mascot-popup-action-area"></div>
-<button class="mascot-popup-close" onclick="closeMascotPopup()">Got it!</button>
+<button class="mascot-popup-close" id="mascot-popup-close-btn" onclick="closeMascotPopup()">Thanks, coach! 🙏</button>
 </div>
 </div>
 <!-- P2: Cookie Consent Banner (GDPR) -->

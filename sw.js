@@ -1,6 +1,6 @@
-/* Kandoo Service Worker — offline caching for the single-page app.
+/* Kline Game Service Worker — offline caching for the single-page app.
  * Cache the app shell + mascot images on install; cache-first for everything. */
-var CACHE = 'kandoo-v2';
+var CACHE = 'klinegame-v2';
 var ASSETS = [
   './',
   './index.html'
@@ -46,7 +46,7 @@ self.addEventListener('fetch', function(e) {
       }).catch(function() {
         /* Fully offline: serve the app shell for navigation requests */
         if (e.request.mode === 'navigate') {
-          return caches.match('./kline_trainer.html').then(function(shell) {
+          return caches.match('./index.html').then(function(shell) {
             return shell || caches.match('./');
           });
         }
