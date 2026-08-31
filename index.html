@@ -11,12 +11,13 @@
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 192 192%27%3E%3Crect width=%27192%27 height=%27192%27 rx=%2740%27 fill=%27%23131722%27/%3E%3Crect x=%2740%27 y=%2760%27 width=%2716%27 height=%2780%27 fill=%27%2322c55e%27/%3E%3Crect x=%2788%27 y=%2740%27 width=%2716%27 height=%27100%27 fill=%27%23ef4444%27/%3E%3Crect x=%27136%27 y=%2770%27 width=%2716%27 height=%2760%27 fill=%27%2322c55e%27/%3E%3C/svg%3E">
 <link rel="manifest" href='data:application/json,{"name":"Kline Game","short_name":"Kline Game","start_url":"/","display":"standalone","background_color":"%23FFFFFF","theme_color":"%2358CC02","icons":[{"src":"data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 192 192%27%3E%3Crect width=%27192%27 height=%27192%27 rx=%2740%27 fill=%27%23131722%27/%3E%3Crect x=%2740%27 y=%2760%27 width=%2716%27 height=%2780%27 fill=%27%2322c55e%27/%3E%3Crect x=%2788%27 y=%2740%27 width=%2716%27 height=%27100%27 fill=%27%23ef4444%27/%3E%3Crect x=%27136%27 y=%2770%27 width=%2716%27 height=%2760%27 fill=%27%2322c55e%27/%3E%3C/svg%3E","sizes":"any","type":"image/svg+xml"}]}'>
 <title>Kline Game - Master Candlestick Patterns</title>
+<script>try{var s=JSON.parse(localStorage.getItem('klinegame_state')||localStorage.getItem('charteye_state')||'{}');var p=s.onboardingDone?'home':'onboarding';document.addEventListener('DOMContentLoaded',function(){var el=document.getElementById('page-'+p);if(el&&!el.classList.contains('active'))el.classList.add('active');});}catch(e){document.addEventListener('DOMContentLoaded',function(){var el=document.getElementById('page-onboarding');if(el)el.classList.add('active');});}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--bg-primary:#FFFFFF;--bg-secondary:#FFFFFF;--bg-card:#FFFFFF;--bg-elevated:#F5F5F5;--text-primary:#1a1a1a;--text-secondary:#666666;--text-muted:#999999;--accent-green:#22c55e;--accent-red:#ef4444;--accent-gold:#f59e0b;--accent-blue:#3b82f6;--accent-purple:#a855f7;--border:#E5E5E5;--stripe:#58CC02}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh;overflow-x:hidden}
-.app-container{max-width:480px;margin:0 auto;min-height:100vh;position:relative}
-.page{display:none;min-height:100vh;padding-bottom:80px}.page.active{display:block}.page-quiz.active{display:flex}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh;min-height:100dvh;overflow-x:hidden}
+.app-container{max-width:480px;margin:0 auto;min-height:100vh;min-height:100dvh;position:relative}
+.page{display:none;min-height:100vh;min-height:100dvh;padding-bottom:80px}.page.active{display:block}.page-quiz.active{display:flex}
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--bg-secondary);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:1000}
 .app-container.quiz-active .bottom-nav{display:none!important}
 .nav-item{display:flex;flex-direction:column;align-items:center;padding:4px 8px;color:var(--text-muted);font-size:10px;cursor:pointer;transition:all .2s;border:none;background:none}
@@ -118,7 +119,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .volume-label{font-size:11px;color:var(--accent-green);font-weight:600;margin-bottom:6px;min-height:16px;background:rgba(34,197,94,.08);border-radius:6px;padding:3px 8px;display:inline-block}
 .options-container{padding:10px 16px calc(18px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px;flex-shrink:0;position:sticky;bottom:0;background:linear-gradient(to top,var(--bg-primary) 60%,rgba(255,255,255,0));z-index:5}
 .option-btn{padding:12px 16px;background:var(--bg-card);border:2px solid var(--border);border-radius:12px;color:var(--text-primary);font-size:14px;text-align:left;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:10px}
-.option-btn:active{transform:scale(.97)}
+.option-btn:hover{border-color:var(--accent-green);background:rgba(34,197,94,.06)}.option-btn:active{transform:scale(.97)}
 .option-btn.correct{border-color:var(--accent-green);background:rgba(34,197,94,.1)}
 .option-btn.wrong{border-color:var(--accent-red);background:rgba(239,68,68,.1)}
 .option-btn.disabled{pointer-events:none;opacity:.7}
@@ -154,9 +155,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 #page-quiz.kq-immersive .quiz-header{position:absolute;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:calc(12px + env(safe-area-inset-top)) 18px 6px;background:none}
 #page-quiz.kq-immersive .quiz-progress{font-size:12px;font-weight:700;color:#8a94a6;font-variant-numeric:tabular-nums;letter-spacing:1.5px}
 #page-quiz.kq-immersive .hearts-quiz{font-size:14px;font-weight:800;color:#ff4d67;text-shadow:0 0 12px rgba(255,77,103,.4)}
-#page-quiz.kq-immersive .quit-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:#8a94a6;font-size:14px;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center}
-#page-quiz.kq-immersive .combo-display{position:absolute;top:calc(26px + env(safe-area-inset-top));left:0;right:0;text-align:center;z-index:35;font-size:54px;font-weight:900;color:#ffc53d;font-family:"SF Mono","Cascadia Mono",Consolas,"Courier New",monospace;font-variant-numeric:tabular-nums;text-shadow:0 0 32px rgba(255,197,61,.45);pointer-events:none;background:rgba(0,0,0,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:6px 0;border-radius:0 0 14px 14px}
-#page-quiz.kq-immersive .question-section{position:absolute;left:0;right:0;bottom:260px;z-index:10;padding:8px 20px 12px;text-align:center;pointer-events:none;background:linear-gradient(to bottom,rgba(5,8,14,0) 0%,rgba(5,8,14,.7) 50%,rgba(5,8,14,.95) 100%)}
+#page-quiz.kq-immersive .quit-btn{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:#a0aec0;font-size:18px;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;transition:background .2s}
+#page-quiz.kq-immersive .combo-display{position:absolute;top:calc(26px + env(safe-area-inset-top));left:0;right:0;text-align:center;z-index:35;font-size:54px;font-weight:900;color:#ffc53d;font-family:"SF Mono","Cascadia Mono",Consolas,"Courier New",monospace;font-variant-numeric:tabular-nums;text-shadow:0 0 32px rgba(255,197,61,.45);pointer-events:none;background:rgba(0,0,0,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:6px 0;border-radius:0 0 14px 14px;animation:comboDisplayPop .4s cubic-bezier(.175,.885,.32,1.275)}
+@keyframes comboDisplayPop{0%{transform:scale(0.8);opacity:0.9}50%{transform:scale(1.1);opacity:1}100%{transform:scale(1);opacity:1}}
+#page-quiz.kq-immersive .question-section{position:absolute;left:0;right:0;bottom:260px;z-index:10;padding:8px 20px 12px;text-align:center;pointer-events:none;background:linear-gradient(to bottom,rgba(5,8,14,0) 0%,rgba(5,8,14,0) 60%,rgba(5,8,14,.82) 88%,rgba(5,8,14,.95) 100%)}
 #page-quiz.kq-immersive .question-text{font-size:clamp(19px,5.2vw,26px);font-weight:800;color:#f2f6fc;line-height:1.35;letter-spacing:-.2px;text-shadow:0 2px 16px rgba(0,0,0,.7),0 0 40px rgba(0,0,0,.35)}
 #page-quiz.kq-immersive .q-type-badge{border-radius:999px;padding:3px 12px;font-size:10px;font-weight:700;background:rgba(255,255,255,.08);color:#b9c2d2;letter-spacing:.5px;backdrop-filter:blur(6px)}
 #page-quiz.kq-immersive .q-type-identify{background:rgba(168,85,247,.2);color:#d8b4fe}
@@ -167,9 +169,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 #page-quiz.kq-immersive .q-type-trap{background:rgba(255,77,103,.2);color:#fda4af}
 #page-quiz.kq-immersive .volume-label{color:#00e58f;font-size:12px;font-weight:600;text-shadow:0 1px 8px rgba(0,0,0,.6)}
 #page-quiz.kq-immersive #pattern-hint-zone{pointer-events:auto;display:flex;justify-content:center;margin-top:10px}
-#page-quiz.kq-immersive .options-container{position:absolute;left:0;right:0;bottom:0;z-index:15;padding:20px 16px calc(20px + env(safe-area-inset-bottom));gap:10px;background:linear-gradient(to top,rgba(5,8,14,.98) 45%,rgba(5,8,14,.85) 65%,rgba(5,8,14,0));display:flex;flex-direction:column;flex-shrink:0}
+#page-quiz.kq-immersive .options-container{position:absolute;left:0;right:0;bottom:0;z-index:15;padding:20px 16px calc(20px + env(safe-area-inset-bottom));gap:10px;background:linear-gradient(to top,rgba(5,8,14,.98) 55%,rgba(5,8,14,.8) 75%,rgba(5,8,14,0));display:flex;flex-direction:column;flex-shrink:0}
 #page-quiz.kq-immersive .option-btn{min-height:66px;padding:14px 18px;font-size:17px;font-weight:800;letter-spacing:.2px;border-radius:22px;border:2px solid rgba(255,255,255,.1);background:rgba(18,25,38,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#f2f6fc;box-shadow:0 10px 30px rgba(0,0,0,.38);text-align:left;display:flex;align-items:center;gap:12px;transition:transform .12s ease,box-shadow .2s ease}
 #page-quiz.kq-immersive .option-btn:active{transform:scale(.965)}
+#page-quiz.kq-immersive .option-btn:not(.disabled):hover{border-color:rgba(255,255,255,.3);background:rgba(28,38,56,.82);box-shadow:0 14px 36px rgba(0,0,0,.42)}
 #page-quiz.kq-immersive .option-letter{width:42px;height:42px;border-radius:14px;font-size:15px;font-weight:800;background:rgba(255,255,255,.09);color:#f2f6fc;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 #page-quiz.kq-immersive .option-btn.correct{border-color:#00e58f;background:rgba(0,229,143,.17);box-shadow:0 0 30px rgba(0,229,143,.35)}
 #page-quiz.kq-immersive .option-btn.correct .option-letter{background:#00e58f;color:#04110a}
@@ -185,6 +188,32 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 #page-quiz.kq-immersive .swipe-hint{position:absolute;top:calc(74px + env(safe-area-inset-top));left:0;right:0;text-align:center;z-index:12;color:#8a94a6;font-size:13px;pointer-events:none;text-shadow:0 1px 8px rgba(0,0,0,.6)}
 #page-quiz.kq-immersive #kline-canvas-desc{color:#8a94a6}
 @media (prefers-reduced-motion:reduce){#page-quiz.kq-immersive .option-btn{transition:none}}
+/* ================================================================
+   Desktop / wide-screen: keep mobile layout centered, add side decor
+   ================================================================ */
+@media (min-width: 520px) {
+  body {
+    background:
+      radial-gradient(ellipse at 15% 20%, rgba(99,102,241,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 80%, rgba(34,197,94,0.06) 0%, transparent 50%),
+      #f8fafc;
+  }
+  .app-container {
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--bg-primary);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.04), 0 20px 60px rgba(0,0,0,0.08);
+    min-height: 100vh;
+    min-height: 100dvh;
+    position: relative;
+    overflow: hidden;
+  }
+  .bottom-nav { max-width: 480px; }
+  /* Fixed position modals — center them on screen, not relative to app-container */
+  .modal-overlay { z-index: 2000; }
+  .mascot-popup { z-index: 2100; }
+  #feedback-modal { z-index: 2200; }
+}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 /* === Combo System Enhancements === */
 .combo-fire{position:fixed;top:120px;right:12px;z-index:110;font-size:24px;pointer-events:none;animation:fireRise .6s ease-out forwards}
@@ -216,7 +245,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .feedback-actions{display:flex;gap:10px;margin-top:14px}
 .feedback-actions button{flex:1;padding:13px;border-radius:12px;border:none;font-size:15px;font-weight:600;cursor:pointer}
 .btn-next{background:var(--accent-gold);color:#000}.btn-retry{background:var(--bg-elevated);color:var(--text-primary)}
-.result-page{padding:60px 24px 40px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh}
+.result-page{padding:60px 24px 40px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;min-height:100dvh}
 .result-emoji{font-size:64px;margin-bottom:8px}
 .result-title{font-size:32px;font-weight:800;margin-bottom:8px}
 .result-subtitle{font-size:18px;color:var(--text-secondary);margin:8px 0 32px}
@@ -286,7 +315,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .checkin-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:18px 0}
 .checkin-day{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:10px 4px;text-align:center;font-size:11px}
 .checkin-day.checked{background:rgba(34,197,94,.15);border-color:var(--accent-green);color:var(--accent-green)}
-.checkin-day.today{border-color:var(--accent-gold);box-shadow:0 0 8px rgba(245,158,11,.3)}
+.checkin-day.today{border-color:var(--accent-gold);box-shadow:0 0 8px rgba(245,158,11,.3);animation:checkinPulse 2s ease-in-out infinite}
+@keyframes checkinPulse{0%,100%{box-shadow:0 0 8px rgba(245,158,11,.3)}50%{box-shadow:0 0 16px rgba(245,158,11,.55)}}
 .checkin-day .day-num{font-weight:700;font-size:13px;margin-bottom:3px}.checkin-day .reward{font-size:9px;color:var(--accent-gold)}
 .checkin-day.day-7{background:linear-gradient(135deg,rgba(245,158,11,.15),rgba(217,119,6,.1));border-color:var(--accent-gold);border-width:2px}
 .checkin-btn{padding:14px 36px;background:linear-gradient(135deg,var(--accent-green),#16a34a);border:none;border-radius:14px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;margin-top:14px}
@@ -302,7 +332,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .modal{background:var(--bg-secondary);border:1px solid var(--border);border-radius:20px;padding:24px;width:90%;max-width:380px;text-align:center}
 .modal h3{font-size:18px;margin-bottom:6px}.modal p{font-size:13px;color:var(--text-secondary);margin-bottom:16px}
 .modal-actions{display:flex;gap:10px}.modal-actions button{flex:1;padding:12px;border-radius:12px;border:none;font-size:14px;font-weight:600;cursor:pointer}
-.modal-actions .btn-gold{background:var(--accent-gold);color:#000}.modal-actions .btn-gray{background:var(--bg-elevated);color:var(--text-primary)}.modal-actions .btn-green{background:var(--accent-green);color:#fff}
+.modal-actions .btn-gold{background:var(--accent-gold);color:#000}.modal-actions .btn-gray{background:var(--bg-elevated);color:var(--text-primary)}.modal-actions .btn-green{background:var(--accent-green);color:#fff}.modal-actions .btn-gold-outline{background:transparent;color:var(--accent-gold);border:2px solid var(--accent-gold);font-weight:700}
 .paywall-modal{background:var(--bg-secondary);border:1px solid var(--border);border-radius:20px;padding:28px 24px;width:92%;max-width:380px;text-align:center}
 .paywall-modal .pw-icon{font-size:48px;margin-bottom:10px}.paywall-modal h3{font-size:20px;font-weight:700;margin-bottom:6px}
 .paywall-modal .pw-sub{font-size:13px;color:var(--text-secondary);margin-bottom:4px}
@@ -347,6 +377,7 @@ button:focus-visible,.option-btn:focus-visible,.nav-item:focus-visible,.level-ca
 .enc-progress-text{font-size:12px;color:var(--text-muted);margin-bottom:8px}
 .enc-progress-bar{height:6px;background:var(--bg-elevated);border-radius:3px;overflow:hidden;margin-bottom:16px}
 .enc-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent-green),var(--accent-gold));border-radius:3px;transition:width .5s}
+.enc-category-header{font-size:13px;font-weight:700;color:var(--accent-blue);padding:16px 4px 8px;border-bottom:2px solid var(--accent-blue);margin-bottom:10px;margin-top:6px;opacity:.85}
 /* Profile entries */
 .profile-entry{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;margin-bottom:8px;cursor:pointer}
 .profile-entry-icon{font-size:20px;width:28px;text-align:center}
@@ -471,13 +502,13 @@ button:focus-visible,.option-btn:focus-visible,.nav-item:focus-visible,.level-ca
 .ln-wrap.pos-cr{justify-content:center;padding-left:28%}
 .ln-wrap.pos-r{justify-content:flex-end;padding-right:12%}
 .ln-conn{position:absolute;left:50%;top:-42px;width:4px;height:52px;background:repeating-linear-gradient(to bottom,var(--text-muted) 0 5px,transparent 5px 12px);transform:translateX(-2px);z-index:0;pointer-events:none}
-.ln-node{width:60px;height:60px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;z-index:1;transition:transform .2s;border:3px solid var(--border);background:var(--bg-card);flex-shrink:0}
+.ln-node{width:60px;height:60px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;z-index:1;transition:transform .2s, box-shadow .2s;border:3px solid var(--border);background:var(--bg-card);flex-shrink:0}
 .ln-node:hover{transform:scale(1.08)}
 .ln-node.completed{background:var(--accent-green);border-color:var(--accent-green);box-shadow:0 4px 16px rgba(34,197,94,.3)}
-.ln-node.current{background:var(--accent-gold);border-color:var(--accent-gold);animation:lnPulse 2s infinite}
-.ln-node.locked{opacity:.35;cursor:not-allowed}
-.ln-node.unlocked{background:var(--accent-gold);border-color:var(--accent-gold);opacity:.55}
-@keyframes lnPulse{0%{box-shadow:0 0 0 0 rgba(245,158,11,.5)}70%{box-shadow:0 0 0 14px rgba(245,158,11,0)}100%{box-shadow:0 0 0 0 rgba(245,158,11,0)}}
+.ln-node.current{background:var(--accent-gold);border-color:var(--accent-gold);transform:scale(1.18);box-shadow:0 0 0 4px rgba(245,158,11,.2), 0 4px 20px rgba(245,158,11,.5);animation:lnPulse 1.8s infinite;z-index:5}
+.ln-node.locked{opacity:.35;cursor:not-allowed;background:var(--bg-elevated);border-color:var(--border);filter:grayscale(0.6)}
+.ln-node.unlocked{background:var(--accent-gold);border-color:var(--accent-gold);opacity:.6}
+@keyframes lnPulse{0%,100%{box-shadow:0 0 0 4px rgba(245,158,11,.25), 0 4px 20px rgba(245,158,11,.5)}50%{box-shadow:0 0 0 10px rgba(245,158,11,.1), 0 4px 28px rgba(245,158,11,.65)}}
 .ln-check{font-size:26px;color:#fff;font-weight:900;line-height:1}
 .ln-num{font-size:20px;font-weight:800;color:#fff;line-height:1}
 .ln-lock{font-size:20px}
@@ -540,12 +571,15 @@ button:focus-visible,.option-btn:focus-visible,.nav-item:focus-visible,.level-ca
 .auth-label{display:block;font-size:12px;font-weight:600;color:#333;margin-bottom:6px}
 .auth-input{width:100%;padding:14px 16px;border:2px solid #E5E5E5;border-radius:12px;font-size:15px;color:#1a1a1a;transition:border-color .2s;background:#fff;box-sizing:border-box}
 .auth-input:focus{outline:none;border-color:#22c55e}
-.auth-btn{width:100%;padding:16px;background:linear-gradient(135deg,#22c55e,#16a34a);border:none;border-radius:14px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(34,197,94,.35);transition:transform .2s;margin-top:6px}
+.auth-btn{width:100%;padding:16px;background:linear-gradient(135deg,#22c55e,#16a34a);border:none;border-radius:14px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;transition:transform .2s;margin-top:6px;box-shadow:0 4px 20px rgba(34,197,94,.3)}
 .auth-btn:active{transform:scale(.97)}
 .auth-btn:disabled{opacity:.6;cursor:not-allowed}
 .auth-error{color:#ef4444;font-size:13px;margin-top:10px;min-height:18px}
-.auth-guest-btn{width:100%;padding:12px;background:transparent;border:1.5px solid #e2e8f0;border-radius:12px;color:#64748b;font-size:14px;font-weight:600;cursor:pointer;margin-top:12px;transition:all .2s}
-.auth-guest-btn:active{background:#f0f1f3}
+.auth-guest-btn{width:100%;padding:12px;background:transparent;border:2px solid #22c55e;border-radius:14px;color:#22c55e;font-size:15px;font-weight:700;cursor:pointer;margin-top:12px;transition:all .2s}
+.auth-guest-btn:hover{background:rgba(34,197,94,.08)}
+.auth-guest-btn:active{transform:scale(.97)}
+.auth-confirm-group{display:none}
+.auth-confirm-group.show{display:block}
 .auth-notice{font-size:11px;color:#999;margin-top:16px;line-height:1.5}
 .auth-loading{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:auth-spin .6s linear infinite;vertical-align:middle;margin-right:8px}
 @keyframes auth-spin{to{transform:rotate(360deg)}}
@@ -563,43 +597,21 @@ button:focus-visible,.option-btn:focus-visible,.nav-item:focus-visible,.level-ca
 <script async src="https://www.paypal.com/sdk/js?client-id=BAAOXqzVG5EcSkaVx-Klr_a5RwBCCTX4woeGrDCU1RJPM0jMBmOW1eEVxZYXP0_EK33GEybjBnmHQw59X8&components=hosted-buttons&disable-funding=venmo&currency=USD"></script>
 </head>
 <body>
-<div class="auth-overlay hidden" id="auth-overlay" role="dialog" aria-label="Login or Register"><div class="auth-card"><div class="auth-logo" aria-hidden="true">📈</div><div class="auth-title">Kline Game — Charts, as Easy as Learning to Speak</div><div class="auth-sub">The daily 5-minute practice app for crypto and stock technical analysis. No trading advice. Just chart literacy.</div><div class="auth-tab-row" role="tablist"><button class="auth-tab active" id="auth-tab-login" onclick="switchAuthTab('login')" role="tab" aria-selected="true">Login</button><button class="auth-tab" id="auth-tab-register" onclick="switchAuthTab('register')" role="tab" aria-selected="false">Sign Up</button></div><div class="auth-input-group"><label class="auth-label" for="auth-email">Email</label><input class="auth-input" type="email" id="auth-email" placeholder="you@example.com" autocomplete="email" aria-required="true" aria-label="Email address"></div><div class="auth-input-group"><label class="auth-label" for="auth-password">Password</label><input class="auth-input" type="password" id="auth-password" placeholder="At least 6 characters" autocomplete="current-password" aria-required="true" aria-label="Password"></div><button class="auth-btn" id="auth-submit-btn" onclick="handleAuthSubmit()" aria-label="Submit"><span id="auth-btn-text">Login</span></button><div class="auth-error" id="auth-error"></div><button class="auth-guest-btn" onclick="enterGuestMode()">🎮 Continue as Guest</button><div class="auth-notice">Guest mode: progress saved locally only. Clearing cache or switching devices will lose data.</div></div></div>
-<div id="feedback-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;background:rgba(0,0,0,.5);align-items:center;justify-content:center" onclick="if(event.target===this)closeFeedbackModal()"><div style="background:var(--bg-secondary);border-radius:20px;padding:28px 24px;max-width:360px;width:90%;text-align:center"><div style="font-size:44px;margin-bottom:12px">📣</div><div style="font-size:20px;font-weight:800;margin-bottom:8px" id="feedback-modal-title">Got a Great Idea?</div><div style="font-size:14px;color:var(--text-secondary);line-height:1.6;margin-bottom:16px" id="feedback-modal-desc">Help us improve Kline Game! Send bug reports, feature ideas, or suggestions. If we adopt yours, you'll get <b style="color:var(--accent-red)">+5 hearts</b> + <b style="color:var(--accent-gold)">500 coins</b> as a thank-you!</div><button onclick="sendFeedbackEmail()" style="width:100%;padding:15px;border-radius:14px;border:none;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:10px" id="feedback-email-btn">📧 Email Us</button><button onclick="closeFeedbackModal()" style="width:100%;padding:13px;border-radius:14px;border:none;background:var(--bg-card);color:var(--text-muted);font-size:14px;cursor:pointer">Maybe Later</button></div></div>
+<div class="auth-overlay hidden" id="auth-overlay" role="dialog" aria-label="Login or Register"><div class="auth-card"><div class="auth-logo" aria-hidden="true">📈</div><div class="auth-title">Kline Game — Charts, as Easy as Learning to Speak</div><div class="auth-sub">The daily 5-minute practice app for crypto and stock technical analysis. No trading advice. Just chart literacy.</div><div class="auth-tab-row" role="tablist"><button class="auth-tab active" id="auth-tab-login" onclick="switchAuthTab('login')" role="tab" aria-selected="true">Login</button><button class="auth-tab" id="auth-tab-register" onclick="switchAuthTab('register')" role="tab" aria-selected="false">Sign Up</button></div><div class="auth-input-group"><label class="auth-label" for="auth-email">Email</label><input class="auth-input" type="email" id="auth-email" placeholder="you@example.com" autocomplete="email" aria-required="true" aria-label="Email address"></div><div class="auth-input-group"><label class="auth-label" for="auth-password">Password</label><input class="auth-input" type="password" id="auth-password" placeholder="At least 6 characters" autocomplete="current-password" aria-required="true" aria-label="Password"></div><div class="auth-input-group auth-confirm-group" id="auth-confirm-group"><label class="auth-label" for="auth-password2">Confirm Password</label><input class="auth-input" type="password" id="auth-password2" placeholder="Re-enter your password" autocomplete="new-password" aria-label="Confirm password"></div><button class="auth-btn" id="auth-submit-btn" onclick="handleAuthSubmit()" aria-label="Submit"><span id="auth-btn-text">Login</span></button><div class="auth-error" id="auth-error"></div><div style="display:flex;align-items:center;gap:12px;margin:16px 0 8px"><div style="flex:1;height:1px;background:#E5E5E5"></div><span style="font-size:12px;color:#999;font-weight:600">or try without account</span><div style="flex:1;height:1px;background:#E5E5E5"></div></div><button class="auth-guest-btn" onclick="enterGuestMode()">🎮 Play Now — No Sign Up</button><div class="auth-notice">Account enables cloud sync across devices. Guest mode stores data locally.</div></div></div>
+<div id="feedback-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;background:rgba(0,0,0,.5);align-items:center;justify-content:center" onclick="if(event.target===this)closeFeedbackModal()"><div style="background:var(--bg-secondary);border-radius:20px;padding:28px 24px;max-width:360px;width:90%;text-align:center"><div style="font-size:44px;margin-bottom:12px">📣</div><div style="font-size:20px;font-weight:800;margin-bottom:8px" id="feedback-modal-title">Got a Great Idea?</div><div style="font-size:14px;color:var(--text-secondary);line-height:1.6;margin-bottom:16px" id="feedback-modal-desc">Help us improve Kline Game! Send bug reports, feature ideas, or suggestions. As a thank-you gift, you'll get <b style="color:var(--accent-red)">+5 hearts</b> + <b style="color:var(--accent-gold)">500 coins</b>!</div><button onclick="sendFeedbackEmail()" style="width:100%;padding:15px;border-radius:14px;border:none;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:10px" id="feedback-email-btn">📧 Email Us</button><button onclick="closeFeedbackModal()" style="width:100%;padding:13px;border-radius:14px;border:none;background:var(--bg-card);color:var(--text-muted);font-size:14px;cursor:pointer">Maybe Later</button></div></div>
 <div class="user-info-bar" id="user-info-bar" style="display:none"><span class="user-email" id="user-email-display"></span><span class="sync-status" id="sync-status-display">⚠️</span><button class="logout-btn" onclick="handleLogout()">Logout</button></div>
 <div class="app-container">
 <div class="page" id="page-onboarding">
-<div class="onboarding-hero" style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px">
+<div class="onboarding-hero" style="min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:calc(40px + env(safe-area-inset-top)) 24px 40px">
 <div class="mascot bull" style="font-size:80px;margin-bottom:20px">🐂</div>
 <h1 class="hero-title" style="font-size:32px;text-align:center;line-height:1.3">Learn Candlestick<br>in 5 Min a Day</h1>
-<p class="hero-sub" style="margin-top:12px;text-align:center">Swipe. Learn. Master charts.</p>
+<p class="hero-sub" style="margin-top:12px;text-align:center">Practice. Learn. Master charts.</p>
 <p class="hero-desc" style="margin-top:16px;text-align:center;font-size:14px;color:var(--text-muted);line-height:1.5;max-width:320px" id="hero-desc-text">Learn to read candlestick charts and spot trends. Free 5 rounds — no signup needed.</p>
 <button class="hero-cta" onclick="startQuickQuiz()" style="margin-top:24px;font-size:20px;padding:20px 48px" aria-label="Start">Start &#8594;</button>
 </div>
 </div>
-<!-- P2: Goal selection page -->
-<div class="page" id="page-goal-select">
-<div style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px">
-<div style="font-size:60px;margin-bottom:16px">🎯</div>
-<h2 style="font-size:26px;text-align:center;font-weight:800" id="goal-title">What do you want to learn?</h2>
-<p style="font-size:14px;color:var(--text-secondary);text-align:center;margin-top:8px" id="goal-sub">Choose your focus — you can change anytime</p>
-<div style="margin-top:32px;width:100%;max-width:340px;display:flex;flex-direction:column;gap:12px">
-<div onclick="selectGoal('stock')" role="button" tabindex="0" aria-label="Learn US stocks" style="padding:18px 20px;border:2px solid var(--border);border-radius:16px;cursor:pointer;transition:border-color .2s;display:flex;align-items:center;gap:14px" onmouseover="this.style.borderColor='var(--accent-green)'" onmouseout="this.style.borderColor='var(--border)'">
-<span style="font-size:32px">📈</span>
-<div><div style="font-weight:700;font-size:15px" id="goal-stock-title">US Stocks</div><div style="font-size:12px;color:var(--text-secondary)" id="goal-stock-desc">K-line patterns for stock market</div></div>
-</div>
-<div onclick="selectGoal('crypto')" role="button" tabindex="0" aria-label="Learn crypto" style="padding:18px 20px;border:2px solid var(--border);border-radius:16px;cursor:pointer;transition:border-color .2s;display:flex;align-items:center;gap:14px" onmouseover="this.style.borderColor='var(--accent-green)'" onmouseout="this.style.borderColor='var(--border)'">
-<span style="font-size:32px">🪙</span>
-<div><div style="font-weight:700;font-size:15px" id="goal-crypto-title">Crypto</div><div style="font-size:12px;color:var(--text-secondary)" id="goal-crypto-desc">24/7 market candlestick analysis</div></div>
-</div>
-<div onclick="selectGoal('both')" role="button" tabindex="0" aria-label="Learn both" style="padding:18px 20px;border:2px solid var(--border);border-radius:16px;cursor:pointer;transition:border-color .2s;display:flex;align-items:center;gap:14px" onmouseover="this.style.borderColor='var(--accent-green)'" onmouseout="this.style.borderColor='var(--border)'">
-<span style="font-size:32px">🎯</span>
-<div><div style="font-weight:700;font-size:15px" id="goal-both-title">Both</div><div style="font-size:12px;color:var(--text-secondary)" id="goal-both-desc">Stocks + Crypto, all categories</div></div>
-</div>
-</div>
-</div>
-</div>
 <div class="page" id="page-home">
-<div class="home-header" style="padding:12px 20px 0">
+<div class="home-header" style="padding:calc(12px + env(safe-area-inset-top)) 20px 0">
 <div class="home-top" style="display:flex;justify-content:space-between;align-items:center">
 <div style="display:flex;gap:14px;align-items:center">
 <span style="font-size:15px;font-weight:700">&#128293; <span id="streak-text">0</span><span id="streak-unit">d</span></span>
@@ -621,6 +633,23 @@ button:focus-visible,.option-btn:focus-visible,.nav-item:focus-visible,.level-ca
 <div style="font-size:13px;color:var(--text-secondary);margin-top:4px" id="hc-desc">Tap to start training</div>
 </div>
 <button class="start-btn" id="start-btn" onclick="startQuickQuiz()" style="font-size:26px;padding:26px 72px;width:auto;border-radius:999px;box-shadow:0 8px 0 #15803d,0 12px 28px rgba(34,197,94,.35);letter-spacing:.5px" aria-label="Start quiz">&#9889; START</button>
+</div>
+<!-- Daily goal & quick info -->
+<div style="padding:0 20px 24px">
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <span style="font-size:13px;font-weight:700" id="daily-goal-title">🎯 Daily Goal</span>
+      <span style="font-size:12px;color:var(--text-muted)" id="daily-goal-pct">0%</span>
+    </div>
+    <div style="height:8px;background:var(--bg-elevated);border-radius:4px;overflow:hidden">
+      <div id="daily-goal-bar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--accent-green),var(--accent-gold));border-radius:4px;transition:width .6s"></div>
+    </div>
+    <div style="font-size:11px;color:var(--text-muted);margin-top:6px" id="daily-goal-detail">0 / 5 min today</div>
+  </div>
+  <div id="home-weak-section" style="display:none">
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px" id="home-weak-title">📉 Need more practice</div>
+    <div id="home-weak-patterns" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+  </div>
 </div>
 </div>
 </div>
@@ -696,7 +725,7 @@ button:focus-visible,.option-btn:focus-visible,.nav-item:focus-visible,.level-ca
 <button class="tutorial-cta" onclick="appState.tutorialDone=true;saveState();showPage('levels')" aria-label="Start Levels">Start Level 1 &rarr;</button>
 </div>
 </div>
-<div class="page page-quiz kq-immersive" id="page-quiz" style="flex-direction:column;height:100vh;overflow:hidden">
+<div class="page page-quiz kq-immersive" id="page-quiz" style="flex-direction:column;height:100vh;height:100dvh;overflow:hidden">
 <div class="quiz-header"><span class="quiz-progress" id="quiz-progress"></span><div class="hearts-quiz" id="quiz-hearts"></div><button class="quit-btn" onclick="quitQuiz()" aria-label="Quit quiz">&#10005;</button></div>
 <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-progress-fill"></div></div>
 <div class="beginner-shield" id="beginner-shield" style="display:none">&#128737;&#65039; <span id="shield-text">Levels 1-10: No hearts lost — learn freely!</span></div><div class="review-mode-banner" id="review-mode-banner" style="display:none;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);border-radius:10px;padding:6px 14px;font-size:11px;font-weight:600;color:#f59e0b;text-align:center;margin:4px 16px">&#128260; <span id="review-banner-text">Review Mode — Upgrade Pro to unlock new patterns</span></div>
@@ -705,16 +734,16 @@ button:focus-visible,.option-btn:focus-visible,.nav-item:focus-visible,.level-ca
 <div class="question-section"><div class="q-type-badge q-type-identify" id="q-type-badge">&#128269; Identify</div><div class="question-text" id="question-text"></div><div class="volume-label" id="volume-label"></div><div id="pattern-hint-zone"></div></div>
 <div class="options-container" id="options-container"></div>
 <div class="feedback-overlay" id="feedback-overlay"><div class="feedback-icon" id="feedback-icon">&#9989;</div><div class="feedback-title correct" id="feedback-title">Correct!</div><div class="feedback-xp" id="feedback-xp">+10 XP</div><div class="feedback-explain" id="feedback-explain"><h4>Explanation</h4><p>...</p></div><div class="feedback-actions"><button class="btn-next" onclick="nextQuestion()" aria-label="Next question" style="width:100%">Continue</button></div></div>
-<div class="swipe-hint" id="swipe-hint">Swipe up for next</div>
+<div class="swipe-hint" id="swipe-hint">Tap to continue →</div>
 </div>
-<div class="page" id="page-result"><div class="result-page"><div class="result-emoji" id="result-emoji" style="font-size:64px;margin-bottom:8px">🎉</div><div class="result-title" id="result-title" style="font-size:32px;font-weight:800;color:var(--text-primary)">太棒了</div><div class="result-subtitle" id="result-subtitle" style="font-size:18px;color:var(--text-secondary);margin:8px 0 32px">+50 XP · 准确率 80%</div><button class="btn-primary" id="btn-again" style="font-size:22px;padding:22px 0;width:100%;max-width:340px;border-radius:20px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;box-shadow:0 6px 0 #15803d,0 8px 20px rgba(34,197,94,.3);margin-bottom:8px" aria-label="Next Level">下一关 →</button><button id="btn-replay" style="display:none;background:none;border:none;color:var(--text-muted);font-size:13px;cursor:pointer;text-decoration:underline;margin-bottom:16px" aria-label="Play Again">↻ 再刷一次</button><div style="text-align:center"><button onclick="toggleMistakeExplain()" id="mistake-toggle-btn" style="background:none;border:none;color:var(--text-muted);font-size:13px;cursor:pointer;text-decoration:underline" aria-label="View mistake explanations">查看错题解释</button><div id="mistake-explain-area" style="display:none;margin-top:12px;max-height:300px;overflow-y:auto;text-align:left;background:var(--bg-secondary);border-radius:12px;padding:14px 16px"></div></div></div></div>
+<div class="page" id="page-result"><div class="result-page"><div class="result-emoji" id="result-emoji" style="font-size:64px;margin-bottom:8px">🎉</div><div class="result-title" id="result-title" style="font-size:32px;font-weight:800;color:var(--text-primary)">Great job!</div><div class="result-stars" id="result-stars" style="font-size:28px;margin:8px 0;letter-spacing:4px">⭐⭐⭐</div><div class="result-subtitle" id="result-subtitle" style="font-size:18px;color:var(--text-secondary);margin:8px 0 20px">+50 XP · 80% Accuracy</div><div class="result-level-progress" id="result-level-progress" style="width:100%;max-width:320px;margin-bottom:24px;background:var(--bg-secondary);border-radius:12px;padding:14px 16px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-size:12px;font-weight:700;color:var(--text-secondary)" id="result-level-label">Level 2</span><span style="font-size:11px;color:var(--text-muted)" id="result-level-xp">40 / 100 XP</span></div><div style="height:8px;background:#e5e7eb;border-radius:4px;overflow:hidden"><div id="result-level-bar" style="height:100%;width:40%;background:linear-gradient(90deg,#fbbf24,#f59e0b);border-radius:4px;transition:width 1s ease-out"></div></div><div style="font-size:11px;color:var(--text-muted);margin-top:6px;text-align:right" id="result-level-next">60 XP to next level →</div></div><div class="result-stats" id="result-stats" style="display:flex;gap:12px;margin-bottom:28px;width:100%;max-width:320px"><div style="flex:1;background:var(--bg-secondary);border-radius:14px;padding:14px 10px;text-align:center"><div style="font-size:22px;font-weight:800;color:var(--accent-gold)" id="stat-combo">0</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px" id="stat-combo-label">Best Combo</div></div><div style="flex:1;background:var(--bg-secondary);border-radius:14px;padding:14px 10px;text-align:center"><div style="font-size:22px;font-weight:800;color:var(--accent-green)" id="stat-acc-num">0%</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px" id="stat-acc-label">Accuracy</div></div><div style="flex:1;background:var(--bg-secondary);border-radius:14px;padding:14px 10px;text-align:center"><div style="font-size:22px;font-weight:800;color:var(--accent-blue)" id="stat-time">0s</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px" id="stat-time-label">Avg Time</div></div></div><button class="btn-primary" id="btn-again" style="font-size:22px;padding:22px 0;width:100%;max-width:340px;border-radius:20px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;box-shadow:0 6px 0 #15803d,0 8px 20px rgba(34,197,94,.3);margin-bottom:8px" aria-label="Next Level">Next Level →</button><button id="btn-replay" style="display:none;background:none;border:none;color:var(--text-muted);font-size:13px;cursor:pointer;text-decoration:underline;margin-bottom:16px" aria-label="Play Again">↻ Play Again</button><div style="text-align:center"><button onclick="toggleMistakeExplain()" id="mistake-toggle-btn" style="background:none;border:none;color:var(--text-muted);font-size:13px;cursor:pointer;text-decoration:underline" aria-label="View mistake explanations">View mistake explanations</button><div id="mistake-explain-area" style="display:none;margin-top:12px;max-height:300px;overflow-y:auto;text-align:left;background:var(--bg-secondary);border-radius:12px;padding:14px 16px"></div></div></div></div>
 <div class="page" id="page-profile"><div class="profile-header"><div class="profile-xp" id="profile-xp">0</div><div class="profile-level" id="profile-level">Newbie Trader</div></div><div style="padding:0 20px"></div><div class="profile-stats"><div class="profile-stat"><div class="profile-stat-value" id="stat-correct">0</div><div class="profile-stat-label" id="stat-correct-label">Correct</div></div><div class="profile-stat"><div class="profile-stat-value" id="stat-total">0</div><div class="profile-stat-label" id="stat-total-label">Total</div></div><div class="profile-stat"><div class="profile-stat-value" id="stat-streak">0</div><div class="profile-stat-label" id="stat-streak-label">Streak</div></div></div><div style="padding:0 20px;margin-top:16px"><div style="background:var(--bg-secondary);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px"><div style="position:relative;width:52px;height:52px;flex-shrink:0"><svg width="52" height="52" viewBox="0 0 52 52" style="transform:rotate(-90deg)"><circle cx="26" cy="26" r="22" fill="none" stroke="#e5e5e5" stroke-width="5"/><circle cx="26" cy="26" r="22" fill="none" stroke="#22c55e" stroke-width="5" stroke-linecap="round" stroke-dasharray="138.2" stroke-dashoffset="138.2" id="weekly-goal-circle"/></svg><div style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700" id="weekly-goal-pct">0%</div></div><div style="flex:1"><div style="font-size:13px;font-weight:700" id="weekly-goal-title">Weekly Goal</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px" id="weekly-goal-desc">0/100 XP this week</div></div></div></div><div style="padding:0 20px;margin-top:14px"><div style="font-size:13px;font-weight:700;margin-bottom:8px">📊 Last 7 Days</div><div id="learning-heatmap" style="display:flex;gap:4px;justify-content:space-between"></div></div><div style="padding:0 20px;margin-top:14px"><div style="font-size:13px;font-weight:700;margin-bottom:8px">🎓 Recently Learned</div><div id="recent-patterns" style="display:flex;gap:6px;flex-wrap:wrap"><span style="font-size:12px;color:var(--text-muted)">No patterns yet</span></div></div><div class="profile-section"><div class="profile-entry" onclick="showPage('mistakes')" role="button" tabindex="0" aria-label="Mistake Log"><span class="profile-entry-icon">&#128128;</span><span class="profile-entry-text" id="mistakes-entry-text">Mistake Log</span><span id="mistakes-badge" style="font-size:12px;color:var(--accent-red);font-weight:600">0</span><span class="profile-entry-arrow">&#8250;</span></div><div class="profile-entry" onclick="showPage('encyclopedia')" role="button" tabindex="0" aria-label="Pattern Wiki"><span class="profile-entry-icon">&#128214;</span><span class="profile-entry-text" id="wiki-entry-text">Pattern Wiki</span><span class="profile-entry-arrow">&#8250;</span></div><div class="profile-entry" onclick="showFeedbackModal()" role="button" tabindex="0" aria-label="Send Feedback"><span class="profile-entry-icon">&#128227;</span><span class="profile-entry-text" id="feedback-entry-text">Send Feedback</span><span class="profile-entry-arrow">&#8250;</span></div></div><div class="pro-banner" onclick="showPage('subscription')" role="button" tabindex="0" aria-label="Go Pro subscription"><div class="pro-banner-text"><div class="pro-banner-title">&#9889; Go Pro</div><div class="pro-banner-desc" id="pro-banner-desc">Unlimited hearts, full access</div></div><span style="font-size:26px">&#128081;</span></div><div class="section-title">&#10084;&#65039; <span id="hearts-title">Hearts</span></div><div id="heart-timer" style="font-size:13px;color:var(--text-secondary);margin-bottom:14px">Next heart: 29:59</div><div class="section-title">&#128201; <span id="weakness-title">Weakness</span></div><div id="weakness-list"></div><div class="section-title">&#9881;&#65039; <span id="settings-title">Settings</span></div><div style="background:var(--bg-secondary);border-radius:14px;padding:4px 16px;margin-bottom:10px"><div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)"><span style="font-size:13px;font-weight:600" id="set-cb-label">&#127912; Color-blind mode</span><button id="set-cb-btn" onclick="toggleColorBlind()" aria-label="Toggle color-blind mode" style="width:46px;height:26px;border-radius:13px;border:none;background:#ccc;position:relative;cursor:pointer;transition:background .2s"><span id="set-cb-knob" style="position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s"></span></button></div><div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)"><span style="font-size:13px;font-weight:600" id="set-sfx-label">&#128266; Sound effects</span><button id="set-sfx-btn" onclick="toggleSfx()" aria-label="Toggle sound effects" style="width:46px;height:26px;border-radius:13px;border:none;background:#ccc;position:relative;cursor:pointer"><span id="set-sfx-knob" style="position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s"></span></button></div><div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0"><span style="font-size:13px;font-weight:600" id="set-vib-label">&#128242; Vibration</span><button id="set-vib-btn" onclick="toggleVibrate()" aria-label="Toggle vibration" style="width:46px;height:26px;border-radius:13px;border:none;background:#ccc;position:relative;cursor:pointer"><span id="set-vib-knob" style="position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s"></span></button></div></div><div style="display:flex;gap:8px;margin-bottom:16px"><button class="btn-secondary" onclick="exportProgress()" aria-label="Export progress" style="flex:1;font-size:11px;padding:8px 4px">&#128228; <span id="exp-label">Export</span></button><button class="btn-secondary" onclick="importProgress()" aria-label="Import progress" style="flex:1;font-size:11px;padding:8px 4px">&#128229; <span id="imp-label">Import</span></button></div><div style="padding:0 20px 24px;text-align:center"><button onclick="showAuthOverlay()" style="font-size:12px;color:var(--text-muted);border:1px solid var(--border);border-radius:8px;padding:8px 24px;background:transparent;cursor:pointer" id="login-entry-text" aria-label="Login or create account">&#128100; Login / Cloud Sync</button></div></div></div></div>
 <div class="page" id="page-mistakes"><div class="mistakes-page"><div class="mistakes-header"><div class="section-title" style="margin:0">&#128128; <span id="mistakes-title">Mistakes</span></div><div class="mistakes-count"><span id="mistakes-count">0</span></div></div><button class="retry-btn" onclick="retryMistakes()" id="retry-btn" aria-label="Review Mistakes">&#128260; <span id="retry-text">Review Mistakes</span></button><div id="mistakes-list"></div></div></div>
-<div class="page" id="page-subscription"><div class="sub-page"><div class="sub-header"><div class="trial-badge">&#11088; Founding Member</div><h2>Unlock Kline Game Pro</h2><p>Unlimited practice. No more waiting.</p></div><div class="plan-toggle" id="plan-toggle"><button class="plan-toggle-btn active" id="toggle-lifetime" onclick="setPlan('lifetime')" aria-label="Select lifetime plan" style="background:linear-gradient(135deg,#fef3c7,#fde68a);color:#92400e;font-weight:700">Lifetime</button></div><div class="pricing-card featured" id="pricing-display"><div class="plan-name" id="plan-name">Pro Lifetime</div><div class="plan-price" id="plan-price"><span class="dollar">$</span>19<span id="plan-cents">.99</span><span class="per" id="plan-period"> once</span></div><div id="price-anchor" style="font-size:12px;color:var(--text-muted);margin-top:4px"></div><div id="urgency-banner" style="display:none;background:linear-gradient(135deg,#fef3c7,#fde68a);border-radius:10px;padding:8px 12px;margin:10px 0;font-size:12px;color:#92400e;text-align:center;font-weight:600"><span id="urgency-timer">⏰ Limited time offer ends in 71:59:59</span></div><p class="auto-renew-notice" style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:6px;line-height:1.5">One-time payment &#183; Lifetime access &#183; No recurring fees</p><div id="paypal-container-SBJMU8U3AWKUU" style="margin-bottom:8px;min-height:50px"></div><div class="guarantee"><span>&#128274;</span> 30-day money-back guarantee. No recurring fees.</div><div class="features-list"><div>&#9989; Unlimited hearts - never wait</div><div>&#9989; All 300+ questions unlocked</div><div>&#9989; All 60 lessons + all question types</div><div>&#9989; Ad-free experience</div><div>&#9989; Priority new content</div><div>&#9989; Cloud sync across devices</div></div></div><div id="lifetime-rights" style="display:none;margin:0 20px 12px;padding:14px 16px;background:linear-gradient(135deg,#fef3c7,#fefce8);border:1px solid #fde68a;border-radius:14px"><div style="font-size:14px;font-weight:700;color:#92400e;margin-bottom:8px">&#127873; Lifetime Access Includes:</div><div style="font-size:12px;color:#78350f;line-height:1.6">&#9989; All current and future K-line pattern levels<br>&#9989; All future game modes and features<br>&#9989; Priority support</div><div style="margin-top:10px;padding-top:10px;border-top:1px solid #fde68a;font-size:12px;color:#78350f;font-weight:600">&#128274; 30-Day Money-Back Guarantee — Not satisfied? Full refund, no questions asked.</div></div><div style="text-align:center;padding:12px 0"><button onclick="closeSubscription()" style="background:none;border:none;color:var(--text-muted);font-size:13px;cursor:pointer;text-decoration:underline" aria-label="Maybe later">Maybe later</button></div><div class="brokers-section"><div class="section-title">&#128279; Recommended Platforms</div><p style="font-size:10px;color:var(--text-muted);margin-bottom:8px;line-height:1.4">Affiliate disclosure: Some links may earn us a commission at no extra cost to you. Not financial advice.</p><div class="broker-card" onclick="window.open('https://www.binance.com/en/activity/referral?', '_blank', 'noopener,noreferrer')" role="button" tabindex="0" aria-label="Open Binance website"><span class="broker-logo">&#129689;</span><div class="broker-info"><div class="broker-name">Binance</div><div class="broker-desc">World's largest crypto exchange</div></div><span class="broker-bonus">Get bonus &gt;</span></div><div class="broker-card" onclick="window.open('https://www.coinbase.com/join', '_blank', 'noopener,noreferrer')" role="button" tabindex="0" aria-label="Open Coinbase website"><span class="broker-logo">&#128142;</span><div class="broker-info"><div class="broker-name">Coinbase</div><div class="broker-desc">NASDAQ-listed, compliant</div></div><span class="broker-bonus">Get bonus &gt;</span></div><div class="broker-card" onclick="window.open('https://www.okx.com/join', '_blank', 'noopener,noreferrer')" role="button" tabindex="0" aria-label="Open OKX website"><span class="broker-logo">&#9889;</span><div class="broker-info"><div class="broker-name">OKX</div><div class="broker-desc">Derivatives &amp; futures trading</div></div><span class="broker-bonus">Get bonus &gt;</span></div><div class="broker-card" onclick="window.open('https://www.webull.com/', '_blank', 'noopener,noreferrer')" role="button" tabindex="0" aria-label="Open Webull website"><span class="broker-logo">&#128176;</span><div class="broker-info"><div class="broker-name">Webull</div><div class="broker-desc">US stocks &amp; options</div></div><span class="broker-bonus">Get bonus &gt;</span></div><div class="broker-card" onclick="window.open('https://www.robinhood.com/', '_blank', 'noopener,noreferrer')" role="button" tabindex="0" aria-label="Open Robinhood website"><span class="broker-logo">&#129413;</span><div class="broker-info"><div class="broker-name">Robinhood</div><div class="broker-desc">Zero-commission US stocks</div></div><span class="broker-bonus">Get bonus &gt;</span></div><div class="broker-card" onclick="window.open('https://www.tdameritrade.com/', '_blank', 'noopener,noreferrer')" role="button" tabindex="0" aria-label="Open TD Ameritrade website"><span class="broker-logo">&#128202;</span><div class="broker-info"><div class="broker-name">TD Ameritrade</div><div class="broker-desc">Professional trading platform</div></div><span class="broker-bonus">Get bonus &gt;</span></div></div><div class="legal-links" style="text-align:center;padding:16px 0 100px;font-size:12px;color:var(--text-muted)"><span onclick="showPage('privacy')" role="button" tabindex="0" aria-label="Privacy Policy" style="cursor:pointer;text-decoration:underline">Privacy Policy</span> &middot; <span onclick="showPage('terms')" role="button" tabindex="0" aria-label="Terms of Service" style="cursor:pointer;text-decoration:underline">Terms of Service</span></div></div></div>
+<div class="page" id="page-subscription"><div class="sub-page"><div class="sub-header"><div class="trial-badge">&#11088; Founding Member</div><h2>Unlock Kline Game Pro</h2><p>Unlimited practice. No more waiting.</p></div><div class="plan-toggle" id="plan-toggle"><button class="plan-toggle-btn active" id="toggle-lifetime" onclick="setPlan('lifetime')" aria-label="Select lifetime plan" style="background:linear-gradient(135deg,#fef3c7,#fde68a);color:#92400e;font-weight:700">Lifetime</button></div><div class="pricing-card featured" id="pricing-display"><div class="plan-name" id="plan-name">Pro Lifetime</div><div class="plan-price" id="plan-price"><span class="dollar">$</span>19<span id="plan-cents">.99</span><span class="per" id="plan-period"> once</span></div><div id="price-anchor" style="font-size:12px;color:var(--text-muted);margin-top:4px"></div><p class="auto-renew-notice" style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:6px;line-height:1.5">One-time payment &#183; Lifetime access &#183; No recurring fees</p><div id="paypal-container-SBJMU8U3AWKUU" style="margin-bottom:8px;min-height:50px"></div><div class="guarantee"><span>&#128274;</span> 30-day money-back guarantee. No recurring fees.</div><div class="features-list"><div>&#9989; Unlimited hearts - never wait</div><div>&#9989; Infinite parametric quizzes unlocked</div><div>&#9989; All 60 lessons + all question types</div><div>&#9989; Ad-free experience</div><div>&#9989; Priority new content</div><div>&#9989; Cloud sync across devices</div></div></div><div id="lifetime-rights" style="display:none;margin:0 20px 12px;padding:14px 16px;background:linear-gradient(135deg,#fef3c7,#fefce8);border:1px solid #fde68a;border-radius:14px"><div style="font-size:14px;font-weight:700;color:#92400e;margin-bottom:8px">&#127873; Lifetime Access Includes:</div><div style="font-size:12px;color:#78350f;line-height:1.6">&#9989; All current and future K-line pattern levels<br>&#9989; All future game modes and features<br>&#9989; Priority support</div><div style="margin-top:10px;padding-top:10px;border-top:1px solid #fde68a;font-size:12px;color:#78350f;font-weight:600">&#128274; 30-Day Money-Back Guarantee — Not satisfied? Full refund, no questions asked.</div></div><div style="text-align:center;padding:12px 0"><button onclick="closeSubscription()" style="background:none;border:none;color:var(--text-muted);font-size:13px;cursor:pointer;text-decoration:underline" aria-label="Maybe later">Maybe later</button></div><div class="legal-links" style="text-align:center;padding:16px 0 100px;font-size:12px;color:var(--text-muted)"><span onclick="showPage('privacy')" role="button" tabindex="0" aria-label="Privacy Policy" style="cursor:pointer;text-decoration:underline">Privacy Policy</span> &middot; <span onclick="showPage('terms')" role="button" tabindex="0" aria-label="Terms of Service" style="cursor:pointer;text-decoration:underline">Terms of Service</span></div></div></div>
 <div class="page" id="page-encyclopedia"><div class="encyclopedia-page"><div class="section-title">&#128214; <span id="enc-title">Pattern Wiki</span></div><div id="enc-list"></div><div id="enc-details"></div></div></div>
 <div class="page" id="page-checkin"><div class="checkin-page"><div class="section-title" style="justify-content:center">&#128197; <span id="checkin-title">Daily Check-in</span></div><div style="font-size:44px;margin:18px 0">&#128293;</div><div style="font-size:18px;font-weight:700" id="current-streak">0 day streak</div><div class="checkin-grid" id="checkin-grid"></div><button class="checkin-btn" id="checkin-btn" onclick="doCheckin()" aria-label="Daily check-in">&#9989; Check In</button><div style="font-size:13px;color:var(--text-secondary);margin-top:10px" id="streak-info">Check in 7 days in a row for 200 coins!</div><div id="checkin-share-area" style="display:none;margin-top:16px"><button class="share-btn share-btn-primary" onclick="shareCheckin()" aria-label="Share checkin">📤 <span id="checkin-share-text">Share My Streak</span></button></div></div></div>
-<div class="page" id="page-privacy"><div class="legal-page"><button class="legal-back" onclick="showPage('home')" aria-label="Back to Home">&larr; Back</button><h1>Privacy Policy</h1><p><strong>Last updated:</strong> August 2026</p><h2>Information We Collect</h2><p>Kline Game operates as a client-side application. All your learning data (progress, answers, settings) is stored exclusively in your browser's local storage. We do not collect, transmit, or store any personal learning data on our servers.</p><h2>Payment Information</h2><p>Payment processing is handled by <strong>PayPal</strong>, a PCI DSS Level 1 certified payment processor. We do not have access to your full credit card number.</p><h2>Analytics</h2><p>We may use privacy-preserving analytics to understand aggregate usage patterns. No individual user data is tracked or sold.</p><h2>Third-Party Services</h2><ul><li><strong>PayPal:</strong> Payment processing</li><li><strong>Broker referrals:</strong> Third-party websites with their own privacy policies</li></ul><h2>Data Retention</h2><p>All data is stored locally on your device. Clearing browser data will permanently delete your progress.</p><h2>Contact</h2><p>support@klinegame.app</p></div></div>
-<div class="page" id="page-terms"><div class="legal-page"><button class="legal-back" onclick="showPage('home')" aria-label="Back to Home">&larr; Back</button><h1>Terms of Service</h1><p><strong>Last updated:</strong> August 2026</p><h2>Payment</h2><p>Kline Game Pro is a one-time payment for lifetime access. No recurring charges, no auto-renewal.</p><h2>Refund Policy</h2><p>Full refund within 30 days. Contact support@klinegame.app.</p><h2>Content</h2><p>Educational content only. Not financial advice. Trading involves risk.</p><h2>Broker Referrals</h2><p>Links may be affiliate links. This does not affect the price you pay.</p><h2>Contact</h2><p>support@klinegame.app</p></div></div>
+<div class="page" id="page-privacy"><div class="legal-page"><button class="legal-back" onclick="showPage('home')" aria-label="Back to Home">&larr; Back</button><h1>Privacy Policy</h1><p><strong>Last updated:</strong> August 2026</p><h2>Information We Collect</h2><p>Kline Game operates as a client-side application. Guest mode stores all learning data (progress, answers, settings) locally in your browser. Optional account creation enables cloud sync via Supabase to sync progress across devices. We do not sell or share your data.</p><h2>Payment Information</h2><p>Payment processing is handled by <strong>PayPal</strong>, a PCI DSS Level 1 certified payment processor. We do not have access to your full credit card number.</p><h2>Analytics</h2><p>We may use privacy-preserving analytics to understand aggregate usage patterns. No individual user data is tracked or sold.</p><h2>Third-Party Services</h2><ul><li><strong>Supabase:</strong> Cloud sync for registered users (email and progress data)</li><li><strong>PayPal:</strong> Payment processing</li></ul><h2>Data Retention</h2><p>Guest mode: all data is stored locally. Clearing browser data will delete your progress. Registered accounts: progress is synced to Supabase and persists across devices. You can request data deletion at support@klinegame.app.</p><h2>Contact</h2><p>support@klinegame.app</p></div></div>
+<div class="page" id="page-terms"><div class="legal-page"><button class="legal-back" onclick="showPage('home')" aria-label="Back to Home">&larr; Back</button><h1>Terms of Service</h1><p><strong>Last updated:</strong> August 2026</p><h2>Payment</h2><p>Kline Game Pro is a one-time payment for lifetime access. No recurring charges, no auto-renewal.</p><h2>Refund Policy</h2><p>Full refund within 30 days. Contact support@klinegame.app.</p><h2>Content</h2><p>Educational content only. Not financial advice. Trading involves risk.</p><h2>No Advertising</h2><p>Kline Game is and will always be ad-free. We do not display ads, broker referral links, or affiliate links. Our revenue comes solely from the one-time Pro purchase.</p><h2>Contact</h2><p>support@klinegame.app</p></div></div>
 <div class="page" id="page-store"><div class="sub-page"><div class="sub-header"><h2 id="store-title-text">Coin Shop</h2><p id="store-coins-display" style="color:var(--accent-gold);font-weight:700">0 coins</p></div><div id="store-items"></div><div style="margin-top:20px"><div class="section-title" id="inventory-title-text">Inventory</div><div id="inventory-list"></div></div><div style="text-align:center;padding:16px 0"><button class="btn-secondary" onclick="showPage('profile')" style="width:100%;max-width:300px" aria-label="Back to Profile">Back</button></div></div></div>
 <div class="page" id="page-league"><div class="sub-page"><div class="sub-header"><h2 id="league-title-text">Weekly League</h2><p id="league-tier-display" style="font-weight:700">Bronze</p></div><div id="league-list"></div><div style="text-align:center;margin-top:20px;font-size:12px;color:var(--text-muted)" id="league-reset-text">Resets every Monday</div><div style="padding:0 20px 8px;margin-top:16px"><button class="share-btn share-btn-primary" onclick="inviteToLeague()" aria-label="Invite friends to league">📲 <span id="league-invite-text">Invite Friends</span></button></div><div style="text-align:center;padding:8px 0"><button class="btn-secondary" onclick="showPage('profile')" style="width:100%;max-width:300px" aria-label="Back to Profile">Back</button></div></div></div>
 <div class="bottom-nav">
@@ -723,7 +752,7 @@ button:focus-visible,.option-btn:focus-visible,.nav-item:focus-visible,.level-ca
 <button class="nav-item" onclick="showPage('profile')" aria-label="Profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</button>
 </div>
 <div class="modal-overlay" id="paywall-modal"><div class="paywall-modal"><div class="pw-icon">&#11088;</div><h3>Unlock Lifetime Access</h3><p class="pw-sub" id="pw-sub">You have used all 5 free rounds!</p><div class="pw-price" id="pw-price"><span class="dollar">$</span>19<span id="pw-cents">.99</span><span class="per" id="pw-period"> once</span></div><div class="pw-trial">&#11088; Founding Member &#183; One-time purchase</div><div class="pw-features"><div>&#9989; All current &amp; future levels</div><div>&#9989; Unlimited rounds &amp; hearts</div><div>&#9989; All game modes &amp; patterns</div><div>&#9989; No recurring fees &#8212; ever</div></div><button onclick="handlePayPalSubscribe()" aria-label="Get Lifetime Access" style="width:100%;padding:16px;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,var(--accent-gold),#d97706);color:#000;box-shadow:0 4px 20px rgba(245,158,11,.3);margin-bottom:8px">&#11088; Get Lifetime Access &#8594;</button><p style="font-size:10px;color:var(--text-muted);text-align:center;margin-top:4px;line-height:1.4">&#128293; Launch price &#183; Price increases as we add more levels</p><div class="pw-guarantee">&#128274; 30-day money-back guarantee</div><p style="text-align:center;margin-top:14px"><span onclick="closePaywall()" role="button" tabindex="0" aria-label="Maybe later" style="font-size:13px;color:var(--text-muted);cursor:pointer;text-decoration:none">Maybe Later</span></p><p style="font-size:10px;color:var(--text-muted);text-align:center;margin-top:4px">Keep practicing for free &#8212; upgrade anytime</p></div></div>
-<div class="modal-overlay" id="no-hearts-modal"><div class="modal"><h3>&#128148;</h3><h3 id="modal-no-hearts-title">No Hearts Left</h3><p id="modal-no-hearts-desc">Choose an option to continue learning</p><div class="modal-actions"><button class="btn-gray" onclick="closeModal('no-hearts-modal');startReviewMode()" aria-label="Practice to recover">📖 Practice</button><button class="btn-gold" onclick="closeModal('no-hearts-modal');showPage('subscription')" aria-label="Go Pro">Go Pro</button></div></div></div>
+<div class="modal-overlay" id="no-hearts-modal"><div class="modal"><h3>&#128148;</h3><h3 id="modal-no-hearts-title">No Hearts Left</h3><p id="modal-no-hearts-desc">Choose an option to continue learning</p><div class="modal-actions"><button class="btn-primary" onclick="closeModal('no-hearts-modal');startReviewMode()" aria-label="Practice to recover hearts">📖 Practice & Recover</button><button class="btn-gold-outline" onclick="closeModal('no-hearts-modal');showPage('subscription')" aria-label="Go Pro for unlimited hearts">✨ Go Pro — Unlimited Hearts</button></div></div></div>
 <div class="modal-overlay" id="pro-modal"><div class="modal"><h3>&#128274;</h3><h3 id="modal-pro-title">Pro Required</h3><p id="modal-pro-desc">Upgrade to unlock this content</p><div class="modal-actions"><button class="btn-gray" onclick="closeModal('pro-modal')" aria-label="Cancel">Cancel</button><button class="btn-gold" onclick="closeModal('pro-modal');showPage('subscription')" aria-label="View Plans">View Plans</button></div></div></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1484,18 +1513,27 @@ var ParamQuestionGen = (function () {
 
   function qIdentify(pattern, candles, rng, baseId, pool) {
     /* Distractor pool: prefer the caller-supplied pool (same difficulty tier)
-       so beginners never see advanced patterns (e.g. "头肩顶" in Level 2). */
-    var candidates = (pool && pool.length >= 3) ? pool.slice() : patterns.map(function(p) { return p.name; });
+       so beginners never see advanced patterns (e.g. "头肩顶" in Level 2).
+       Also: filter by category — candlestick patterns get candlestick distractors,
+       indicator patterns get indicator distractors. No cross-category confusion. */
+    var correctCat = pattern.category || 'candlestick';
+    var candidates = (pool && pool.length >= 4) ? pool.slice() : patterns.filter(function(p) {
+      return (p.category || 'candlestick') === correctCat;
+    }).map(function(p) { return p.name; });
+    /* If not enough same-category distractors, fall back to all non-matching patterns */
+    if (candidates.length < 4) {
+      candidates = patterns.filter(function(p) { return p.name !== pattern.name; }).map(function(p) { return p.name; });
+    }
     shuffle(rng, candidates);
     var dist = [];
-    for (var i = 0; i < candidates.length && dist.length < 2; i++) {
+    for (var i = 0; i < candidates.length && dist.length < 3; i++) {
       if (candidates[i] !== pattern.name) dist.push(candidates[i]);
     }
-    if (dist.length < 2) {
+    if (dist.length < 3) {
       /* Fallback: any pattern except the correct one */
       var fb = patterns.filter(function(p) { return p.name !== pattern.name; });
       shuffle(rng, fb);
-      for (var j = dist.length; j < 2 && fb.length; j++) dist.push(fb[j].name);
+      for (var j = dist.length; j < 3 && fb.length; j++) dist.push(fb[j].name);
     }
     function zhName(n) {
       return (byName[n] && byName[n].nameZh) || n;
@@ -1503,14 +1541,15 @@ var ParamQuestionGen = (function () {
     var opts = [
       { en: pattern.name, zh: pattern.nameZh },
       { en: dist[0], zh: zhName(dist[0]) },
-      { en: dist[1], zh: zhName(dist[1]) }
+      { en: dist[1], zh: zhName(dist[1]) },
+      { en: dist[2], zh: zhName(dist[2]) }
     ];
     shuffle(rng, opts);
     var correct = indexOfByEn(opts, pattern.name);
     return {
       id: makeId(baseId, rng), pattern: pattern.name, type: 'identify', candles: candles,
       question: { en: 'What pattern is this?', zh: '这是什么形态？' },
-      options: { en: [opts[0].en, opts[1].en, opts[2].en], zh: [opts[0].zh, opts[1].zh, opts[2].zh] },
+      options: { en: [opts[0].en, opts[1].en, opts[2].en, opts[3].en], zh: [opts[0].zh, opts[1].zh, opts[2].zh, opts[3].zh] },
       correct: correct, explain: pattern.explain, volumeHint: pattern.volumeHint
     };
   }
@@ -1518,7 +1557,7 @@ var ParamQuestionGen = (function () {
   function qPredict(pattern, candles, signal, rng, baseId) {
     var bull = { en: 'Will rise 📈', zh: '会涨📈' };
     var bear = { en: 'Will fall 📉', zh: '会跌📉' };
-    var side = { en: 'Sideways', zh: '横盘' };
+    var side = { en: 'Sideways ↔️', zh: '横盘↔️' };
     var opts;
     if (signal === 'bull') opts = [bull, side, bear];
     else if (signal === 'bear') opts = [bear, side, bull];
@@ -1783,9 +1822,20 @@ function switchAuthTab(tab) {
   var regTab = document.getElementById('auth-tab-register');
   var btnText = document.getElementById('auth-btn-text');
   var errEl = document.getElementById('auth-error');
+  var confirmGroup = document.getElementById('auth-confirm-group');
+  var pwInput = document.getElementById('auth-password');
   errEl.textContent = '';
-  if (tab === 'login') { loginTab.classList.add('active'); regTab.classList.remove('active'); btnText.textContent = 'Login'; }
-  else { loginTab.classList.remove('active'); regTab.classList.add('active'); btnText.textContent = 'Sign Up'; }
+  if (tab === 'login') {
+    loginTab.classList.add('active'); regTab.classList.remove('active');
+    btnText.textContent = 'Login';
+    if (confirmGroup) confirmGroup.classList.remove('show');
+    if (pwInput) pwInput.setAttribute('autocomplete', 'current-password');
+  } else {
+    loginTab.classList.remove('active'); regTab.classList.add('active');
+    btnText.textContent = 'Sign Up';
+    if (confirmGroup) confirmGroup.classList.add('show');
+    if (pwInput) pwInput.setAttribute('autocomplete', 'new-password');
+  }
 }
 
 async function handleAuthSubmit() {
@@ -1797,8 +1847,12 @@ async function handleAuthSubmit() {
   errEl.textContent = '';
   if (!email || !password) { errEl.textContent = 'Please enter email and password'; return; }
   if (password.length < 6) { errEl.textContent = 'Password must be at least 6 characters'; return; }
-  if (!supabaseClient) { errEl.textContent = 'Cloud service not configured. Using guest mode.'; enterGuestMode(); return; }
   var isRegister = document.getElementById('auth-tab-register').classList.contains('active');
+  if (isRegister) {
+    var pw2 = document.getElementById('auth-password2');
+    if (pw2 && pw2.value !== password) { errEl.textContent = 'Passwords do not match'; return; }
+  }
+  if (!supabaseClient) { errEl.textContent = 'Cloud service not configured. Using guest mode.'; enterGuestMode(); return; }
   btn.disabled = true;
   btnText.innerHTML = '<span class="auth-loading"></span>' + (isRegister ? 'Signing up...' : 'Logging in...');
   try {
@@ -1853,6 +1907,20 @@ function sendFeedbackEmail() {
   var zh = currentLang === 'zh';
   var subject = zh ? 'Kline Game 反馈建议' : 'Kline Game Feedback';
   var body = zh ? '你好！我的建议是：\n\n' : 'Hi! My suggestion is:\n\n';
+  /* Auto-grant thank-you reward on first feedback send */
+  if (!appState.feedbackRewardClaimed) {
+    appState.feedbackRewardClaimed = true;
+    appState.hearts = Math.min(appState.maxHearts, appState.hearts + 5);
+    appState.coins = (appState.coins || 0) + 500;
+    saveState();
+    updateHeartsDisplay();
+    var homeCoins = document.getElementById('home-coins');
+    if (homeCoins) { homeCoins.textContent = '🪙 ' + appState.coins; homeCoins.style.display = 'block'; }
+    setTimeout(function() {
+      showToast(zh ? '🎁 感谢反馈！+5 心 +500 金币' : '🎁 Thanks for the feedback! +5 hearts +500 coins');
+    }, 300);
+  }
+  closeFeedbackModal();
   window.location.href = 'mailto:support@klinegame.app?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
 }
 
@@ -2142,7 +2210,8 @@ var defaultState = {
   paywallClosedCount: 0,
   paywallSeen: false,
   reviewRoundsCount: 0,
-  learningGoal: 'both'
+  learningGoal: 'both',
+  feedbackRewardClaimed: false
 };
 var appState;
 try {
@@ -2526,30 +2595,6 @@ function startFreeTest() {
   showPage('home');
 }
 
-/* P2: Goal selector — let user choose focus area */
-function showGoalSelector() {
-  showPage('goal-select');
-}
-
-function selectGoal(goal) {
-  appState.learningGoal = goal;
-  /* Pre-unlock relevant categories based on goal */
-  if (goal === 'stock') {
-    appState.unlockedLevels = ['beginner', 'stock'];
-  } else if (goal === 'crypto') {
-    appState.unlockedLevels = ['beginner', 'crypto'];
-  } else {
-    appState.unlockedLevels = ['beginner'];
-  }
-  appState.onboardingDone = true;
-  appState.currentLevel30 = 1;
-  appState.currentPathNode = 1;
-  appState.pathProgress = {};
-  appState.tutorialDone = false;
-  saveState();
-  showPage('home');
-}
-
 function initApp() {
   checkDailyReset();
   checkHeartRegenOnLoad();
@@ -2576,6 +2621,11 @@ function showPage(name) {
   var fbOv = document.getElementById('feedback-overlay');
   if (fbOv) fbOv.classList.remove('show');
   document.querySelectorAll('.modal-overlay').forEach(function(m) { m.classList.remove('show'); });
+  /* Also close feedback modal and mascot popup — they don't use modal-overlay class */
+  var fbModal = document.getElementById('feedback-modal');
+  if (fbModal) fbModal.style.display = 'none';
+  var mascotPopup = document.getElementById('mascot-popup');
+  if (mascotPopup) mascotPopup.classList.remove('show');
   /* Clean up combo-fire-edge overlay if present */
   var fe = document.getElementById('combo-fire-edge');
   if (fe) fe.remove();
@@ -2593,31 +2643,37 @@ function showPage(name) {
   document.querySelectorAll('.page').forEach(function(p) {
     p.classList.remove('active')
   });
-  document.getElementById('page-' + name).classList.add('active');
-  /* Show/hide bottom nav based on quiz page */
+  var pageEl = document.getElementById('page-' + name);
+  if (!pageEl) { console.warn('[showPage] Page not found:', name); return; }
+  pageEl.classList.add('active');
+  /* Show/hide bottom nav based on quiz page — both CSS class + inline style for reliability */
   var _bn = document.querySelector('.bottom-nav');
+  var _app = document.querySelector('.app-container');
   if (_bn) {
     _bn.style.display = (name === 'quiz') ? 'none' : 'flex';
+  }
+  if (_app) {
+    _app.classList.toggle('quiz-active', name === 'quiz');
   }
   document.querySelectorAll('.nav-item').forEach(function(n, i) {
     var pages = ['home', 'levels', 'profile'];
     n.classList.toggle('active', pages[i] === name)
   });
   window.scrollTo(0, 0);
-  if (name === 'profile') renderProfile();
-  if (name === 'mistakes') renderMistakes();
-  if (name === 'subscription') renderSubscription();
-  if (name === 'encyclopedia') renderEncyclopedia();
-  if (name === 'checkin') renderCheckin();
-  if (name === 'store') renderStore();
-  if (name === 'league') renderLeague();
-  if (name === 'levels') renderLevelPath();
-  if (name === 'tutorial') renderTutorial();
-  if (name === 'result') renderResultPage();
-  if (name === 'home') {
-    updateUI();
-    renderTasks()
-  }
+  /* P0 fix: wrap all render calls in try-catch so a single broken render
+     never leaves the page blank or breaks navigation */
+  function safe(fn) { try { fn(); } catch(e) { console.error('[showPage] render error for ' + name + ':', e); } }
+  if (name === 'profile') safe(renderProfile);
+  if (name === 'mistakes') safe(renderMistakes);
+  if (name === 'subscription') safe(renderSubscription);
+  if (name === 'encyclopedia') safe(renderEncyclopedia);
+  if (name === 'checkin') safe(renderCheckin);
+  if (name === 'store') safe(renderStore);
+  if (name === 'league') safe(renderLeague);
+  if (name === 'levels') safe(renderLevelPath);
+  if (name === 'tutorial') safe(renderTutorial);
+  if (name === 'result') safe(renderResultPage);
+  if (name === 'home') safe(function() { updateUI(); renderTasks(); });
 }
 
 function clearAllTimers() {
@@ -3077,8 +3133,13 @@ function startQuiz(questions, level, isRetry) {
     difficultyTier: 0
   };
   showPage('quiz');
+  /* P0 fix: render immediately so text/options show on first paint,
+     then re-render on next frame once canvas layout is settled */
   renderQuestion();
-  startOverallTimer()
+  requestAnimationFrame(function() {
+    if (currentQuiz && currentQuiz.active) renderQuestion();
+    startOverallTimer();
+  });
 }
 
 function renderQuestion() {
@@ -3129,7 +3190,8 @@ function renderQuestion() {
     var qText = (q.question[currentLang] || q.question.zh) || '';
     klineDesc.textContent = 'K-line chart showing ' + pName + ' pattern. Question ' + (currentQuiz.currentIndex + 1) + ' of ' + currentQuiz.questions.length + ': ' + qText;
   }
-  document.getElementById('quiz-progress').textContent = t('quizProgress') + (currentQuiz.currentIndex + 1) + '/' + currentQuiz.questions.length;
+  var qpEl = document.getElementById('quiz-progress');
+  if (qpEl) qpEl.textContent = t('quizProgress') + (currentQuiz.currentIndex + 1) + '/' + currentQuiz.questions.length;
   updateHeartsDisplay();
   /* Beginner shield: show on L1-L10, hide otherwise */
   var _shield = document.getElementById('beginner-shield');
@@ -3151,16 +3213,18 @@ function renderQuestion() {
       if (_rbt) _rbt.textContent = currentLang === 'zh' ? '🔁 复习模式 — 升级 Pro 解锁新形态' : '🔁 Review Mode — Upgrade Pro to unlock new patterns';
     }
   }
-  document.getElementById('question-text').textContent = (q.question[currentLang] || q.question.zh);
+  var qtEl = document.getElementById('question-text');
+  if (qtEl) qtEl.textContent = (q.question[currentLang] || q.question.zh);
   var vh = q.volumeHint ? (q.volumeHint[currentLang] || q.volumeHint.zh) : '';
-  document.getElementById('volume-label').textContent = vh || 'Volume';
+  var vlEl = document.getElementById('volume-label');
+  if (vlEl) vlEl.textContent = vh || 'Volume';
   var badge = document.getElementById('q-type-badge');
   var qtype = q.type || 'identify';
   /* P0: For teach questions, show a "lesson" badge and "Got it" button instead of options */
   if (qtype === 'teach') {
-    badge.className = 'q-type-badge q-type-identify';
-    badge.textContent = currentLang === 'zh' ? '📖 教学' : '📖 Lesson';
+    if (badge) { badge.className = 'q-type-badge q-type-identify'; badge.textContent = currentLang === 'zh' ? '📖 教学' : '📖 Lesson'; }
     var oc = document.getElementById('options-container');
+    if (!oc) return;
     oc.innerHTML = '';
     /* Show explanation text + "Got it" button */
     var ec = (q.explain && (q.explain[currentLang] || q.explain.zh)) || '';
@@ -3169,21 +3233,19 @@ function renderQuestion() {
     div.className = 'inline-feedback teach';
     div.innerHTML = '<div class="inline-feedback-explain">' + ec + '</div>';
     oc.appendChild(div);
-    /* P2: Maintain three-option physical structure for muscle memory consistency */
-    var teachLetters = ['A', 'B', 'C'];
-    var teachLabels = currentLang === 'zh'
-      ? ['明白了！继续 →', '跳过', '不懂']
-      : ['Got it! Continue →', 'Skip', 'Not sure'];
-    teachLabels.forEach(function(label, ti) {
-      var btn = document.createElement('button');
-      btn.className = 'option-btn';
-      btn.innerHTML = '<span class="option-letter">' + teachLetters[ti] + '</span><span>' + label + '</span>';
-      if (ti === 0) {
-        btn.style.background = 'var(--accent-green)';
-        btn.style.color = '#fff';
-        btn.style.boxShadow = '0 4px 0 #16a34a';
-        btn.setAttribute('aria-label', 'Got it, continue');
-        btn.onclick = function() {
+    /* P2: Simplified teach mode — only show the primary "Got it" button.
+       Hidden "Skip" and "Not sure" buttons confused users (disabled state is unclear). */
+    var teachBtn = document.createElement('button');
+    teachBtn.className = 'option-btn';
+    teachBtn.innerHTML = '<span style="flex:1;text-align:center;font-weight:800;font-size:17px">' + (currentLang === 'zh' ? '明白了！继续 →' : 'Got it! Continue →') + '</span>';
+    teachBtn.style.background = 'linear-gradient(135deg, var(--accent-green), #16a34a)';
+    teachBtn.style.color = '#fff';
+    teachBtn.style.boxShadow = '0 4px 0 #15803d, 0 6px 16px rgba(34,197,94,.3)';
+    teachBtn.style.border = 'none';
+    teachBtn.style.justifyContent = 'center';
+    teachBtn.style.minHeight = '60px';
+    teachBtn.setAttribute('aria-label', 'Got it, continue');
+    teachBtn.onclick = function() {
           if (q.id === 'teach3') {
             appState.teachingDone = appState.teachingDone || {};
             appState.teachingDone[1] = true;
@@ -3201,13 +3263,7 @@ function renderQuestion() {
           }
           nextQuestion();
         };
-      } else {
-        btn.style.opacity = '0.3';
-        btn.style.cursor = 'default';
-        btn.disabled = true;
-      }
-      oc.appendChild(btn);
-    });
+    oc.appendChild(teachBtn);
     /* Hide timer for teach questions */
     var tcEl = document.getElementById('quiz-timer');
     if (tcEl) tcEl.innerHTML = '';
@@ -3217,27 +3273,29 @@ function renderQuestion() {
     }
     return;
   }
-  if (qtype === 'identify') {
-    badge.className = 'q-type-badge q-type-identify';
-    badge.textContent = t('qTypeIdentify')
-  } else if (qtype === 'predict') {
-    badge.className = 'q-type-badge q-type-predict';
-    badge.textContent = t('qTypePredict')
-  } else if (qtype === 'scenario') {
-    badge.className = 'q-type-badge q-type-scenario';
-    badge.textContent = t('qTypeScenario')
-  } else if (qtype === 'truefalse') {
-    badge.className = 'q-type-badge q-type-truefalse';
-    badge.textContent = currentLang === 'zh' ? '⚖️ 真假判断' : '⚖️ True/False'
-  } else if (qtype === 'trap') {
-    badge.className = 'q-type-badge q-type-trap';
-    badge.textContent = currentLang === 'zh' ? '🚨 陷阱识别' : '🚨 Trap'
-  } else if (qtype === 'trend') {
-    badge.className = 'q-type-badge q-type-identify';
-    badge.textContent = currentLang === 'zh' ? '🟢🔴 涨跌判断' : '🟢🔴 Trend'
-  } else {
-    badge.className = 'q-type-badge q-type-volume';
-    badge.textContent = t('qTypeVolume')
+  if (badge) {
+    if (qtype === 'identify') {
+      badge.className = 'q-type-badge q-type-identify';
+      badge.textContent = t('qTypeIdentify')
+    } else if (qtype === 'predict') {
+      badge.className = 'q-type-badge q-type-predict';
+      badge.textContent = t('qTypePredict')
+    } else if (qtype === 'scenario') {
+      badge.className = 'q-type-badge q-type-scenario';
+      badge.textContent = t('qTypeScenario')
+    } else if (qtype === 'truefalse') {
+      badge.className = 'q-type-badge q-type-truefalse';
+      badge.textContent = currentLang === 'zh' ? '⚖️ 真假判断' : '⚖️ True/False'
+    } else if (qtype === 'trap') {
+      badge.className = 'q-type-badge q-type-trap';
+      badge.textContent = currentLang === 'zh' ? '🚨 陷阱识别' : '🚨 Trap'
+    } else if (qtype === 'trend') {
+      badge.className = 'q-type-badge q-type-identify';
+      badge.textContent = currentLang === 'zh' ? '🟢🔴 涨跌判断' : '🟢🔴 Trend'
+    } else {
+      badge.className = 'q-type-badge q-type-volume';
+      badge.textContent = t('qTypeVolume')
+    }
   }
   /* P0: Pattern hint card — first time a pattern appears that the user hasn't mastered yet */
   appState.patternHintsSeen = appState.patternHintsSeen || {};
@@ -3327,6 +3385,23 @@ function renderQuestion() {
     pf.style.width = ((currentQuiz.currentIndex + 1) / currentQuiz.questions.length * 100) + '%';
     pf.classList.add('glow');
     setTimeout(function(){ pf.classList.remove('glow'); }, 600);
+  }
+  /* Last question indicator */
+  var isLastQ = currentQuiz.currentIndex === currentQuiz.questions.length - 1;
+  var qTypeBadge = document.getElementById('q-type-badge');
+  if (qTypeBadge && qtype !== 'teach') {
+    var existingFinal = document.getElementById('final-q-badge');
+    if (isLastQ) {
+      if (!existingFinal) {
+        var finalBadge = document.createElement('span');
+        finalBadge.id = 'final-q-badge';
+        finalBadge.style.cssText = 'display:inline-block;padding:3px 10px;border-radius:999px;font-size:10px;font-weight:700;background:linear-gradient(90deg,#f59e0b,#ef4444);color:#fff;margin-left:6px;letter-spacing:.5px;animation:fadeIn .3s';
+        finalBadge.textContent = currentLang === 'zh' ? '🏁 最后一题' : '🏁 Final question';
+        qTypeBadge.parentNode.insertBefore(finalBadge, qTypeBadge.nextSibling);
+      }
+    } else if (existingFinal) {
+      existingFinal.remove();
+    }
   }
   updateComboDisplay();
   startQuestionTimer()
@@ -3707,12 +3782,8 @@ function selectAnswer(idx) {
     showUnstoppable();
     showToast(t("combo10"));
     playSound('combo10');
-    /* Show achievement share for combo x10 */
-    if (!appState.sharedAchievements) appState.sharedAchievements = [];
-    if (appState.sharedAchievements.indexOf('combo10') < 0) {
-      appState.sharedAchievements.push('combo10');
-      setTimeout(function() { showAchievementShare('combo', 10, currentQuiz.correctCount ? Math.round(currentQuiz.correctCount / (currentQuiz.currentIndex + 1) * 100) : 0); }, 2000);
-    }
+    /* Note: combo10 share card moved to result page (renderResultPage)
+       so that appState.totalXP is already updated when displayed */
   }
   saveState();
   updateHeartsDisplay()
@@ -4007,6 +4078,16 @@ function closeFeedback() {
 function renderResultPage() {
   var zh = currentLang === 'zh';
   var r = currentQuizResult;
+  /* Safety fallback: if result not set, derive basic info from currentQuiz */
+  if (!r && currentQuiz) {
+    var realQ = currentQuiz.questions.filter(function(q) { return q.type !== 'teach'; });
+    var acc = realQ.length > 0 ? Math.round(currentQuiz.correctCount / realQ.length * 100) : 0;
+    r = {
+      accuracy: acc,
+      xp: currentQuiz.totalXP || 0,
+      level30Num: currentQuiz.level30Num || null
+    };
+  }
   if (!r) return;
   var emoji = r.accuracy >= 80 ? '🎉' : r.accuracy >= 60 ? '✅' : '💪';
   var title = r.accuracy >= 80 ? (zh ? '太棒了' : 'Great job!') : r.accuracy >= 60 ? (zh ? '不错！' : 'Nice!') : (zh ? '继续加油' : 'Keep going');
@@ -4018,6 +4099,62 @@ function renderResultPage() {
   if (emojiEl) emojiEl.textContent = emoji;
   if (titleEl) titleEl.textContent = title;
   if (subEl) subEl.textContent = sub;
+  /* Stars: 3 stars = >=90%, 2 stars = >=70%, 1 star = >=50%, 0 stars = <50% */
+  var starsEl = document.getElementById('result-stars');
+  if (starsEl) {
+    var starCount = r.accuracy >= 90 ? 3 : r.accuracy >= 70 ? 2 : r.accuracy >= 50 ? 1 : 0;
+    var starHtml = '';
+    for (var si = 0; si < 3; si++) {
+      starHtml += si < starCount ? '⭐' : '☆';
+    }
+    starsEl.innerHTML = starHtml;
+  }
+  /* Level progress bar */
+  var lvlProgressEl = document.getElementById('result-level-progress');
+  if (lvlProgressEl && appState) {
+    var curLvl = r.level30Num || appState.currentLevel30 || 1;
+    var xpForCurLvl = (curLvl - 1) * 50;
+    var totalXpInLvl = appState.totalXP - xpForCurLvl;
+    var xpNeeded = 50; /* 50 XP per level */
+    var pct = Math.min(100, Math.max(0, (totalXpInLvl / xpNeeded) * 100));
+    var lvlLabel = document.getElementById('result-level-label');
+    var lvlXp = document.getElementById('result-level-xp');
+    var lvlBar = document.getElementById('result-level-bar');
+    var lvlNext = document.getElementById('result-level-next');
+    if (lvlLabel) lvlLabel.textContent = (zh ? '等级 ' : 'Level ') + curLvl;
+    if (lvlXp) lvlXp.textContent = Math.round(totalXpInLvl) + ' / ' + xpNeeded + ' XP';
+    if (lvlBar) { setTimeout(function() { lvlBar.style.width = pct + '%'; }, 300); }
+    if (lvlNext) {
+      var remain = Math.max(0, xpNeeded - totalXpInLvl);
+      lvlNext.textContent = Math.round(remain) + ' XP ' + (zh ? '到下一级' : 'to next level') + ' →';
+    }
+  }
+  /* Highlight stats: best combo, accuracy, avg time */
+  var statsEl = document.getElementById('result-stats');
+  if (statsEl && currentQuiz) {
+    var realAnswers = currentQuiz.answers.filter(function(a) { return true; });
+    var bestCombo = currentQuiz.bestCombo || currentQuiz.maxCombo || 0;
+    /* Compute best combo from answers if not tracked */
+    if (bestCombo === 0) {
+      var run = 0;
+      for (var ai = 0; ai < currentQuiz.answers.length; ai++) {
+        if (currentQuiz.answers[ai].correct) { run++; if (run > bestCombo) bestCombo = run; }
+        else run = 0;
+      }
+    }
+    var comboStat = document.getElementById('stat-combo');
+    var comboLabel = document.getElementById('stat-combo-label');
+    var accStat = document.getElementById('stat-acc-num');
+    var accLabel = document.getElementById('stat-acc-label');
+    var timeStat = document.getElementById('stat-time');
+    var timeLabel = document.getElementById('stat-time-label');
+    if (comboStat) comboStat.textContent = bestCombo;
+    if (comboLabel) comboLabel.textContent = zh ? '最长连击' : 'Best Combo';
+    if (accStat) accStat.textContent = r.accuracy + '%';
+    if (accLabel) accLabel.textContent = zh ? '正确率' : 'Accuracy';
+    if (timeStat) timeStat.textContent = '—';
+    if (timeLabel) timeLabel.textContent = zh ? '平均用时' : 'Avg Time';
+  }
   if (btnEl) {
     var replayBtn = document.getElementById('btn-replay');
     /* Always hide replay button on success (accuracy >= 60%) */
@@ -4084,6 +4221,17 @@ function renderResultPage() {
     reviewHint.textContent = zh ? '💡 升级 Pro 解锁 25 个新形态 + 无限心力' : '💡 Upgrade Pro for 25 new patterns + unlimited hearts';
     var mtbParent = mtb ? mtb.parentElement : null;
     if (mtbParent) mtbParent.appendChild(reviewHint);
+  }
+  /* Combo 10 achievement share — show on result page so XP is already settled */
+  if (r.bestCombo && r.bestCombo >= 10) {
+    if (!appState.sharedAchievements) appState.sharedAchievements = [];
+    if (appState.sharedAchievements.indexOf('combo10') < 0) {
+      appState.sharedAchievements.push('combo10');
+      saveState();
+      setTimeout(function() {
+        showAchievementShare('combo', 10, r.accuracy);
+      }, 1500);
+    }
   }
 }
 
@@ -4185,7 +4333,13 @@ function showInlineFeedback(q) {
   var div = document.createElement('div');
   div.id = 'inline-fb';
   div.className = 'inline-feedback wrong';
-  var html = '<div class="inline-feedback-title">❌ ' + (zh ? '正确答案：' : 'Correct: ') + correctText + '</div>';
+  var lastAnswer = currentQuiz.answers.length > 0 ? currentQuiz.answers[currentQuiz.answers.length - 1] : null;
+  var yourAnswerText = lastAnswer ? lastAnswer.yourAnswer : '';
+  var html = '';
+  if (yourAnswerText && yourAnswerText !== correctText) {
+    html += '<div style="font-size:12px;color:var(--accent-red);font-weight:600;margin-bottom:6px">❌ ' + (zh ? '你的答案' : 'Your answer') + ': ' + yourAnswerText + '</div>';
+  }
+  html += '<div class="inline-feedback-title" style="color:var(--accent-green)">✅ ' + (zh ? '正确答案' : 'Correct answer') + ': ' + correctText + '</div>';
   if (ec) html += '<div class="inline-feedback-explain" style="margin-top:6px;white-space:pre-line">' + ec + '</div>';
   /* P0: Beginner encouragement — show "don't give up" message for Levels 1-10 */
   if (currentQuiz.level30Num && currentQuiz.level30Num <= 10) {
@@ -4270,6 +4424,7 @@ function floatXPFromButton(xp, btnIdx) {
 
 function updateComboDisplay() {
   var el = document.getElementById('combo-display');
+  if (!el) return;
   if (currentQuiz.combo >= 2) {
     var b = 0;
     if (currentQuiz.combo >= 10) b = 100;
@@ -4646,7 +4801,8 @@ function endQuiz() {
     time: el,
     level: currentQuiz.level,
     level30Num: currentQuiz.level30Num,
-    isReview: currentQuiz.isReview
+    isReview: currentQuiz.isReview,
+    bestCombo: appState.currentSessionMaxCombo || 0
   };
   appState.currentSessionMaxCombo = 0;
   if (!appState.isPro && !currentQuiz.isReview) {
@@ -4657,8 +4813,8 @@ function endQuiz() {
       setTimeout(function() {
         var zh = currentLang === 'zh';
         showSoftUpgradeCard(zh
-          ? '🎯 你已正确识别 ' + correctSoFar + ' 个形态！Pro 解锁 300+ 高级题目'
-          : '🎯 You\'ve identified ' + correctSoFar + ' patterns! Pro unlocks 300+ advanced questions');
+          ? '🎯 你已正确识别 ' + correctSoFar + ' 个形态！Pro 解锁无限题目生成'
+          : '🎯 You\'ve identified ' + correctSoFar + ' patterns! Pro unlocks infinite parametric quizzes');
       }, 1500);
     }
     /* P1: Light hint after 3rd round — give user expectation */
@@ -5755,7 +5911,7 @@ function renderMascotState() {
     var inviteLeft = 2 - getTodayInviteCount();
     bubbleText = zh ? '心用完了，' + mins + '分钟后恢复' : 'Out of hearts! Recover in ' + mins + ' min';
     bubbleText += '<br><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;justify-content:center">';
-    bubbleText += '<button class="mascot-action-btn" onclick="refillHeartFromMascot()">' + (zh ? '看视频 +1❤️' : 'Watch ad +1 ❤️') + '</button>';
+    bubbleText += '<button class="mascot-action-btn" onclick="refillHeartFromMascot()">' + (zh ? '🎁 领一颗心' : '🎁 Get +1 ❤️') + '</button>';
     bubbleText += '</div>';
   }
   html += '<div class="mascot-bubble">' + bubbleText + '</div>';
@@ -5812,7 +5968,7 @@ function refillHeartFromMascot() {
     showToast(currentLang === 'zh' ? '心已满！' : 'Hearts already full!');
     return;
   }
-  /* Demo: refill 1 heart (in production, trigger rewarded ad) */
+  /* Free heart refill from mascot — small mercy when hearts run low */
   appState.hearts = Math.min(appState.maxHearts, appState.hearts + 1);
   saveState();
   updateHeartsDisplay();
@@ -5900,6 +6056,39 @@ function updateUI() {
       frEl.style.display = 'block'
     }
   }
+  /* Daily goal progress */
+  var dailySec = appState.dailySeconds || 0;
+  var goalSec = 300; /* 5 min daily goal */
+  var goalPct = Math.min(100, Math.round(dailySec / goalSec * 100));
+  var goalBar = document.getElementById('daily-goal-bar');
+  if (goalBar) goalBar.style.width = goalPct + '%';
+  var goalPctEl = document.getElementById('daily-goal-pct');
+  if (goalPctEl) goalPctEl.textContent = goalPct + '%';
+  var goalDetail = document.getElementById('daily-goal-detail');
+  if (goalDetail) {
+    var mins = Math.floor(dailySec / 60);
+    goalDetail.textContent = mins + ' / 5 min today';
+  }
+  /* Weak patterns quick view on home */
+  var weakSection = document.getElementById('home-weak-section');
+  var weakContainer = document.getElementById('home-weak-patterns');
+  if (weakSection && weakContainer && appState.weakPatterns) {
+    var weakEntries = Object.entries(appState.weakPatterns)
+      .sort(function(a, b) { return b[1] - a[1]; })
+      .slice(0, 4);
+    if (weakEntries.length > 0 && appState.totalAnswered > 5) {
+      weakSection.style.display = 'block';
+      weakContainer.innerHTML = '';
+      weakEntries.forEach(function(entry) {
+        var tag = document.createElement('span');
+        tag.style.cssText = 'padding:4px 10px;background:rgba(239,68,68,.1);color:var(--accent-red);border-radius:8px;font-size:12px;font-weight:600';
+        tag.textContent = entry[0];
+        weakContainer.appendChild(tag);
+      });
+    } else {
+      weakSection.style.display = 'none';
+    }
+  }
   /* All content is dynamic — nothing to preload */
   var tots = getLevelTotals();
   for (var k in tots) updateLevelProgress(k, tots[k]);
@@ -5907,7 +6096,7 @@ function updateUI() {
   allLevels.forEach(function(lv) {
     var card = document.getElementById('level-' + lv);
     if (!card) return;
-    var locked = !appState.unlockedLevels.includes(lv);
+    var locked = !(appState.unlockedLevels && appState.unlockedLevels.includes(lv));
     card.classList.toggle('locked', locked);
     var lockIcon = card.querySelector('.lock-icon');
     if (lockIcon) lockIcon.style.display = locked ? 'block' : 'none'
@@ -5932,12 +6121,12 @@ function updateUI() {
   var heroTitle = document.querySelector('.hero-title');
   if (heroTitle) heroTitle.innerHTML = currentLang === 'zh' ? '每天5分钟<br>学会K线图' : 'Learn Candlestick<br>in 5 Min a Day';
   var heroSub = document.querySelector('.hero-sub');
-  if (heroSub) heroSub.textContent = currentLang === 'zh' ? '滑动 · 学习 · 掌握图表' : 'Swipe. Learn. Master charts.';
+  if (heroSub) heroSub.textContent = currentLang === 'zh' ? '练习 · 学习 · 掌握图表' : 'Practice. Learn. Master charts.';
 }
 
 
 function updateLevelProgress(lv, total) {
-  var done = (appState.completedQuestions[lv] || []).length,
+  var done = ((appState.completedQuestions && appState.completedQuestions[lv]) || []).length,
     pct = Math.min(100, Math.round(done / total * 100)),
     fl = document.getElementById('progress-' + lv),
     tx = document.getElementById('text-' + lv);
@@ -5946,14 +6135,15 @@ function updateLevelProgress(lv, total) {
 }
 
 function renderProfile() {
-  document.getElementById('profile-xp').textContent = appState.totalXP + ' XP';
-  document.getElementById('profile-level').textContent = getLevelName();
-  document.getElementById('stat-correct').textContent = appState.totalCorrect;
-  document.getElementById('stat-total').textContent = appState.totalAnswered;
-  document.getElementById('stat-streak').textContent = appState.streak;
-  document.getElementById('hearts-title').textContent = t('heartsTitle');
-  document.getElementById('weakness-title').textContent = t('weaknessTitle');
-  document.getElementById('pro-banner-desc').textContent = t('proBannerDesc');
+  var el = function(id) { return document.getElementById(id); };
+  if (el('profile-xp')) el('profile-xp').textContent = appState.totalXP + ' XP';
+  if (el('profile-level')) el('profile-level').textContent = getLevelName();
+  if (el('stat-correct')) el('stat-correct').textContent = appState.totalCorrect;
+  if (el('stat-total')) el('stat-total').textContent = appState.totalAnswered;
+  if (el('stat-streak')) el('stat-streak').textContent = appState.streak;
+  if (el('hearts-title')) el('hearts-title').textContent = t('heartsTitle');
+  if (el('weakness-title')) el('weakness-title').textContent = t('weaknessTitle');
+  if (el('pro-banner-desc')) el('pro-banner-desc').textContent = t('proBannerDesc');
   /* P2: Update mistake log badge and wiki entry text */
   var mb = document.getElementById('mistakes-badge');
   if (mb) mb.textContent = (appState.mistakes || []).length;
@@ -5966,7 +6156,7 @@ function renderProfile() {
   var fmt = document.getElementById('feedback-modal-title');
   if (fmt) fmt.textContent = currentLang === 'zh' ? '有好想法？' : 'Got a Great Idea?';
   var fmd = document.getElementById('feedback-modal-desc');
-  if (fmd) fmd.innerHTML = currentLang === 'zh' ? '帮助我们改进 Kline Game！发送 Bug 报告、功能建议或任何想法。如果采纳你的建议，你将获得 <b style="color:var(--accent-red)">+5 心</b> + <b style="color:var(--accent-gold)">500 金币</b> 作为感谢！' : 'Help us improve Kline Game! Send bug reports, feature ideas, or suggestions. If we adopt yours, you\'ll get <b style="color:var(--accent-red)">+5 hearts</b> + <b style="color:var(--accent-gold)">500 coins</b> as a thank-you!';
+  if (fmd) fmd.innerHTML = currentLang === 'zh' ? '帮助我们改进 Kline Game！发送 Bug 报告、功能建议或任何想法。作为感谢礼，你将获得 <b style="color:var(--accent-red)">+5 心</b> + <b style="color:var(--accent-gold)">500 金币</b>！' : 'Help us improve Kline Game! Send bug reports, feature ideas, or suggestions. As a thank-you gift, you\'ll get <b style="color:var(--accent-red)">+5 hearts</b> + <b style="color:var(--accent-gold)">500 coins</b>!';
   var feb = document.getElementById('feedback-email-btn');
   if (feb) feb.textContent = currentLang === 'zh' ? '📧 邮件联系' : '📧 Email Us';
   var ce = document.getElementById('checkin-entry-text');
@@ -6032,7 +6222,12 @@ function renderProfile() {
   var csBadges = document.querySelectorAll('.coming-soon-badge');
   csBadges.forEach(function(el) { el.textContent = t('comingSoon'); });
   var wl = document.getElementById('weakness-list');
+  if (!wl) return;
   wl.innerHTML = '';
+  if (!appState.weakPatterns || typeof appState.weakPatterns !== 'object') {
+    wl.innerHTML = '<div style="color:var(--text-muted);font-size:12px;padding:6px 0">' + (currentLang === 'zh' ? '暂无数据' : 'No data yet') + '</div>';
+    return;
+  }
   var sorted = Object.entries(appState.weakPatterns).sort(function(a, b) {
     return b[1] - a[1]
   }).slice(0, 5);
@@ -6116,65 +6311,44 @@ function setPlan(plan) {
 }
 
 function renderSubscription() {
-  var brokerSection = document.querySelector('.brokers-section');
-  if (brokerSection) brokerSection.style.display = isFeatureEnabled('brokerLinks') ? '' : 'none';
   if (!isFeatureEnabled('monthlySubscription') && !isFeatureEnabled('yearlySubscription')) {
     selectedPlan = 'lifetime';
   }
   setPlan(selectedPlan);
-  startUrgencyCountdown();
   renderPayPalButton();
 }
 
 /* PayPal Hosted Button — render into subscription page container */
 var _paypalBtnRendered = false;
+var _paypalRetryCount = 0;
 function renderPayPalButton() {
   if (_paypalBtnRendered) return;
   var container = document.getElementById('paypal-container-SBJMU8U3AWKUU');
   if (!container) return;
+  /* P0 fix: show loading indicator immediately so users know something is happening */
+  if (_paypalRetryCount === 0) {
+    container.innerHTML = '<div style="text-align:center;padding:20px 14px"><div style="display:inline-block;width:28px;height:28px;border:3px solid rgba(34,197,94,.2);border-top-color:var(--accent-green);border-radius:50%;animation:auth-spin .8s linear infinite;vertical-align:middle"></div><div style="font-size:12px;color:var(--text-muted);margin-top:8px">' + (currentLang === 'zh' ? '正在加载支付…' : 'Loading payment…') + '</div></div>';
+  }
   if (typeof paypal === 'undefined' || !paypal.HostedButtons) {
-    /* SDK still loading — retry in 500ms */
+    _paypalRetryCount++;
+    if (_paypalRetryCount > 16) {
+      container.innerHTML = '<div style="text-align:center;padding:14px"><p style="font-size:13px;color:var(--text-muted);margin-bottom:10px">' + (currentLang === 'zh' ? '支付加载超时，请刷新重试' : 'Payment loading timed out. Please refresh.') + '</p><button onclick="_paypalRetryCount=0;_paypalBtnRendered=false;renderPayPalButton()" style="background:var(--accent-green);color:#fff;border:none;border-radius:10px;padding:10px 24px;font-size:14px;font-weight:700;cursor:pointer">' + (currentLang === 'zh' ? '重试' : 'Retry') + '</button></div>';
+      _paypalRetryCount = 0;
+      return;
+    }
     setTimeout(renderPayPalButton, 500);
     return;
   }
   try {
+    container.innerHTML = '';
     paypal.HostedButtons({
       hostedButtonId: "SBJMU8U3AWKUU"
     }).render("#paypal-container-SBJMU8U3AWKUU");
     _paypalBtnRendered = true;
   } catch(e) {
     console.error('[PayPal] Hosted Button render failed:', e);
+    container.innerHTML = '<div style="text-align:center;padding:14px"><p style="font-size:13px;color:var(--text-muted);margin-bottom:10px">' + (currentLang === 'zh' ? '支付加载失败，请刷新重试' : 'Payment failed to load. Please refresh.') + '</p><button onclick="_paypalRetryCount=0;_paypalBtnRendered=false;renderPayPalButton()" style="background:var(--accent-green);color:#fff;border:none;border-radius:10px;padding:10px 24px;font-size:14px;font-weight:700;cursor:pointer">' + (currentLang === 'zh' ? '重试' : 'Retry') + '</button></div>';
   }
-}
-
-/* P1: 72-hour urgency countdown for first-time visitors */
-var _urgencyInterval = null;
-function startUrgencyCountdown() {
-  if (appState.isPro) return;
-  var key = 'urgency_start';
-  var start = localStorage.getItem(key);
-  if (!start) {
-    start = Date.now().toString();
-    localStorage.setItem(key, start);
-  }
-  var elapsed = Date.now() - parseInt(start);
-  var remaining = 72 * 3600 * 1000 - elapsed;
-  if (remaining <= 0) { return; }
-  var banner = document.getElementById('urgency-banner');
-  if (!banner) return;
-  banner.style.display = 'block';
-  if (_urgencyInterval) clearInterval(_urgencyInterval);
-  function tick() {
-    var r = 72 * 3600 * 1000 - (Date.now() - parseInt(start));
-    if (r <= 0) { banner.style.display = 'none'; clearInterval(_urgencyInterval); return; }
-    var h = Math.floor(r / 3600000);
-    var m = Math.floor((r % 3600000) / 60000);
-    var s = Math.floor((r % 60000) / 1000);
-    var el = document.getElementById('urgency-timer');
-    if (el) el.textContent = (currentLang === 'zh' ? '⏰ 限时优惠剩 ' : '⏰ Offer ends in ') + h + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
-  }
-  tick();
-  _urgencyInterval = setInterval(tick, 1000);
 }
 
 function showPaymentError(reason) {
@@ -6630,7 +6804,26 @@ function renderEncyclopedia() {
   var details = document.getElementById("enc-details");
   details.innerHTML = "";
   list.innerHTML = "<div class=\"enc-progress-text\">" + t("encProgress") + " " + unlocked.length + "/27</div><div class=\"enc-progress-bar\"><div class=\"enc-progress-fill\" style=\"width:" + pct + "%\"></div></div>";
+  /* Pattern categories for better organization */
+  var categories = [
+    { start: 0, label: currentLang === 'zh' ? '🔨 单根反转形态' : '🔨 Single Candle Reversal' },
+    { start: 2, label: currentLang === 'zh' ? '📊 双根形态' : '📊 Two-Candle Patterns' },
+    { start: 4, label: currentLang === 'zh' ? '🌟 三根形态' : '🌟 Three-Candle Patterns' },
+    { start: 6, label: currentLang === 'zh' ? '✚ 十字星家族' : '✚ Doji Family' },
+    { start: 11, label: currentLang === 'zh' ? '📍 星线与纺锤' : '📍 Star & Spinning Top' },
+    { start: 15, label: currentLang === 'zh' ? '🤰 孕育与收口' : '🤰 Harami & Inside' },
+    { start: 21, label: currentLang === 'zh' ? '🎯 支撑阻力与突破' : '🎯 Support, Resistance & Breakouts' },
+    { start: 25, label: currentLang === 'zh' ? '📈 均线指标' : '📈 Moving Average Indicators' }
+  ];
   allPatterns.forEach(function(item, i) {
+    /* Add category header before first pattern of each group */
+    var cat = categories.find(function(c) { return c.start === i; });
+    if (cat) {
+      var catHeader = document.createElement('div');
+      catHeader.className = 'enc-category-header';
+      catHeader.innerHTML = cat.label;
+      list.appendChild(catHeader);
+    }
     var isUnlocked = unlocked.indexOf(item.name) !== -1;
     var card = document.createElement("div");
     card.className = "enc-card" + (isUnlocked ? "" : " locked");
@@ -7227,6 +7420,24 @@ function drawKlineCanvas(canvasId, candles, maLines, highlights, indicator, retr
     ctx.strokeStyle = color;
     ctx.lineWidth = 1;
     ctx.strokeRect(x - bodyW / 2, bTop, bodyW, bH);
+    /* Color-blind mode: add shape indicator inside candle body */
+    if (appState && appState.colorBlind && bH > 6) {
+      ctx.fillStyle = isGreen ? '#ffffff' : '#000000';
+      var markerSize = Math.min(5, bodyW * 0.25);
+      if (isGreen) {
+        /* Up candle: filled dot marker */
+        ctx.beginPath();
+        ctx.arc(x, bTop + bH / 2, markerSize, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        /* Down candle: hollow ring marker */
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(x, bTop + bH / 2, markerSize, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    }
     if (c.v) {
       var vx = pad.left + i * candleW + candleW / 2;
       var vy = volToY(c.v);
@@ -7653,20 +7864,27 @@ function generateAchievementCard(type, value, accuracy) {
   var emoji = type === 'level' ? '🏆' : '🔥';
   ctx.fillText(emoji, 300, 340);
 
-  /* Stats */
+  /* Stats — labels right-aligned to 200, values left-aligned to 400 */
   ctx.font = 'bold 20px Arial';
   ctx.fillStyle = '#666';
   var xpText = (appState.totalXP || 0) + ' XP';
   var streakText = (appState.streak || 0) + (zh ? ' 天连胜' : ' Day Streak');
   var accText = accuracy > 0 ? accuracy + '% ' + (zh ? '正确率' : 'Accuracy') : '';
+  ctx.textAlign = 'right';
   ctx.fillText(zh ? '总 XP' : 'Total XP', 200, 440);
-  ctx.fillText(xpText, 400, 440);
   ctx.fillText(zh ? '连胜' : 'Streak', 200, 480);
-  ctx.fillText(streakText, 400, 480);
   if (accText) {
     ctx.fillText(zh ? '正确率' : 'Accuracy', 200, 520);
+  }
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#1a1a1a';
+  ctx.fillText(xpText, 400, 440);
+  ctx.fillText(streakText, 400, 480);
+  if (accText) {
     ctx.fillText(accText, 400, 520);
   }
+  /* Reset to center for following elements */
+  ctx.textAlign = 'center';
 
   /* Mascot */
   ctx.font = '60px Arial';
@@ -7810,11 +8028,11 @@ if ('serviceWorker' in navigator) {
 </div>
 </div>
 <!-- P2: Cookie Consent Banner (GDPR) -->
-<div id="cookie-banner" style="position:fixed;bottom:0;left:0;right:0;background:#1a1a1a;color:#fff;padding:12px 16px;z-index:9999;display:none;box-shadow:0 -2px 10px rgba(0,0,0,.3)">
+<div id="cookie-banner" style="position:fixed;bottom:0;left:0;right:0;background:#fff;color:#1a1a1a;padding:14px 16px;z-index:9999;display:none;box-shadow:0 -4px 20px rgba(0,0,0,.08);border-top:1px solid #e5e7eb">
   <div style="max-width:480px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-    <span style="font-size:12px;flex:1;min-width:200px">We use cookies to improve your experience. By continuing, you agree to our <span onclick="showPage('privacy')" style="color:#60a5fa;cursor:pointer;text-decoration:underline">Privacy Policy</span>.</span>
-    <button onclick="acceptCookies()" style="background:#22c55e;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">Accept</button>
-    <button onclick="declineCookies()" style="background:transparent;color:#999;border:1px solid #555;padding:8px 16px;border-radius:8px;font-size:13px;cursor:pointer;white-space:nowrap">Decline</button>
+    <span style="font-size:12px;flex:1;min-width:200px;color:#4b5563;line-height:1.5">We use cookies to improve your experience. By continuing, you agree to our <span onclick="showPage('privacy')" style="color:#22c55e;cursor:pointer;text-decoration:underline;font-weight:600">Privacy Policy</span>.</span>
+    <button onclick="acceptCookies()" style="background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;padding:10px 20px;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;box-shadow:0 3px 0 #15803d">Accept</button>
+    <button onclick="declineCookies()" style="background:transparent;color:#6b7280;border:1px solid #d1d5db;padding:9px 16px;border-radius:12px;font-size:13px;cursor:pointer;white-space:nowrap;font-weight:600">Decline</button>
   </div>
 </div>
 <script>
