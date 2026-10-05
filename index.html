@@ -100,6 +100,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .quiz-header{display:flex;align-items:center;justify-content:space-between;padding:calc(8px + env(safe-area-inset-top)) 16px 6px;border-bottom:none}
 .quiz-progress{display:none}
 .hearts-quiz{font-size:14px}
+.quiz-lives{display:flex;gap:4px;align-items:center}
+.quiz-lives .life-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;transition:all .3s ease}
+.quiz-lives .life-dot.lost{background:rgba(255,255,255,.2)}
+#page-quiz.kq-immersive .quiz-lives .life-dot{background:#22c55e;box-shadow:0 0 6px rgba(34,197,94,.6)}
+#page-quiz.kq-immersive .quiz-lives .life-dot.lost{background:rgba(255,255,255,.15);box-shadow:none}
 .quiz-timer{font-size:13px;color:var(--text-secondary);transition:color .3s}
 .quiz-timer.urgent{color:var(--accent-red);animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
@@ -657,6 +662,26 @@ button:focus-visible,.option-btn:focus-visible,.nav-item:focus-visible,.level-ca
 .feedback-cooldown-text{text-align:center;font-size:12px;color:var(--text-muted);margin-top:8px}
 .feedback-success-toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.9);background:rgba(0,0,0,.85);color:#fff;padding:18px 28px;border-radius:14px;font-size:15px;font-weight:600;z-index:100000;opacity:0;visibility:hidden;transition:all .3s ease}
 .feedback-success-toast.show{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1)}
+
+/* 3-3: 浅色模式 — 基于 CSS 变量覆盖，保护眼睛 */
+body.light-mode{--bg-primary:#f8fafc;--bg-secondary:#f1f5f9;--bg-card:#ffffff;--bg-elevated:#e2e8f0;--text-primary:#0f172a;--text-secondary:#475569;--text-muted:#94a3b8;--border:#e2e8f0}
+body.light-mode .app-container{background:#f8fafc}
+body.light-mode .kline-canvas{background:#f1f5f9 !important}
+body.light-mode .option-btn{background:#fff;color:#0f172a;border-color:#e2e8f0}
+body.light-mode .option-btn:hover{border-color:#22c55e;background:rgba(34,197,94,.05)}
+body.light-mode .option-btn .option-letter{background:#f1f5f9;color:#475569}
+body.light-mode .option-btn.correct .option-letter{background:#22c55e;color:#fff}
+body.light-mode .option-btn.wrong .option-letter{background:#ef4444;color:#fff}
+body.light-mode .question-text{color:#0f172a}
+body.light-mode .q-type-badge{background:#f1f5f9;color:#475569}
+body.light-mode .btn-primary{color:#fff}
+body.light-mode .btn-secondary{background:#f1f5f9;color:#475569;border-color:#e2e8f0}
+body.light-mode .chart-container{background:#fff}
+body.light-mode #kline-zoom-overlay{background:rgba(255,255,255,0.95) !important}
+body.light-mode .quiz-focus-banner{background:rgba(34,197,94,.08) !important;border-color:rgba(34,197,94,.25) !important;color:#16a34a !important}
+body.light-mode .legal-footer a{color:#64748b}
+body.light-mode .legal-page{background:#fff;color:#0f172a}
+body.light-mode .legal-page h1,body.light-mode .legal-page h2{color:#0f172a}
 </style>
 <!-- PayPal SDK — load once in head, used by Hosted Buttons on subscription page -->
 <script async src="https://www.paypal.com/sdk/js?client-id=BAAOXqzVG5EcSkaVx-Klr_a5RwBCCTX4woeGrDCU1RJPM0jMBmOW1eEVxZYXP0_EK33GEybjBnmHQw59X8&components=hosted-buttons&disable-funding=venmo&currency=USD"></script>
@@ -810,7 +835,7 @@ button:focus-visible,.option-btn:focus-visible,.nav-item:focus-visible,.level-ca
 <div class="lp-finish" id="lp-finish" style="display:none">
 <div class="lp-finish-icon">&#127942;</div>
 <div class="lp-finish-text" id="lp-finish-text">All Levels Complete!</div>
-<div class="lp-finish-sub">You've mastered all 60 lessons</div>
+<div class="lp-finish-sub" id="lp-finish-sub">You've mastered all lessons!</div>
 </div>
 </div>
 </div>
@@ -872,24 +897,62 @@ button:focus-visible,.option-btn:focus-visible,.nav-item:focus-visible,.level-ca
 </div>
 </div>
 <div class="page page-quiz kq-immersive" id="page-quiz" style="flex-direction:column;height:100vh;height:100dvh;overflow:hidden">
-<div class="quiz-header"><span class="quiz-progress" id="quiz-progress"></span><div class="hearts-quiz" id="quiz-hearts"></div><button class="quit-btn" onclick="quitQuiz()" aria-label="Quit quiz">&#10005;</button></div>
+<div class="quiz-header"><span class="quiz-progress" id="quiz-progress"></span><div id="quiz-lives" class="quiz-lives" style="display:none"></div><div class="hearts-quiz" id="quiz-hearts"></div><button class="quit-btn" onclick="quitQuiz()" aria-label="Quit quiz">&#10005;</button></div>
 <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-progress-fill"></div></div>
 <div class="beginner-shield" id="beginner-shield" style="display:none">&#128737;&#65039; <span id="shield-text">Levels 1-10: No hearts lost — learn freely!</span></div><div class="review-mode-banner" id="review-mode-banner" style="display:none;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);border-radius:10px;padding:6px 14px;font-size:11px;font-weight:600;color:#f59e0b;text-align:center;margin:4px 16px">&#128260; <span id="review-banner-text">Review Mode — Upgrade Pro to unlock new patterns</span></div>
+<!-- 1-1 界面层：本关重点练习提示 -->
+<div id="quiz-focus-banner" class="quiz-focus-banner" style="display:none;margin:4px 16px 0;padding:8px 12px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);border-radius:10px;font-size:11px;font-weight:600;color:#4ade80;text-align:center">📌 <span id="focus-banner-text">本关重点练习形态</span></div>
+<!-- Fusion 阶段热身题横幅 -->
+<div id="quiz-warmup-banner" style="display:none;margin:4px 16px 0;padding:8px 12px;background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.3);border-radius:10px;font-size:11px;font-weight:600;color:#c084fc;text-align:center">🎮 <span id="warmup-banner-text">热身题 · 不计分 — 熟悉一下题型再开始</span></div>
 <div class="combo-display hidden" id="combo-display"></div>
-<div class="chart-container"><div style="display:flex;justify-content:flex-end;padding:0 2px 4px;min-height:20px"><button id="chart-toggle-btn" onclick="toggleChartView()" style="display:none;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;color:var(--text-secondary);font-size:10px;padding:3px 10px;cursor:pointer" aria-label="Toggle chart view">All candles</button></div><canvas class="kline-canvas" id="kline-canvas" role="img" aria-describedby="kline-canvas-desc"></canvas><div class="sr-only" id="kline-canvas-desc" aria-live="polite">K-line chart showing candlestick pattern</div></div>
+<div class="chart-container"><div style="display:flex;justify-content:space-between;align-items:center;padding:0 2px 4px;min-height:20px"><span id="kline-zoom-hint" style="font-size:10px;color:var(--text-muted);cursor:pointer" onclick="openKlineZoom()">🔍 Tap to zoom</span><button id="chart-toggle-btn" onclick="toggleChartView()" style="display:none;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;color:var(--text-secondary);font-size:10px;padding:3px 10px;cursor:pointer" aria-label="Toggle chart view">All candles</button></div><canvas class="kline-canvas" id="kline-canvas" role="img" aria-describedby="kline-canvas-desc" style="cursor:zoom-in" onclick="openKlineZoom()"></canvas><div class="sr-only" id="kline-canvas-desc" aria-live="polite">K-line chart showing candlestick pattern</div></div>
 <div class="question-section"><div class="q-type-badge q-type-identify" id="q-type-badge">&#128269; Identify</div><div class="question-text" id="question-text"></div><div class="volume-label" id="volume-label"></div><div id="pattern-hint-zone"></div></div>
 <div class="options-container" id="options-container"></div>
 <div class="feedback-overlay" id="feedback-overlay"><div class="feedback-icon" id="feedback-icon">&#9989;</div><div class="feedback-title correct" id="feedback-title">Correct!</div><div class="feedback-xp" id="feedback-xp">+10 XP</div><div class="feedback-explain" id="feedback-explain"><h4>Explanation</h4><p>...</p></div><div class="feedback-actions"><button class="btn-next" onclick="nextQuestion()" aria-label="Next question" style="width:100%">Continue</button></div></div>
 <div class="swipe-hint" id="swipe-hint">Tap to continue →</div>
 </div>
-<div class="page" id="page-result"><div class="result-page"><div class="result-emoji" id="result-emoji" style="font-size:64px;margin-bottom:8px">🎉</div><div class="result-title" id="result-title" style="font-size:32px;font-weight:800;color:var(--text-primary)">Great job!</div><div class="result-stars" id="result-stars" style="font-size:28px;margin:8px 0;letter-spacing:4px">⭐⭐⭐</div><div class="result-subtitle" id="result-subtitle" style="font-size:18px;color:var(--text-secondary);margin:8px 0 20px">+50 XP · 80% Accuracy</div><div class="result-level-progress" id="result-level-progress" style="width:100%;max-width:320px;margin-bottom:24px;background:var(--bg-secondary);border-radius:12px;padding:14px 16px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-size:12px;font-weight:700;color:var(--text-secondary)" id="result-level-label">Level 2</span><span style="font-size:11px;color:var(--text-muted)" id="result-level-xp">40 / 100 XP</span></div><div style="height:8px;background:#e5e7eb;border-radius:4px;overflow:hidden"><div id="result-level-bar" style="height:100%;width:40%;background:linear-gradient(90deg,#fbbf24,#f59e0b);border-radius:4px;transition:width 1s ease-out"></div></div><div style="font-size:11px;color:var(--text-muted);margin-top:6px;text-align:right" id="result-level-next">60 XP to next level →</div></div><div class="result-stats" id="result-stats" style="display:flex;gap:12px;margin-bottom:28px;width:100%;max-width:320px"><div style="flex:1;background:var(--bg-secondary);border-radius:14px;padding:14px 10px;text-align:center"><div style="font-size:22px;font-weight:800;color:var(--accent-gold)" id="stat-combo">0</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px" id="stat-combo-label">Best Combo</div></div><div style="flex:1;background:var(--bg-secondary);border-radius:14px;padding:14px 10px;text-align:center"><div style="font-size:22px;font-weight:800;color:var(--accent-green)" id="stat-acc-num">0%</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px" id="stat-acc-label">Accuracy</div></div><div style="flex:1;background:var(--bg-secondary);border-radius:14px;padding:14px 10px;text-align:center"><div style="font-size:22px;font-weight:800;color:var(--accent-blue)" id="stat-time">0s</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px" id="stat-time-label">Avg Time</div></div></div><button class="btn-primary" id="btn-again" style="font-size:22px;padding:22px 0;width:100%;max-width:340px;border-radius:20px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;box-shadow:0 6px 0 #15803d,0 8px 20px rgba(34,197,94,.3);margin-bottom:8px" aria-label="Next Level">Next Level →</button><button id="btn-replay" style="display:none;background:none;border:none;color:var(--text-muted);font-size:13px;cursor:pointer;text-decoration:underline;margin-bottom:16px" aria-label="Play Again">↻ Play Again</button><div style="text-align:center"><button onclick="toggleMistakeExplain()" id="mistake-toggle-btn" style="background:none;border:none;color:var(--text-muted);font-size:13px;cursor:pointer;text-decoration:underline" aria-label="View mistake explanations">View mistake explanations</button><div id="mistake-explain-area" style="display:none;margin-top:12px;max-height:300px;overflow-y:auto;text-align:left;background:var(--bg-secondary);border-radius:12px;padding:14px 16px"></div></div></div></div>
-<div class="page" id="page-profile"><div class="profile-header"><div class="profile-xp" id="profile-xp">0</div><div class="profile-level" id="profile-level">Newbie Trader</div></div><div style="padding:0 20px"></div><div class="profile-stats"><div class="profile-stat"><div class="profile-stat-value" id="stat-correct">0</div><div class="profile-stat-label" id="stat-correct-label">Correct</div></div><div class="profile-stat"><div class="profile-stat-value" id="stat-total">0</div><div class="profile-stat-label" id="stat-total-label">Total</div></div><div class="profile-stat"><div class="profile-stat-value" id="stat-streak">0</div><div class="profile-stat-label" id="stat-streak-label">Streak</div></div></div><div style="padding:0 20px;margin-top:16px"><div style="background:var(--bg-secondary);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px"><div style="position:relative;width:52px;height:52px;flex-shrink:0"><svg width="52" height="52" viewBox="0 0 52 52" style="transform:rotate(-90deg)"><circle cx="26" cy="26" r="22" fill="none" stroke="#e5e5e5" stroke-width="5"/><circle cx="26" cy="26" r="22" fill="none" stroke="#22c55e" stroke-width="5" stroke-linecap="round" stroke-dasharray="138.2" stroke-dashoffset="138.2" id="weekly-goal-circle"/></svg><div style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700" id="weekly-goal-pct">0%</div></div><div style="flex:1"><div style="font-size:13px;font-weight:700" id="weekly-goal-title">Weekly Goal</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px" id="weekly-goal-desc">0/100 XP this week</div></div></div></div><div style="padding:0 20px;margin-top:14px"><div style="font-size:13px;font-weight:700;margin-bottom:8px">📊 Last 7 Days</div><div id="learning-heatmap" style="display:flex;gap:4px;justify-content:space-between"></div></div><div style="padding:0 20px;margin-top:14px"><div style="font-size:13px;font-weight:700;margin-bottom:8px">🎓 Recently Learned</div><div id="recent-patterns" style="display:flex;gap:6px;flex-wrap:wrap"><span style="font-size:12px;color:var(--text-muted)">No patterns yet</span></div></div><div class="profile-section"><div class="profile-entry" onclick="showPage('mistakes')" role="button" tabindex="0" aria-label="Mistake Log"><span class="profile-entry-icon">&#128128;</span><span class="profile-entry-text" id="mistakes-entry-text">Mistake Log</span><span id="mistakes-badge" style="font-size:12px;color:var(--accent-red);font-weight:600">0</span><span class="profile-entry-arrow">&#8250;</span></div><div class="profile-entry" onclick="showPage('encyclopedia')" role="button" tabindex="0" aria-label="Pattern Wiki"><span class="profile-entry-icon">&#128214;</span><span class="profile-entry-text" id="wiki-entry-text">Pattern Wiki</span><span class="profile-entry-arrow">&#8250;</span></div><div class="profile-entry" onclick="showFeedbackModal()" role="button" tabindex="0" aria-label="Send Feedback"><span class="profile-entry-icon">&#128227;</span><span class="profile-entry-text" id="feedback-entry-text">Send Feedback</span><span class="profile-entry-arrow">&#8250;</span></div></div><div class="pro-banner" onclick="showPage('subscription')" role="button" tabindex="0" aria-label="Go Pro subscription"><div class="pro-banner-text"><div class="pro-banner-title">&#9889; Go Pro</div><div class="pro-banner-desc" id="pro-banner-desc">Unlimited hearts, full access</div></div><span style="font-size:26px">&#128081;</span></div><div class="section-title">&#10084;&#65039; <span id="hearts-title">Hearts</span></div><div id="heart-timer" style="font-size:13px;color:var(--text-secondary);margin-bottom:14px">Next heart: 29:59</div><div class="section-title">&#128201; <span id="weakness-title">Weakness</span></div><div id="weakness-list"></div><div class="section-title">&#9881;&#65039; <span id="settings-title">Settings</span></div><div style="background:var(--bg-secondary);border-radius:14px;padding:4px 16px;margin-bottom:10px"><div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)"><span style="font-size:13px;font-weight:600" id="set-cb-label">&#127912; Color-blind mode</span><button id="set-cb-btn" onclick="toggleColorBlind()" aria-label="Toggle color-blind mode" style="width:46px;height:26px;border-radius:13px;border:none;background:#ccc;position:relative;cursor:pointer;transition:background .2s"><span id="set-cb-knob" style="position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s"></span></button></div><div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)"><span style="font-size:13px;font-weight:600" id="set-sfx-label">&#128266; Sound effects</span><button id="set-sfx-btn" onclick="toggleSfx()" aria-label="Toggle sound effects" style="width:46px;height:26px;border-radius:13px;border:none;background:#ccc;position:relative;cursor:pointer"><span id="set-sfx-knob" style="position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s"></span></button></div><div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0"><span style="font-size:13px;font-weight:600" id="set-vib-label">&#128242; Vibration</span><button id="set-vib-btn" onclick="toggleVibrate()" aria-label="Toggle vibration" style="width:46px;height:26px;border-radius:13px;border:none;background:#ccc;position:relative;cursor:pointer"><span id="set-vib-knob" style="position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s"></span></button></div></div><div style="display:flex;gap:8px;margin-bottom:16px"><button class="btn-secondary" onclick="exportProgress()" aria-label="Export progress" style="flex:1;font-size:11px;padding:8px 4px">&#128228; <span id="exp-label">Export</span></button><button class="btn-secondary" onclick="importProgress()" aria-label="Import progress" style="flex:1;font-size:11px;padding:8px 4px">&#128229; <span id="imp-label">Import</span></button></div><div style="padding:0 20px 24px;text-align:center"><button onclick="showAuthOverlay()" style="font-size:12px;color:var(--text-muted);border:1px solid var(--border);border-radius:8px;padding:8px 24px;background:transparent;cursor:pointer" id="login-entry-text" aria-label="Login or create account">&#128100; Login / Cloud Sync</button></div></div></div></div>
+<div class="page" id="page-result"><div class="result-page"><div class="result-emoji" id="result-emoji" style="font-size:64px;margin-bottom:8px">🎉</div><div class="result-title" id="result-title" style="font-size:32px;font-weight:800;color:var(--text-primary)">Great job!</div><div class="result-stars" id="result-stars" style="font-size:28px;margin:8px 0;letter-spacing:4px">⭐⭐⭐</div><div id="result-perfect-badge" style="display:none;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(251,191,36,.15),rgba(245,158,11,.1));border:1px solid rgba(251,191,36,.3);border-radius:12px;padding:8px 16px;margin:6px 0 14px;gap:6px"></div><div class="result-subtitle" id="result-subtitle" style="font-size:18px;color:var(--text-secondary);margin:8px 0 20px">+50 XP · 80% Accuracy</div><div class="result-level-progress" id="result-level-progress" style="width:100%;max-width:320px;margin-bottom:24px;background:var(--bg-secondary);border-radius:12px;padding:14px 16px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-size:12px;font-weight:700;color:var(--text-secondary)" id="result-level-label">Level 2</span><span style="font-size:11px;color:var(--text-muted)" id="result-level-xp">40 / 100 XP</span></div><div style="height:8px;background:#e5e7eb;border-radius:4px;overflow:hidden"><div id="result-level-bar" style="height:100%;width:40%;background:linear-gradient(90deg,#fbbf24,#f59e0b);border-radius:4px;transition:width 1s ease-out"></div></div><div style="font-size:11px;color:var(--text-muted);margin-top:6px;text-align:right" id="result-level-next">60 XP to next level →</div></div><div class="result-stats" id="result-stats" style="display:flex;gap:12px;margin-bottom:28px;width:100%;max-width:320px"><div style="flex:1;background:var(--bg-secondary);border-radius:14px;padding:14px 10px;text-align:center"><div style="font-size:22px;font-weight:800;color:var(--accent-gold)" id="stat-combo">0</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px" id="stat-combo-label">Best Combo</div></div><div style="flex:1;background:var(--bg-secondary);border-radius:14px;padding:14px 10px;text-align:center"><div style="font-size:22px;font-weight:800;color:var(--accent-green)" id="stat-acc-num">0%</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px" id="stat-acc-label">Accuracy</div></div><div style="flex:1;background:var(--bg-secondary);border-radius:14px;padding:14px 10px;text-align:center"><div style="font-size:22px;font-weight:800;color:var(--accent-blue)" id="stat-time">0s</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px" id="stat-time-label">Avg Time</div></div></div><button class="btn-primary" id="btn-again" style="font-size:22px;padding:22px 0;width:100%;max-width:340px;border-radius:20px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;box-shadow:0 6px 0 #15803d,0 8px 20px rgba(34,197,94,.3);margin-bottom:8px" aria-label="Next Level">Next Level →</button><button id="btn-replay" style="display:none;background:none;border:none;color:var(--text-muted);font-size:13px;cursor:pointer;text-decoration:underline;margin-bottom:16px" aria-label="Play Again">↻ Play Again</button><div style="text-align:center"><button onclick="toggleMistakeExplain()" id="mistake-toggle-btn" style="background:none;border:none;color:var(--text-muted);font-size:13px;cursor:pointer;text-decoration:underline" aria-label="View mistake explanations">View mistake explanations</button><div id="mistake-explain-area" style="display:none;margin-top:12px;max-height:300px;overflow-y:auto;text-align:left;background:var(--bg-secondary);border-radius:12px;padding:14px 16px"></div></div></div></div>
+<div class="page" id="page-profile"><div class="profile-header"><div class="profile-xp" id="profile-xp">0</div><div class="profile-level" id="profile-level">Newbie Trader</div></div><div style="padding:0 20px"></div><div class="profile-stats"><div class="profile-stat"><div class="profile-stat-value" id="stat-correct">0</div><div class="profile-stat-label" id="stat-correct-label">Correct</div></div><div class="profile-stat"><div class="profile-stat-value" id="stat-total">0</div><div class="profile-stat-label" id="stat-total-label">Total</div></div><div class="profile-stat"><div class="profile-stat-value" id="stat-streak">0</div><div class="profile-stat-label" id="stat-streak-label">Streak</div></div></div><div style="padding:0 20px;margin-top:16px"><div style="background:var(--bg-secondary);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px"><div style="position:relative;width:52px;height:52px;flex-shrink:0"><svg width="52" height="52" viewBox="0 0 52 52" style="transform:rotate(-90deg)"><circle cx="26" cy="26" r="22" fill="none" stroke="#e5e5e5" stroke-width="5"/><circle cx="26" cy="26" r="22" fill="none" stroke="#22c55e" stroke-width="5" stroke-linecap="round" stroke-dasharray="138.2" stroke-dashoffset="138.2" id="weekly-goal-circle"/></svg><div style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700" id="weekly-goal-pct">0%</div></div><div style="flex:1"><div style="font-size:13px;font-weight:700" id="weekly-goal-title">Weekly Goal</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px" id="weekly-goal-desc">0/100 XP this week</div></div></div></div><div style="padding:0 20px;margin-top:14px"><div style="font-size:13px;font-weight:700;margin-bottom:8px">📊 Last 7 Days</div><div id="learning-heatmap" style="display:flex;gap:4px;justify-content:space-between"></div></div><div style="padding:0 20px;margin-top:14px"><div style="font-size:13px;font-weight:700;margin-bottom:8px">🎓 Recently Learned</div><div id="recent-patterns" style="display:flex;gap:6px;flex-wrap:wrap"><span style="font-size:12px;color:var(--text-muted)">No patterns yet</span></div></div><div class="profile-section"><div class="profile-entry" onclick="showPage('mistakes')" role="button" tabindex="0" aria-label="Mistake Log"><span class="profile-entry-icon">&#128128;</span><span class="profile-entry-text" id="mistakes-entry-text">Mistake Log</span><span id="mistakes-badge" style="font-size:12px;color:var(--accent-red);font-weight:600">0</span><span class="profile-entry-arrow">&#8250;</span></div><div class="profile-entry" onclick="showPage('encyclopedia')" role="button" tabindex="0" aria-label="Pattern Wiki"><span class="profile-entry-icon">&#128214;</span><span class="profile-entry-text" id="wiki-entry-text">Pattern Wiki</span><span class="profile-entry-arrow">&#8250;</span></div><div class="profile-entry" onclick="showFeedbackModal()" role="button" tabindex="0" aria-label="Send Feedback"><span class="profile-entry-icon">&#128227;</span><span class="profile-entry-text" id="feedback-entry-text">Send Feedback</span><span class="profile-entry-arrow">&#8250;</span></div></div><div class="pro-banner" onclick="showPage('subscription')" role="button" tabindex="0" aria-label="Go Pro subscription"><div class="pro-banner-text"><div class="pro-banner-title">&#9889; Go Pro</div><div class="pro-banner-desc" id="pro-banner-desc">Unlimited hearts, full access</div></div><span style="font-size:26px">&#128081;</span></div><div class="section-title">&#10084;&#65039; <span id="hearts-title">Hearts</span></div><div id="heart-timer" style="font-size:13px;color:var(--text-secondary);margin-bottom:14px">Next heart: 29:59</div><div class="section-title">&#128201; <span id="weakness-title">Weakness</span></div><div id="weakness-list"></div><div class="section-title">&#9881;&#65039; <span id="settings-title">Settings</span></div><div style="background:var(--bg-secondary);border-radius:14px;padding:4px 16px;margin-bottom:10px"><div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)"><span style="font-size:13px;font-weight:600" id="set-cb-label">&#127912; Color-blind mode</span><button id="set-cb-btn" onclick="toggleColorBlind()" aria-label="Toggle color-blind mode" style="width:46px;height:26px;border-radius:13px;border:none;background:#ccc;position:relative;cursor:pointer;transition:background .2s"><span id="set-cb-knob" style="position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s"></span></button></div><div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)"><span style="font-size:13px;font-weight:600" id="set-sfx-label">&#128266; Sound effects</span><button id="set-sfx-btn" onclick="toggleSfx()" aria-label="Toggle sound effects" style="width:46px;height:26px;border-radius:13px;border:none;background:#ccc;position:relative;cursor:pointer"><span id="set-sfx-knob" style="position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s"></span></button></div><div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0"><span style="font-size:13px;font-weight:600" id="set-vib-label">&#128242; Vibration</span><button id="set-vib-btn" onclick="toggleVibrate()" aria-label="Toggle vibration" style="width:46px;height:26px;border-radius:13px;border:none;background:#ccc;position:relative;cursor:pointer"><span id="set-vib-knob" style="position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s"></span></button></div></div><div style="display:flex;gap:8px;margin-bottom:8px"><button class="btn-secondary" onclick="exportProgress()" aria-label="Export progress" style="flex:1;font-size:11px;padding:8px 4px">&#128228; <span id="exp-label">Export</span></button><button class="btn-secondary" onclick="importProgress()" aria-label="Import progress" style="flex:1;font-size:11px;padding:8px 4px">&#128229; <span id="imp-label">Import</span></button></div><div id="local-storage-hint" style="font-size:11px;color:var(--text-muted);line-height:1.5;padding:8px 12px;background:var(--bg-secondary);border-radius:10px;margin-bottom:16px;border:1px solid var(--border)">💾 <span id="lsh-text">Your progress is saved on this device. Clear browser data will erase it — export a backup to keep it safe!</span></div><div style="padding:0 20px 24px;text-align:center"><button onclick="showAuthOverlay()" style="font-size:12px;color:var(--text-muted);border:1px solid var(--border);border-radius:8px;padding:8px 24px;background:transparent;cursor:pointer" id="login-entry-text" aria-label="Login or create account">&#128100; Login / Cloud Sync</button></div></div></div></div>
 <div class="page" id="page-mistakes"><div class="mistakes-page"><div class="mistakes-header"><div class="section-title" style="margin:0">&#128128; <span id="mistakes-title">Mistakes</span></div><div class="mistakes-count"><span id="mistakes-count">0</span></div></div><button class="retry-btn" onclick="retryMistakes()" id="retry-btn" aria-label="Review Mistakes">&#128260; <span id="retry-text">Review Mistakes</span></button><div id="mistakes-list"></div></div></div>
 <div class="page" id="page-subscription"><div class="sub-page"><div class="sub-header"><div class="trial-badge">&#11088; Founding Member</div><h2>Unlock Kline Game Pro</h2><p>Unlimited practice. No more waiting.</p></div><div class="plan-toggle" id="plan-toggle"><button class="plan-toggle-btn active" id="toggle-lifetime" onclick="setPlan('lifetime')" aria-label="Select lifetime plan" style="background:linear-gradient(135deg,#fef3c7,#fde68a);color:#92400e;font-weight:700">Lifetime</button></div><div class="pricing-card featured" id="pricing-display"><div class="plan-name" id="plan-name">Pro Lifetime</div><div class="plan-price" id="plan-price"><span class="dollar">$</span>19<span id="plan-cents">.99</span><span class="per" id="plan-period"> once</span></div><div id="price-anchor" style="font-size:12px;color:var(--text-muted);margin-top:4px"></div><p class="auto-renew-notice" style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:6px;line-height:1.5">One-time payment &#183; Lifetime access &#183; No recurring fees</p><div id="paypal-container-SBJMU8U3AWKUU" style="margin-bottom:8px;min-height:50px"></div><div class="guarantee"><span>&#128274;</span> 30-day money-back guarantee. No recurring fees.</div><div class="features-list"><div>&#9989; Unlimited hearts - never wait</div><div>&#9989; Infinite parametric quizzes unlocked</div><div>&#9989; All 60 lessons + all question types</div><div>&#9989; Ad-free experience</div><div>&#9989; Priority new content</div><div>&#9989; Cloud sync across devices</div></div></div><div id="lifetime-rights" style="display:none;margin:0 20px 12px;padding:14px 16px;background:linear-gradient(135deg,#fef3c7,#fefce8);border:1px solid #fde68a;border-radius:14px"><div style="font-size:14px;font-weight:700;color:#92400e;margin-bottom:8px">&#127873; Lifetime Access Includes:</div><div style="font-size:12px;color:#78350f;line-height:1.6">&#9989; All current and future K-line pattern levels<br>&#9989; All future game modes and features<br>&#9989; Priority support</div><div style="margin-top:10px;padding-top:10px;border-top:1px solid #fde68a;font-size:12px;color:#78350f;font-weight:600">&#128274; 30-Day Money-Back Guarantee — Not satisfied? Full refund, no questions asked.</div></div><div style="text-align:center;padding:12px 0"><button onclick="closeSubscription()" style="background:none;border:none;color:var(--text-muted);font-size:13px;cursor:pointer;text-decoration:underline" aria-label="Maybe later">Maybe later</button></div><div class="legal-links" style="text-align:center;padding:16px 0 100px;font-size:12px;color:var(--text-muted)"><span onclick="showPage('privacy')" role="button" tabindex="0" aria-label="Privacy Policy" style="cursor:pointer;text-decoration:underline">Privacy Policy</span> &middot; <span onclick="showPage('terms')" role="button" tabindex="0" aria-label="Terms of Service" style="cursor:pointer;text-decoration:underline">Terms of Service</span></div></div></div>
 <div class="page" id="page-encyclopedia"><div class="encyclopedia-page"><div class="section-title">&#128214; <span id="enc-title">Pattern Wiki</span></div><div id="enc-list"></div><div id="enc-details"></div></div></div>
 <div class="page" id="page-checkin"><div class="checkin-page"><div class="section-title" style="justify-content:center">&#128197; <span id="checkin-title">Daily Check-in</span></div><div style="font-size:44px;margin:18px 0">&#128293;</div><div style="font-size:18px;font-weight:700" id="current-streak">0 day streak</div><div class="checkin-grid" id="checkin-grid"></div><button class="checkin-btn" id="checkin-btn" onclick="doCheckin()" aria-label="Daily check-in">&#9989; Check In</button><div style="font-size:13px;color:var(--text-secondary);margin-top:10px" id="streak-info">Check in 7 days in a row for 200 coins!</div><div id="checkin-share-area" style="display:none;margin-top:16px"><button class="share-btn share-btn-primary" onclick="shareCheckin()" aria-label="Share checkin">📤 <span id="checkin-share-text">Share My Streak</span></button></div></div></div>
 <div class="page" id="page-privacy"><div class="legal-page"><button class="legal-back" onclick="showPage('home')" aria-label="Back to Home">&larr; Back</button><h1>Privacy Policy</h1><p><strong>Last updated:</strong> August 2026</p><h2>Information We Collect</h2><p>Kline Game operates as a client-side application. Guest mode stores all learning data (progress, answers, settings) locally in your browser. Optional account creation enables cloud sync via Supabase to sync progress across devices. We do not sell or share your data.</p><h2>Payment Information</h2><p>Payment processing is handled by <strong>PayPal</strong>, a PCI DSS Level 1 certified payment processor. We do not have access to your full credit card number.</p><h2>Analytics</h2><p>We use privacy-preserving analytics to understand how users interact with our site. This includes anonymous session identifiers and UTM parameters to measure traffic sources and user journeys. No personal data is sold to third parties. Analytics data is only collected after you accept cookies.</p><h2>Third-Party Services</h2><ul><li><strong>Supabase:</strong> Cloud sync for registered users (email and progress data)</li><li><strong>PayPal:</strong> Payment processing</li></ul><h2>Data Retention</h2><p>Guest mode: all data is stored locally. Clearing browser data will delete your progress. Registered accounts: progress is synced to Supabase and persists across devices. You can request data deletion at support@klinegame.app.</p><h2>Contact</h2><p>support@klinegame.app</p></div></div>
 <div class="page" id="page-terms"><div class="legal-page"><button class="legal-back" onclick="showPage('home')" aria-label="Back to Home">&larr; Back</button><h1>Terms of Service</h1><p><strong>Last updated:</strong> August 2026</p><h2>Payment</h2><p>Kline Game Pro is a one-time payment for lifetime access. No recurring charges, no auto-renewal.</p><h2>Refund Policy</h2><p>Full refund within 30 days. Contact support@klinegame.app.</p><h2>Content</h2><p>Educational content only. Not financial advice. Trading involves risk.</p><h2>No Advertising</h2><p>Kline Game is and will always be ad-free. We do not display ads, broker referral links, or affiliate links. Our revenue comes solely from the one-time Pro purchase.</p><h2>Contact</h2><p>support@klinegame.app</p></div></div>
+<div class="page" id="page-changelog"><div class="legal-page"><button class="legal-back" onclick="showPage('home')" aria-label="Back to Home">&larr; Back</button>
+<h1 id="cl-title">✨ What's New</h1>
+<p id="cl-subtitle" style="color:var(--text-muted);font-size:13px;margin-bottom:20px">We update the app regularly to make learning K-line patterns easier and more fun.</p>
+
+<div id="cl-v2" style="margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border)">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+    <span style="background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:12px" id="cl-new-tag">NEW</span>
+    <span style="font-size:16px;font-weight:700">v2.0 <span id="cl-v2-date" style="font-size:12px;color:var(--text-muted);font-weight:400">· Jan 2025</span></span>
+  </div>
+  <h2 id="cl-v2-title">🎯 更适合新手的学习体验</h2>
+  <ul id="cl-v2-list">
+    <li><strong>答题再也不会一下清零了</strong> — 每关有 3 次容错机会，手滑答错也不怕，用完才会失败。全程零错误还能拿到「完美通关」徽章 🏆</li>
+    <li><strong>不会考你没学过的</strong> — 题目严格从已经教过的形态里出，学多少考多少，越往后题库越丰富，不会突然蹦出来看不懂的名词</li>
+    <li><strong>答错了能看懂为什么错</strong> — 每次答错都会告诉你正确答案、用大白话解释这个形态是什么、再给你一个好记的口诀，还能马上回看讲解</li>
+    <li><strong>学习地图一目了然</strong> — 主页的关卡路径现在能看到总进度、每个主题完成了多少、一共多少个形态，已通关的关卡可以点回去重看讲解</li>
+    <li><strong>难度爬坡更平缓</strong> — 主题之间加了过渡关，不会突然变难；最终综合关拆成了 3 个梯度，一步一步来</li>
+    <li><strong>薄弱形态针对性练习</strong> — 个人页会显示你最容易搞错的形态，点一下就能开始专项练习</li>
+    <li><strong>教学演示更可控</strong> — 加了页码显示，跳过有二次确认，不怕手滑错过。默认手动翻页，想听着学可以切「自动播放」。翻页时按钮会变灰，不会点两下跳两页</li>
+    <li><strong>题目更多样</strong> — 每个阶段会融合之前学过的题型，边学新的边复习旧的，记得更牢</li>
+  </ul>
+</div>
+
+<div id="cl-v1" style="margin-bottom:24px">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+    <span style="font-size:16px;font-weight:700">v1.0 <span style="font-size:12px;color:var(--text-muted);font-weight:400">· Aug 2024</span></span>
+  </div>
+  <h2 id="cl-v1-title">🚀 初次见面</h2>
+  <ul id="cl-v1-list">
+    <li id="cl-v1-1">12 个主题、60+ 个 K 线形态，从入门到进阶</li>
+    <li id="cl-v1-2">课前教学演示，边看边学</li>
+    <li id="cl-v1-3">错题本、形态百科、每日打卡</li>
+  </ul>
+</div>
+</div></div>
 <div class="page" id="page-store"><div class="sub-page"><div class="sub-header"><h2 id="store-title-text">Coin Shop</h2><p id="store-coins-display" style="color:var(--accent-gold);font-weight:700">0 coins</p></div><div id="store-items"></div><div style="margin-top:20px"><div class="section-title" id="inventory-title-text">Inventory</div><div id="inventory-list"></div></div><div style="text-align:center;padding:16px 0"><button class="btn-secondary" onclick="showPage('profile')" style="width:100%;max-width:300px" aria-label="Back to Profile">Back</button></div></div></div>
 <div class="page" id="page-league"><div class="sub-page"><div class="sub-header"><h2 id="league-title-text">Weekly League</h2><p id="league-tier-display" style="font-weight:700">Bronze</p></div><div id="league-list"></div><div style="text-align:center;margin-top:20px;font-size:12px;color:var(--text-muted)" id="league-reset-text">Resets every Monday</div><div style="padding:0 20px 8px;margin-top:16px"><button class="share-btn share-btn-primary" onclick="inviteToLeague()" aria-label="Invite friends to league">📲 <span id="league-invite-text">Invite Friends</span></button></div><div style="text-align:center;padding:8px 0"><button class="btn-secondary" onclick="showPage('profile')" style="width:100%;max-width:300px" aria-label="Back to Profile">Back</button></div></div></div>
 <div class="bottom-nav">
@@ -898,6 +961,7 @@ button:focus-visible,.option-btn:focus-visible,.nav-item:focus-visible,.level-ca
 <button class="nav-item" onclick="showPage('profile')" aria-label="Profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</button>
 </div>
 <div class="legal-footer">
+  <a href="#" onclick="showPage('changelog');return false;" id="footer-changelog">What's New</a>·
   <a href="disclaimer.html">Disclaimer</a>·
   <a href="#" onclick="showPage('terms');return false;">Terms</a>·
   <a href="#" onclick="showPage('privacy');return false;">Privacy</a>
@@ -2269,6 +2333,27 @@ function isPageSealed(name) {
   return null;
 }
 
+/* =========================================================
+ * 6-1: 训练版预埋接口（TRAINER_MODE_PREVIEW）
+ * 未来解封训练版时，只需：
+ * 1. 将 TRAINER_CONFIG.enabled 设为 true
+ * 2. 在主页添加入口按钮（参考 kline_trainer.html）
+ * 3. 进度互通：appState.pathProgress 已统一结构，两边共享同一 localStorage key
+ * 4. 逻辑统一：buildPath / qIdentify / showChapterTeachingDemo 等核心函数完全同源
+ * 5. 数据同步：两边共用 appState、mistakes、pathProgress，无需迁移
+ * 目前前端入口已封印，核心逻辑保持同步，未来解封零成本
+ * ========================================================= */
+var TRAINER_CONFIG = {
+  enabled: false,              /* 训练版开关：false=封印，true=解封 */
+  shareProgress: true,         /* 进度互通：与主站共享 pathProgress / mistakes */
+  shareLogic: true,            /* 逻辑统一：使用同一套出题/教学/容错算法 */
+  entryPoints: {               /* 预留入口位置，解封时取消注释即可 */
+    // homeQuickStart: false,   /* 主页快速开始按钮 */
+    // navTab: false,           /* 底部导航 Tab */
+    // profileEntry: false      /* 个人页入口 */
+  }
+};
+
 var defaultState = {
   onboardingDone: false,
   tutorialDone: false,
@@ -2756,6 +2841,8 @@ function initApp() {
   renderTasks();
   startHeartRegenTimer();
   checkAuthOnStartup();
+  /* 3-3: 初始化浅色模式 */
+  _applyLightMode();
   /* Newcomer guide — show once on first visit */
   checkNewcomerGuide();
 }
@@ -2873,7 +2960,8 @@ function startQuickQuiz() {
   }
   saveState();
   var lvl = appState.currentPathNode || appState.currentLevel30 || 1;
-  if (lvl > 60) lvl = 60;
+  var totalNodes = PATH_THEMES.length * PATH_STAGES.length;
+  if (lvl > totalNodes) lvl = totalNodes;
   startLevel30(lvl);
 }
 
@@ -3506,7 +3594,23 @@ function renderQuestion() {
     if (appState && appState.colorBlind) {
       label = String(label).split('🟢').join('▲ ').split('🔴').join('▼ ').split('🟢').join('▲ ').split('🟡').join('◆ ');
     }
-    btn.innerHTML = '<span class="option-letter">' + letter + '</span><span>' + label + '</span>';
+    /* 17: 术语展示规则 — 识别题的选项下方加口语化短注解
+     * 只有选项文本是形态名时才显示，其他题型（判断/预测/场景）不显示 */
+    var optionSubLabel = '';
+    var q = currentQuiz.questions[currentQuiz.currentIndex];
+    if (q && q.type === 'identify') {
+      /* 尝试用选项文本匹配形态名，查找短注解 */
+      var shortDesc = getPatternShortDesc(label);
+      if (!shortDesc) {
+        /* 如果直接匹配不到，尝试模糊匹配（去掉前后空格、特殊字符） */
+        var cleanLabel = String(label).trim().replace(/^[\s\W]+|[\s\W]+$/g, '');
+        shortDesc = getPatternShortDesc(cleanLabel);
+      }
+      if (shortDesc) {
+        optionSubLabel = '<span style="font-size:11px;color:var(--text-muted);font-weight:400;line-height:1.3">' + shortDesc + '</span>';
+      }
+    }
+    btn.innerHTML = '<span class="option-letter">' + letter + '</span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-weight:600">' + label + '</span>' + optionSubLabel + '</span>';
     btn.setAttribute('tabindex', '0');
     btn.setAttribute('aria-label', 'Answer option ' + letter + ': ' + label);
     btn.onclick = function() {
@@ -3596,6 +3700,154 @@ function toggleChartView() {
     var zh = currentLang === 'zh';
     btn.textContent = chartShowAll ? (zh ? '最近7根' : 'Recent 7') : (zh ? '全部K线' : 'All candles');
   }
+}
+
+/* 3-2: K线图放大模态框 — 整组圈选 + 结构标注 */
+function openKlineZoom() {
+  var q = currentQuiz && currentQuiz.questions ? currentQuiz.questions[currentQuiz.currentIndex] : null;
+  if (!q) return;
+  var zh = currentLang === 'zh';
+  var drawCandles = currentQuiz.activeCandles || q.candles || [];
+  var patternName = q.pattern || '';
+
+  /* 创建全屏遮罩 */
+  var overlay = document.createElement('div');
+  overlay.id = 'kline-zoom-overlay';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:99998;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;box-sizing:border-box';
+  overlay.onclick = function(e) { if (e.target === overlay) closeKlineZoom(); };
+
+  /* 顶部栏 */
+  var topBar = document.createElement('div');
+  topBar.style.cssText = 'width:100%;max-width:500px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px';
+  topBar.innerHTML =
+    '<span style="font-size:13px;font-weight:700;color:#fff">🔍 ' + (zh ? '放大查看' : 'Zoom View') + '</span>' +
+    '<button type="button" onclick="closeKlineZoom()" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:20px;color:#cbd5e1;font-size:12px;padding:6px 14px;cursor:pointer;font-family:inherit">' + (zh ? '关闭 ✕' : 'Close ✕') + '</button>';
+  overlay.appendChild(topBar);
+
+  /* 形态名称 */
+  var pObj = _findPatternObjByName(patternName);
+  var dispName = zh ? (pObj ? (pObj.nameZh || patternName) : patternName) : patternName;
+  var nameLabel = document.createElement('div');
+  nameLabel.style.cssText = 'font-size:18px;font-weight:800;color:#fbbf24;margin-bottom:12px';
+  nameLabel.textContent = dispName;
+  overlay.appendChild(nameLabel);
+
+  /* 放大的 K 线图画布 */
+  var canvas = document.createElement('canvas');
+  canvas.id = 'kline-zoom-canvas';
+  canvas.width = 480;
+  canvas.height = 280;
+  canvas.style.cssText = 'background:#0b1220;border-radius:16px;border:2px solid #334155;box-shadow:0 8px 32px rgba(0,0,0,0.5);max-width:100%;height:auto';
+  overlay.appendChild(canvas);
+
+  /* 结构标注说明 */
+  var annotations = getPatternAnnotations(patternName);
+  if (annotations && annotations.length > 0) {
+    var annBox = document.createElement('div');
+    annBox.style.cssText = 'margin-top:16px;width:100%;max-width:480px;background:rgba(30,41,59,0.8);border:1px solid #334155;border-radius:12px;padding:12px 16px';
+    var annTitle = document.createElement('div');
+    annTitle.style.cssText = 'font-size:12px;font-weight:700;color:#93c5fd;margin-bottom:8px';
+    annTitle.textContent = '📐 ' + (zh ? '结构标注' : 'Structure Guide');
+    annBox.appendChild(annTitle);
+    annotations.forEach(function(ann, idx) {
+      var row = document.createElement('div');
+      row.style.cssText = 'display:flex;gap:8px;align-items:flex-start;margin-bottom:6px';
+      row.innerHTML =
+        '<span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:' + ann.color + ';color:#fff;font-size:10px;font-weight:800;flex-shrink:0;margin-top:1px">' + (idx + 1) + '</span>' +
+        '<span style="color:#cbd5e1;font-size:12px;line-height:1.5"><strong style="color:#f1f5f9">' + ann.label + '：</strong>' + ann.desc + '</span>';
+      annBox.appendChild(row);
+    });
+    overlay.appendChild(annBox);
+  }
+
+  document.body.appendChild(overlay);
+
+  /* 绘制带圈选的 K 线图 */
+  setTimeout(function() {
+    var cv = document.getElementById('kline-zoom-canvas');
+    if (cv && drawCandles && drawCandles.length) {
+      try {
+        /* 高亮整组形态，而不只是最后一根 */
+        var patternLen = estimatePatternLength(patternName, drawCandles.length);
+        var hl = {
+          index: drawCandles.length - 1,
+          lastCandleOnly: false,
+          groupStart: Math.max(0, drawCandles.length - patternLen),
+          groupEnd: drawCandles.length - 1,
+          zoomMode: true
+        };
+        drawKlineCanvas('kline-zoom-canvas', drawCandles, q.maLines || null, hl, null);
+      } catch(e) { /* silent */ }
+    }
+  }, 50);
+}
+
+function closeKlineZoom() {
+  var el = document.getElementById('kline-zoom-overlay');
+  if (el && el.parentNode) el.parentNode.removeChild(el);
+}
+
+/* 3-2: 估算形态的 K 线数量（用于整组圈选） */
+function estimatePatternLength(patternName, totalLen) {
+  var simplePatterns = ['Marubozu', 'Doji', 'Hammer', 'Shooting Star', 'Hanging Man', 'Inverted Hammer', 'Spinning Top', 'Paper Umbrella', 'Bullish Engulfing', 'Bearish Engulfing', 'Piercing Pattern', 'Dark Cloud Cover', 'Bullish Harami', 'Bearish Harami', 'Morning Star', 'Evening Star', 'Three White Soldiers', 'Three Black Crows'];
+  for (var i = 0; i < simplePatterns.length; i++) {
+    if (patternName && patternName.indexOf(simplePatterns[i]) !== -1) {
+      return Math.min(totalLen, 5); /* 简单形态圈选最后 5 根 */
+    }
+  }
+  return Math.min(totalLen, 7); /* 复杂形态圈选最后 7 根 */
+}
+
+/* 3-2: 形态结构标注数据 */
+function getPatternAnnotations(patternName) {
+  var zh = currentLang === 'zh';
+  var annotations = {
+    'Hammer': [
+      { label: zh ? '长下影线' : 'Long lower wick', desc: zh ? '实体下方的长影线，说明下跌后被强力拉回' : 'Long wick below the body — price dropped sharply but recovered', color: '#22c55e' },
+      { label: zh ? '小实体' : 'Small body', desc: zh ? '实体很小，说明开盘收盘差距不大' : 'Small real body — open and close are close together', color: '#f59e0b' },
+      { label: zh ? '短上影线' : 'Short upper wick', desc: zh ? '几乎没有上影线，说明上方阻力很弱' : 'Almost no upper wick — little resistance above', color: '#94a3b8' }
+    ],
+    'Shooting Star': [
+      { label: zh ? '长上影线' : 'Long upper wick', desc: zh ? '实体上方的长影线，说明冲高后被打下来' : 'Long wick above — price rallied but was rejected', color: '#ef4444' },
+      { label: zh ? '小实体' : 'Small body', desc: zh ? '实体很小，开盘收盘几乎在同一位置' : 'Small body — open ≈ close', color: '#f59e0b' },
+      { label: zh ? '短下影线' : 'Short lower wick', desc: zh ? '下影很短，下方支撑暂时不明显' : 'Very short lower wick', color: '#94a3b8' }
+    ],
+    'Bullish Engulfing': [
+      { label: zh ? '前一根阴线' : 'Previous bearish candle', desc: zh ? '下跌趋势中先出现一根阴线' : 'A bearish candle in a downtrend', color: '#ef4444' },
+      { label: zh ? '吞没阳线' : 'Engulfing bullish candle', desc: zh ? '大阳线完全包住前一根阴线实体，反转信号' : 'Large bullish candle completely engulfs prior body — reversal signal', color: '#22c55e' }
+    ],
+    'Bearish Engulfing': [
+      { label: zh ? '前一根阳线' : 'Previous bullish candle', desc: zh ? '上涨趋势中先出现一根阳线' : 'A bullish candle in an uptrend', color: '#22c55e' },
+      { label: zh ? '吞没阴线' : 'Engulfing bearish candle', desc: zh ? '大阴线完全包住前一根阳线实体，反转信号' : 'Large bearish candle completely engulfs prior body — reversal signal', color: '#ef4444' }
+    ],
+    'Doji': [
+      { label: zh ? '十字星实体' : 'Doji body', desc: zh ? '开盘价几乎等于收盘价，实体极小' : 'Open ≈ close — body is extremely small', color: '#f59e0b' },
+      { label: zh ? '上下影线' : 'Upper & lower wicks', desc: zh ? '两边都有影线，说明多空争夺激烈' : 'Wicks on both sides — indecision between buyers and sellers', color: '#94a3b8' }
+    ],
+    'Marubozu': [
+      { label: zh ? '光头光脚' : 'No wicks', desc: zh ? '几乎没有上下影线，说明单边力量极强' : 'Almost no wicks — strong one-sided momentum', color: '#22c55e' },
+      { label: zh ? '大实体' : 'Large body', desc: zh ? '实体很长，开盘到收盘涨跌幅大' : 'Large real body — big move from open to close', color: '#f59e0b' }
+    ],
+    'Three White Soldiers': [
+      { label: zh ? '连续三根阳线' : 'Three consecutive bullish candles', desc: zh ? '一根比一根高，每根都收盘在高位' : 'Each closes higher than the last — strong buying pressure', color: '#22c55e' },
+      { label: zh ? '逐级攀升' : 'Steady climb', desc: zh ? '每根开盘在前一根实体内，稳步上涨' : 'Each opens within prior body — gradual uptrend', color: '#f59e0b' }
+    ],
+    'Three Black Crows': [
+      { label: zh ? '连续三根阴线' : 'Three consecutive bearish candles', desc: zh ? '一根比一根低，每根都收盘在低位' : 'Each closes lower than the last — strong selling pressure', color: '#ef4444' },
+      { label: zh ? '逐级下跌' : 'Steady decline', desc: zh ? '每根开盘在前一根实体内，稳步下跌' : 'Each opens within prior body — gradual downtrend', color: '#f59e0b' }
+    ]
+  };
+  /* 模糊匹配 */
+  for (var key in annotations) {
+    if (patternName && patternName.indexOf(key) !== -1) {
+      return annotations[key];
+    }
+  }
+  /* 默认通用标注 */
+  return [
+    { label: zh ? 'K线实体' : 'Candle body', desc: zh ? '粗的部分是实体，代表开盘到收盘的价格区间' : 'Thick part = body — price range from open to close', color: '#3b82f6' },
+    { label: zh ? '上下影线' : 'Wicks / shadows', desc: zh ? '细的线是影线，代表最高价和最低价' : 'Thin lines = wicks — highest and lowest prices', color: '#94a3b8' }
+  ];
 }
 
 /* Expand/collapse the pattern hint card */
@@ -3749,11 +4001,29 @@ function selectAnswer(idx) {
     type: q.type || 'identify'
   });
   if (ok) {
+    /* Fusion 阶段热身题：答对不计分，直接进入下一题 */
+    if (q.isWarmup) {
+      var zhW = currentLang === 'zh';
+      playSound('correct');
+      triggerMascotState('victory', 800);
+      showToast(zhW ? '✅ 热身题答对了！正式开始~' : '✅ Warm-up correct! Let\'s start for real~', 1500);
+      setTimeout(function() { nextQuestion(); }, 1000);
+      return;
+    }
     currentQuiz.correctCount++;
     currentQuiz.combo++;
     /* Adaptive difficulty: track consecutive correct */
     currentQuiz.consecutiveCorrect++;
     currentQuiz.consecutiveWrong = 0;
+    /* 1-4: 简单模式恢复 — 答对一题减少剩余简单题数，用完后恢复正常难度 */
+    if (currentQuiz.easyModeActive) {
+      currentQuiz.easyModeRemaining = (currentQuiz.easyModeRemaining || 0) - 1;
+      if (currentQuiz.easyModeRemaining <= 0) {
+        currentQuiz.easyModeActive = false;
+        var zhR = currentLang === 'zh';
+        showToast(zhR ? '🌟 感觉回来了！恢复正常难度~' : '🌟 You got this! Back to normal difficulty~', 2000);
+      }
+    }
     /* Review mode: count correct answers for heart reward */
     if (currentQuiz.isReview) {
       currentQuiz.reviewCorrectCount++;
@@ -3787,19 +4057,69 @@ function selectAnswer(idx) {
     if (appState.totalAnswered === 0 && ok) {
       showFirstCorrectCelebration();
     }
-    /* Streak check for path nodes: if streak target met, end quiz with success */
+    /* Streak check for path nodes: 4-1 容错机制
+       旧逻辑：连续答对 target 题 → 通关；答错清零 → 挫败感强
+       新逻辑：累计答对 target 题 → 通关；答错扣 1 条命，3 条命用完再答错才失败
+       combo 视觉仍然断（保留刺激感），但通关进度不重置 */
     if (currentQuiz.stageMode === 'streak' && currentQuiz.pathNodeNum &&
-        currentQuiz.consecutiveCorrect >= currentQuiz.stageTarget) {
+        currentQuiz.correctCount >= currentQuiz.stageTarget) {
       currentQuiz.streakAchieved = true;
       setTimeout(function() { endQuiz(); }, 1200);
     } else {
       setTimeout(function() { nextQuestion(); }, 800);
     }
   } else {
+    /* Fusion 阶段热身题：答错不计分、不扣命，直接进入下一题 */
+    if (q.isWarmup) {
+      var zhW2 = currentLang === 'zh';
+      playSound('wrong');
+      showToast(zhW2 ? '🤔 热身题没关系，正式开始~' : '🤔 No worries — it\'s just a warm-up. Let\'s go!', 1500);
+      setTimeout(function() { nextQuestion(); }, 1000);
+      return;
+    }
     currentQuiz.combo = 0;
     /* Adaptive difficulty: track consecutive wrong */
     currentQuiz.consecutiveWrong++;
     currentQuiz.consecutiveCorrect = 0;
+    /* 4-1: 3 次容错机制 — 答错扣 1 命，命用完判定失败
+       注意：通关进度（correctCount）不重置，用户已积累的答对题数仍然有效 */
+    currentQuiz.isPerfectRun = false;
+    currentQuiz.wrongCount++;
+    var hadLivesBefore = currentQuiz.livesRemaining > 0;
+    if (currentQuiz.stageMode === 'streak' && currentQuiz.pathNodeNum) {
+      currentQuiz.livesRemaining = Math.max(0, currentQuiz.livesRemaining - 1);
+      updateLivesDisplay();
+    }
+    var livesLeft = currentQuiz.livesRemaining > 0;
+
+    /* P1-1: 答错难度回落（帮一把机制）— 仅在剩余命数 > 0 时生效
+       触发条件：连续答错 2 次 → 激活简单模式，接下来 2 题只考本关新学形态
+       恢复规则：简单模式下答对 2 题后自动恢复正常难度
+       叠加关系：答错扣命 + 难度回落判定为同一答错行为同时触发（命数 > 0 时） */
+    if (livesLeft && currentQuiz.consecutiveWrong >= 2 && !currentQuiz.easyModeActive) {
+      currentQuiz.easyModeActive = true;
+      currentQuiz.easyModeRemaining = 2;
+      var zhE = currentLang === 'zh';
+      showToast(zhE ? '💪 别着急，先做两道刚学过的题找找感觉！' : '💪 Take it easy — 2 warm-up questions coming up!', 2500);
+    }
+
+    /* 命数扣完 → 立即失败，不再执行难度回落后续逻辑 */
+    if (!livesLeft && hadLivesBefore && currentQuiz.stageMode === 'streak' && currentQuiz.pathNodeNum) {
+      /* 容错用完，立即结束答题（失败） */
+      currentQuiz.failed = true;
+      setTimeout(function() { endQuiz(); }, 1500);
+      exitFeverMode();
+      playSound('wrong');
+      if (navigator.vibrate) navigator.vibrate([30, 50, 30, 50, 60]);
+      addMistake(q, idx, answerText, correctText);
+      showInlineFeedback(q);
+      triggerMascotState('wrong', 2000);
+      appState.totalAnswered++;
+      appState.questionsAnsweredToday++;
+      if (q.pattern) appState.weakPatterns[q.pattern] = (appState.weakPatterns[q.pattern] || 0) + 1;
+      saveState();
+      return; /* 提前返回，不再执行后面的通用逻辑 */
+    }
     exitFeverMode();
     /* sound: soft low tone for wrong answer */
     playSound('wrong');
@@ -4156,9 +4476,26 @@ function nextQuestion() {
   currentQuiz.currentIndex++;
   if (currentQuiz.currentIndex >= currentQuiz.questions.length) endQuiz();
   else {
+    /* 1-4: 难度回落 — 简单模式下，确保下一题是本关新学形态（刚教过，最简单）
+       从剩余题目中找第一道 isNewTaught = true 的，交换到当前位置 */
+    if (currentQuiz.easyModeActive && currentQuiz.easyModeRemaining > 0) {
+      var curIdx = currentQuiz.currentIndex;
+      var qs = currentQuiz.questions;
+      if (qs[curIdx] && !qs[curIdx].isNewTaught) {
+        for (var si = curIdx + 1; si < qs.length; si++) {
+          if (qs[si] && qs[si].isNewTaught) {
+            var tmp = qs[curIdx];
+            qs[curIdx] = qs[si];
+            qs[si] = tmp;
+            break;
+          }
+        }
+      }
+    }
     /* Adaptive difficulty: swap next question based on performance */
     adaptDifficulty();
     renderQuestion();
+    updateWarmupBanner(); /* 每题更新热身题横幅 */
   }
 }
 
@@ -4288,6 +4625,18 @@ function renderResultPage() {
     }
     starsEl.innerHTML = starHtml;
   }
+  /* 4-1: 完美通关徽章 — 零错误通关时显示 */
+  var perfectEl = document.getElementById('result-perfect-badge');
+  if (perfectEl) {
+    if (r.isPerfectRun && r.accuracy >= 60) {
+      perfectEl.style.display = 'flex';
+      perfectEl.innerHTML =
+        '<span style="font-size:18px">🏆</span>' +
+        '<span style="font-size:13px;font-weight:700;color:#fbbf24;margin-left:6px">' + (zh ? '完美通关！一次都没错' : 'Perfect Run! Zero mistakes') + '</span>';
+    } else {
+      perfectEl.style.display = 'none';
+    }
+  }
   /* Level progress bar */
   var lvlProgressEl = document.getElementById('result-level-progress');
   if (lvlProgressEl && appState) {
@@ -4349,7 +4698,8 @@ function renderResultPage() {
       if (replayBtn) replayBtn.style.display = 'none';
     } else if (lvlNum) {
       var nextLvl = Number(lvlNum) + 1;
-      if (nextLvl > 60) {
+      var totalNodes = PATH_THEMES.length * PATH_STAGES.length;
+      if (nextLvl > totalNodes) {
         btnEl.textContent = zh ? '🏆 全部通关！回到首页' : '🏆 All Clear! Back Home';
         btnEl.onclick = function() { showPage('home'); };
         if (replayBtn) replayBtn.style.display = 'none';
@@ -4505,41 +4855,66 @@ function showInlineFeedback(q) {
     canvas.classList.add('wrong-flash');
     setTimeout(function() { canvas.classList.remove('wrong-flash'); }, 1200);
   }
-  /* Minimal inline feedback: pattern name + trading implication + tap to continue */
+  /* 4-2: 三段式答错反馈
+     1. 正确答案（附形态名）
+     2. 错在哪（大白话解释）
+     3. 记忆口诀（一个特征记住它）
+     + 回看讲解按钮 */
   var zh = currentLang === 'zh';
   var correctIdx = (currentQuiz.activeCorrect != null) ? currentQuiz.activeCorrect : q.correct;
   var correctText = getAnswerText(q, correctIdx);
-  /* For trend questions (beginner mode), show simple color-based feedback without trading implications */
+  var lastAnswer = currentQuiz.answers.length > 0 ? currentQuiz.answers[currentQuiz.answers.length - 1] : null;
+  var yourAnswerText = lastAnswer ? lastAnswer.yourAnswer : '';
+  var patternName = q.pattern || '';
+  var mnemonic = getPatternMnemonic(patternName);
+  /* For trend questions (beginner mode), show simple color-based feedback */
   var isTrendQ = q.type === 'trend';
   var implication = isTrendQ ? null : getTradingImplication(q.pattern);
   var ec = (q.explain && (q.explain[currentLang] || q.explain.zh)) || '';
   if (isTrendQ && !ec) {
-    /* Provide a simple, beginner-friendly explanation for trend questions */
     ec = zh ? '🟢 绿色K线 = 价格上涨（收盘 > 开盘）\n🔴 红色K线 = 价格下跌（收盘 < 开盘）' : '🟢 Green candle = price rose (close > open)\n🔴 Red candle = price fell (close < open)';
   }
   var div = document.createElement('div');
   div.id = 'inline-fb';
   div.className = 'inline-feedback wrong';
-  var lastAnswer = currentQuiz.answers.length > 0 ? currentQuiz.answers[currentQuiz.answers.length - 1] : null;
-  var yourAnswerText = lastAnswer ? lastAnswer.yourAnswer : '';
   var html = '';
+  /* 第一段：你的答案 vs 正确答案 */
   if (yourAnswerText && yourAnswerText !== correctText) {
-    html += '<div style="font-size:12px;color:var(--accent-red);font-weight:600;margin-bottom:6px">❌ ' + (zh ? '你的答案' : 'Your answer') + ': ' + yourAnswerText + '</div>';
+    html += '<div style="font-size:12px;color:#ef4444;font-weight:700;margin-bottom:4px">❌ ' + (zh ? '你的答案' : 'Your answer') + ': ' + yourAnswerText + '</div>';
   }
-  html += '<div class="inline-feedback-title" style="color:var(--accent-green)">✅ ' + (zh ? '正确答案' : 'Correct answer') + ': ' + correctText + '</div>';
-  if (ec) html += '<div class="inline-feedback-explain" style="margin-top:6px;white-space:pre-line">' + ec + '</div>';
-  /* P0: Beginner encouragement — show "don't give up" message for Levels 1-10 */
+  html += '<div style="font-size:14px;font-weight:800;color:#22c55e;margin-bottom:2px">✅ ' + (zh ? '正确答案' : 'Correct') + ': ' + correctText + '</div>';
+  /* 1-1 界面层：如果是刚学的形态，加提示 */
+  if (q.isNewTaught) {
+    html += '<div style="font-size:11px;color:#fbbf24;font-weight:600;margin-bottom:8px">💡 ' + (zh ? '这题考的就是刚才讲过的！' : 'You just learned this one!') + '</div>';
+  }
+  /* 第二段：形态解释（大白话） */
+  if (ec) {
+    html += '<div style="margin-top:8px;padding:10px 12px;background:rgba(59,130,246,.08);border-radius:8px;border-left:3px solid #3b82f6">';
+    html += '<div style="font-size:11px;font-weight:700;color:#93c5fd;margin-bottom:4px">' + (zh ? '📖 形态说明' : 'What it means') + '</div>';
+    html += '<div style="font-size:12px;color:#cbd5e1;line-height:1.5;white-space:pre-line">' + ec + '</div>';
+    html += '</div>';
+  }
+  /* 第三段：记忆口诀 */
+  if (mnemonic) {
+    html += '<div style="margin-top:8px;padding:10px 12px;background:rgba(245,158,11,.08);border-radius:8px;border-left:3px solid #f59e0b">';
+    html += '<div style="font-size:11px;font-weight:700;color:#fbbf24;margin-bottom:4px">' + (zh ? '🧠 记住一个特征就够了' : 'Memory tip') + '</div>';
+    html += '<div style="font-size:12px;color:#fef3c7;line-height:1.5">' + mnemonic + '</div>';
+    html += '</div>';
+  }
+  /* 鼓励语 */
   if (currentQuiz.level30Num && currentQuiz.level30Num <= 10) {
     var encouragements = zh
       ? ['没关系，刚开始都这样！💪', '记住这个特征，下次就会了！🎯', '错了也是学习的一部分，加油！🌱', '看一眼特征，再来一次！✨']
       : ['No worries, everyone starts here! 💪', 'Remember this feature, next time you\'ll nail it! 🎯', 'Mistakes are part of learning! 🌱', 'Look at the shape, try again! ✨'];
     var enc = encouragements[Math.floor(Math.random() * encouragements.length)];
-    html += '<div style="margin-top:8px;font-size:13px;color:var(--text-muted);font-style:italic">' + enc + '</div>';
+    html += '<div style="margin-top:8px;font-size:12px;color:#94a3b8;font-style:italic;text-align:center">' + enc + '</div>';
   }
-  if (implication) html += '<div style="margin-top:6px;padding:6px 10px;background:rgba(59,130,246,.04);border-radius:8px;font-size:11px;color:var(--text-muted);line-height:1.4;opacity:.8"><span style="font-weight:600;color:var(--text-secondary)">' + (zh ? '交易启示：' : 'Trading: ') + '</span>' + implication + '</div>';
-  /* P0 BUGFIX B3: Use a proper <button> element with stable class and id for accessibility & testability.
-     Previously this was a plain div, making it hard to locate via selectors and inaccessible to screen readers. */
-  html += '<button type="button" id="feedback-continue-btn" class="feedback-continue-btn" style="margin-top:10px;padding:14px;border:2px solid var(--accent-green);border-radius:12px;text-align:center;font-size:15px;font-weight:700;color:var(--accent-green);cursor:pointer;width:100%;background:transparent;font-family:inherit">' + (zh ? '点击继续 →' : 'Tap to continue →') + '</button>';
+  /* 4-5: 回看讲解按钮 */
+  if (currentQuiz.pathNodeNum) {
+    html += '<button type="button" onclick="event.stopPropagation();replayTeachingDemo()" style="margin-top:10px;padding:10px;border:1px solid rgba(148,163,184,.3);border-radius:10px;text-align:center;font-size:13px;font-weight:600;color:#94a3b8;cursor:pointer;width:100%;background:transparent;font-family:inherit;margin-bottom:6px">📖 ' + (zh ? '回看对应讲解' : 'Review this lesson') + '</button>';
+  }
+  /* 继续按钮 */
+  html += '<button type="button" id="feedback-continue-btn" class="feedback-continue-btn" style="padding:14px;border:2px solid var(--accent-green);border-radius:12px;text-align:center;font-size:15px;font-weight:700;color:var(--accent-green);cursor:pointer;width:100%;background:transparent;font-family:inherit">' + (zh ? '继续 →' : 'Continue →') + '</button>';
   div.innerHTML = html;
   /* Immersive layout: feedback card appears ABOVE the answer buttons,
      taking over the question area (TikTok-style). */
@@ -4963,10 +5338,20 @@ function endQuiz() {
           pathStars = 1;
         }
       } else if (currentQuiz.stageMode === 'streak' && currentQuiz.pathNodeNum) {
-        /* Streak mode: streak achieved = 3 stars; accuracy >= 50% = pass with 1-2 stars */
-        if (currentQuiz.streakAchieved) {
+        /* 4-1: 3 次容错机制
+           streakAchieved (累计答对 >= target) = 通关
+           完美通关 (0 错误) = 3 星；1-2 次错 = 2 星；用完 3 次容错 = 1 星
+           容错用完 (failed) = 失败，即使正确率达标也不算过 */
+        if (currentQuiz.failed) {
+          /* 容错用完，判定失败 */
+          passed = false;
+          pathStars = 0;
+        } else if (currentQuiz.streakAchieved) {
           passed = true;
-          pathStars = acc === 100 ? 3 : 2;
+          var wrong = currentQuiz.wrongCount || 0;
+          if (wrong === 0) pathStars = 3;       /* 完美通关 */
+          else if (wrong <= 2) pathStars = 2;   /* 少量错误 */
+          else pathStars = 1;                    /* 用完容错 */
         } else if (acc >= 50) {
           passed = true;
           pathStars = acc >= 80 ? 2 : 1;
@@ -4993,7 +5378,7 @@ function endQuiz() {
         appState.level30Progress = appState.pathProgress;
         if (l30n >= (appState.currentPathNode || 1)) {
           appState.currentPathNode = l30n + 1;
-          if (appState.currentPathNode > 60) appState.currentPathNode = 61;
+          if (appState.currentPathNode > PATH_THEMES.length * PATH_STAGES.length) appState.currentPathNode = PATH_THEMES.length * PATH_STAGES.length + 1;
           appState.currentLevel30 = appState.currentPathNode;
           var zh = currentLang === 'zh';
           showToast('\u{1F389} ' + (zh ? '\u8282\u70B9\u901A\u5173\uFF01' : 'Stage Cleared!'));
@@ -5019,7 +5404,11 @@ function endQuiz() {
     level: currentQuiz.level,
     level30Num: currentQuiz.level30Num,
     isReview: currentQuiz.isReview,
-    bestCombo: appState.currentSessionMaxCombo || 0
+    bestCombo: appState.currentSessionMaxCombo || 0,
+    /* 4-1: 完美通关标识 */
+    isPerfectRun: currentQuiz.isPerfectRun === true,
+    wrongCount: currentQuiz.wrongCount || 0,
+    totalQuestions: tot
   };
   if (window.Analytics) Analytics.track('quiz_complete', { level: currentQuiz.level, accuracy: acc, correct: cor, total: tot, xp: currentQuiz.totalXP, is_review: currentQuiz.isReview || false });
   appState.currentSessionMaxCombo = 0;
@@ -5106,19 +5495,104 @@ function checkLevelUnlock(cl) {
 }
 
 /* === 12-Theme x 5-Stage Path System (Duolingo-style) === */
+/* 4-2 / 17: 形态记忆口诀 + 口语化解释（用于答错反馈和选项注解） */
+var PATTERN_MNEMONICS = {
+  'Marubozu Bullish': { en: 'Big green body, no shadows — buyers were in control the whole time.', zh: '一根大绿柱，从头到尾都在涨，买方完全控盘。' },
+  'Marubozu Bearish': { en: 'Big red body, no shadows — sellers dominated the whole session.', zh: '一根大红柱，从头到尾都在跌，卖方完全控盘。' },
+  'Doji': { en: 'Open = close, looks like a cross — market is undecided.', zh: '开盘收盘差不多，长得像个十字，市场犹豫不决。' },
+  'Hammer': { en: 'Long lower shadow, small body at top — looks like a hammer hitting bottom.', zh: '下影线很长，实体很小在上面，像锤子砸到底部要反弹。' },
+  'Shooting Star': { en: 'Long upper shadow, small body at bottom — price shot up then fell back.', zh: '上影线很长，实体很小在下面，价格冲高又掉下来。' },
+  'Inverted Hammer': { en: 'Long upper shadow, small body at bottom — buyers testing upward.', zh: '上影线长，实体在底部，买方在试探往上走。' },
+  'Hanging Man': { en: 'Long lower shadow, small body at top — appears at the top of a trend.', zh: '下影线长，实体在顶部，出现在上涨顶部，像人挂在高处。' },
+  'Bullish Engulfing': { en: 'Big green candle completely covers the previous red candle — buyers take over.', zh: '一根大阳线完全盖住前一根阴线，买方反扑接管局势。' },
+  'Bearish Engulfing': { en: 'Big red candle completely covers the previous green candle — sellers take over.', zh: '一根大阴线完全盖住前一根阳线，卖方反扑接管局势。' },
+  'Piercing Line': { en: 'Green candle opens lower then closes more than halfway up the previous red candle.', zh: '低开高走的阳线，收盘超过前一根阴线实体的一半。' },
+  'Dark Cloud Cover': { en: 'Red candle opens higher then closes more than halfway down the previous green candle.', zh: '高开低走的阴线，收盘跌过前一根阳线实体的一半。' },
+  'Morning Star': { en: 'Three candles: red, small doji, green — morning (sunrise) after a dark night.', zh: '三根K线：阴线→十字星→阳线，就像黑夜过后的日出。' },
+  'Evening Star': { en: 'Three candles: green, small doji, red — evening (sunset) after a bright day.', zh: '三根K线：阳线→十字星→阴线，就像白天过后的日落。' },
+  'Three White Soldiers': { en: 'Three consecutive green candles, each closing higher — soldiers marching up.', zh: '连续三根阳线，一根比一根高，像士兵列队向上冲锋。' },
+  'Three Black Crows': { en: 'Three consecutive red candles, each closing lower — crows flying down.', zh: '连续三根阴线，一根比一根低，像乌鸦成群往下飞。' },
+  'Bull Flag': { en: 'Brief pause (flag) in an uptrend, then continues up.', zh: '上涨途中短暂休整（像一面旗子），然后继续往上冲。' },
+  'Bear Flag': { en: 'Brief pause (flag) in a downtrend, then continues down.', zh: '下跌途中短暂休整（像一面旗子），然后继续往下掉。' },
+  'Double Top': { en: 'Price hits the same high twice and bounces down — M shape.', zh: '价格两次摸到同一个高点都掉下来，像字母 M。' },
+  'Double Bottom': { en: 'Price hits the same low twice and bounces up — W shape.', zh: '价格两次跌到同一个低点都弹起来，像字母 W。' },
+  'Head and Shoulders': { en: 'Three peaks: middle one is highest (head), two sides are lower (shoulders).', zh: '三个山峰：中间最高是头，两边矮一点是肩膀。' },
+  'Cup and Handle': { en: 'Rounded bottom (cup) followed by a small dip (handle) before breakout.', zh: '一个圆弧形的杯子，右边有个小把手，然后往上突破。' }
+};
+
+function getPatternMnemonic(patternName) {
+  var m = PATTERN_MNEMONICS[patternName];
+  if (!m) return null;
+  var lang = currentLang === 'zh' ? 'zh' : 'en';
+  return m[lang] || m.en;
+}
+
+/* 17: 术语展示规则 — 形态短注解，用于答题选项下方
+ * 官方标准名称 + 口语化短解释，既保留专业感又降低理解门槛 */
+var PATTERN_SHORT_DESC = {
+  'Marubozu Bullish': { zh: '光头光脚大阳线', en: 'Bald bullish candle' },
+  'Marubozu Bearish': { zh: '光头光脚大阴线', en: 'Bald bearish candle' },
+  'Doji': { zh: '十字星（开盘≈收盘）', en: 'Cross (open≈close)' },
+  'Hammer': { zh: '锤子线（下影长，见底信号）', en: 'Hammer (long lower wick)' },
+  'Shooting Star': { zh: '流星线（上影长，见顶信号）', en: 'Shooting star (long upper wick)' },
+  'Inverted Hammer': { zh: '倒锤子（上影长，底部反转）', en: 'Inverted hammer (bottom reversal)' },
+  'Hanging Man': { zh: '吊颈线（高位出现，见顶信号）', en: 'Hanging man (top reversal)' },
+  'Bullish Engulfing': { zh: '看涨吞没（阳包阴，底部反转）', en: 'Bullish engulfing (bottom reversal)' },
+  'Bearish Engulfing': { zh: '看跌吞没（阴包阳，顶部反转）', en: 'Bearish engulfing (top reversal)' },
+  'Piercing Line': { zh: '刺透线（低开高走，过半反转）', en: 'Piercing line (bullish reversal)' },
+  'Dark Cloud Cover': { zh: '乌云盖顶（高开低走，过半反转）', en: 'Dark cloud cover (bearish reversal)' },
+  'Morning Star': { zh: '启明星（三K线见底，黎明信号）', en: 'Morning star (3-candle bottom)' },
+  'Evening Star': { zh: '黄昏星（三K线见顶，黄昏信号）', en: 'Evening star (3-candle top)' },
+  'Three White Soldiers': { zh: '三白兵（三连阳，强势上涨）', en: 'Three white soldiers (3 bullish)' },
+  'Three Black Crows': { zh: '三乌鸦（三连阴，强势下跌）', en: 'Three black crows (3 bearish)' },
+  'Bull Flag': { zh: '看涨旗形（涨后横盘，继续向上）', en: 'Bull flag (up + pause + up)' },
+  'Bear Flag': { zh: '看跌旗形（跌后横盘，继续向下）', en: 'Bear flag (down + pause + down)' },
+  'Double Top': { zh: '双顶（M形，两次摸顶回落）', en: 'Double top (M shape, 2 highs)' },
+  'Double Bottom': { zh: '双底（W形，两次探底回升）', en: 'Double bottom (W shape, 2 lows)' },
+  'Head and Shoulders': { zh: '头肩顶（中间高，两边低）', en: 'Head & shoulders (1 head, 2 shoulders)' },
+  'Cup and Handle': { zh: '杯柄形态（圆底+小回调，突破向上）', en: 'Cup & handle (round bottom + dip)' },
+  'Spinning Top': { zh: '陀螺线（小实体，上下影差不多）', en: 'Spinning top (small body, equal wicks)' },
+  'Paper Umbrella': { zh: '纸伞线（下影长，类似锤子）', en: 'Paper umbrella (long lower wick)' },
+  'Tweezer Bottom': { zh: '镊子底（两根同价低点，支撑强）', en: 'Tweezer bottom (2 equal lows)' },
+  'Tweezer Top': { zh: '镊子顶（两根同价高点，阻力强）', en: 'Tweezer top (2 equal highs)' }
+};
+
+function getPatternShortDesc(patternName) {
+  var d = PATTERN_SHORT_DESC[patternName];
+  if (!d) return '';
+  var lang = currentLang === 'zh' ? 'zh' : 'en';
+  return d[lang] || d.en || '';
+}
+
 var PATH_THEMES = [
-  {name: 'Candlestick Basics', nameZh: '蜡烛基础', icon: '\u{1F525}', patterns: ['Marubozu Bullish', 'Marubozu Bearish', 'Doji']},
-  {name: 'Single Reversal', nameZh: '单根反转', icon: '\u{1F528}', patterns: ['Hammer', 'Shooting Star', 'Inverted Hammer', 'Hanging Man']},
-  {name: 'Two-Candle Patterns', nameZh: '双根组合', icon: '\u{1F4CA}', patterns: ['Bullish Engulfing', 'Bearish Engulfing', 'Piercing Line', 'Dark Cloud Cover']},
-  {name: 'Three-Candle Patterns', nameZh: '三根组合', icon: '\u{1F4C8}', patterns: ['Morning Star', 'Evening Star', 'Three White Soldiers', 'Three Black Crows']},
-  {name: 'Doji Family', nameZh: '十字星家族', icon: '\u2728', patterns: ['Long-Legged Doji', 'Dragonfly Doji', 'Gravestone Doji', 'Spinning Top']},
-  {name: 'Harami & Tweezer', nameZh: '孕线与镊子', icon: '\u{1F4CC}', patterns: ['Bullish Harami', 'Bearish Harami', 'Tweezer Top', 'Tweezer Bottom']},
-  {name: 'Inside & Abandoned', nameZh: '三内与弃婴', icon: '\u{1F50D}', patterns: ['Three Inside Up', 'Three Inside Down', 'Abandoned Baby Bullish', 'Abandoned Baby Bearish']},
-  {name: 'Indicator Patterns', nameZh: '指标形态', icon: '\u{1F4C9}', patterns: ['MACD Bullish Divergence', 'MACD Bearish Divergence', 'Bollinger Squeeze', 'Golden Cross', 'Death Cross', 'RSI Overbought', 'RSI Oversold']},
-  {name: 'Trend Continuation', nameZh: '趋势延续', icon: '\u{1F680}', patterns: ['Bull Flag', 'Bear Flag', 'Support Bounce', 'Resistance Rejection']},
-  {name: 'Reversal Structures', nameZh: '反转结构', icon: '\u{1F504}', patterns: ['Double Top', 'Double Bottom', 'Head and Shoulders', 'Inverse Head and Shoulders']},
-  {name: 'Chart Patterns', nameZh: '图表形态', icon: '\u{1F4D0}', patterns: ['Ascending Triangle', 'Descending Triangle', 'Symmetrical Triangle', 'Cup and Handle', 'Rising Wedge', 'Falling Wedge']},
-  {name: 'Comprehensive', nameZh: '综合实战', icon: '\u{1F3C6}', patterns: null}
+  /* BEGINNER (0-2) */
+  {name: 'Candlestick Basics', nameZh: '蜡烛基础', icon: '\u{1F525}', patterns: ['Marubozu Bullish', 'Marubozu Bearish', 'Doji'], difficulty: 'beginner'},
+  {name: 'Single Reversal', nameZh: '单根反转', icon: '\u{1F528}', patterns: ['Hammer', 'Shooting Star', 'Inverted Hammer', 'Hanging Man'], difficulty: 'beginner'},
+  {name: 'Two-Candle Patterns', nameZh: '双根组合', icon: '\u{1F4CA}', patterns: ['Bullish Engulfing', 'Bearish Engulfing', 'Piercing Line', 'Dark Cloud Cover'], difficulty: 'beginner'},
+  /* Transition 1: BEGINNER → INTERMEDIATE (缓冲过渡) */
+  {name: 'Stepping Up', nameZh: '进阶台阶', icon: '\u{26F0}', patterns: ['Morning Star', 'Evening Star', 'Bullish Engulfing', 'Bearish Engulfing', 'Hammer', 'Shooting Star'], difficulty: 'transition_1', isTransition: true, transitionFrom: 'beginner', transitionTo: 'intermediate'},
+  /* INTERMEDIATE (4-7) */
+  {name: 'Three-Candle Patterns', nameZh: '三根组合', icon: '\u{1F4C8}', patterns: ['Morning Star', 'Evening Star', 'Three White Soldiers', 'Three Black Crows'], difficulty: 'intermediate'},
+  {name: 'Doji Family', nameZh: '十字星家族', icon: '\u2728', patterns: ['Long-Legged Doji', 'Dragonfly Doji', 'Gravestone Doji', 'Spinning Top'], difficulty: 'intermediate'},
+  {name: 'Harami & Tweezer', nameZh: '孕线与镊子', icon: '\u{1F4CC}', patterns: ['Bullish Harami', 'Bearish Harami', 'Tweezer Top', 'Tweezer Bottom'], difficulty: 'intermediate'},
+  {name: 'Inside & Abandoned', nameZh: '三内与弃婴', icon: '\u{1F50D}', patterns: ['Three Inside Up', 'Three Inside Down', 'Abandoned Baby Bullish', 'Abandoned Baby Bearish'], difficulty: 'intermediate'},
+  /* Transition 2: INTERMEDIATE → ADVANCED (缓冲过渡) */
+  {name: 'Leveling Up', nameZh: '高阶台阶', icon: '\u{1F3D4}', patterns: ['Double Top', 'Double Bottom', 'Morning Star', 'Evening Star', 'Bull Flag', 'Bear Flag'], difficulty: 'transition_2', isTransition: true, transitionFrom: 'intermediate', transitionTo: 'advanced'},
+  /* ADVANCED (9-12) */
+  {name: 'Indicator Patterns', nameZh: '指标形态', icon: '\u{1F4C9}', patterns: ['MACD Bullish Divergence', 'MACD Bearish Divergence', 'Bollinger Squeeze', 'Golden Cross', 'Death Cross', 'RSI Overbought', 'RSI Oversold'], difficulty: 'advanced'},
+  {name: 'Trend Continuation', nameZh: '趋势延续', icon: '\u{1F680}', patterns: ['Bull Flag', 'Bear Flag', 'Support Bounce', 'Resistance Rejection'], difficulty: 'advanced'},
+  {name: 'Reversal Structures', nameZh: '反转结构', icon: '\u{1F504}', patterns: ['Double Top', 'Double Bottom', 'Head and Shoulders', 'Inverse Head and Shoulders'], difficulty: 'advanced'},
+  {name: 'Chart Patterns', nameZh: '图表形态', icon: '\u{1F4D0}', patterns: ['Ascending Triangle', 'Descending Triangle', 'Symmetrical Triangle', 'Cup and Handle', 'Rising Wedge', 'Falling Wedge'], difficulty: 'advanced'},
+  /* Comprehensive (13-15): 3 级梯度 (1-5 条需求) */
+  {name: 'Comprehensive I', nameZh: '综合实战·初', icon: '\u{1F3C5}', patterns: null, difficulty: 'combo', isComprehensive: true, comboTier: 1,
+    /* 动态计算：前 4 个正式主题（0-3）的所有形态 + 过渡1 */
+    _comboRange: [0, 3]},
+  {name: 'Comprehensive II', nameZh: '综合实战·中', icon: '\u{1F948}', patterns: null, difficulty: 'combo', isComprehensive: true, comboTier: 2,
+    /* 动态计算：前 8 个正式主题（0-7）的所有形态 + 过渡1 */
+    _comboRange: [0, 7]},
+  {name: 'Comprehensive III', nameZh: '综合实战·终', icon: '\u{1F3C6}', patterns: null, difficulty: 'combo', isComprehensive: true, comboTier: 3,
+    /* 全形态 */
+    _comboRange: [0, 12]}
 ];
 
 var PATH_STAGES = [
@@ -5126,12 +5600,14 @@ var PATH_STAGES = [
   {name: 'Understand', nameZh: '理解', icon: '\u{1F9E0}', qType: 'truefalse', target: 2, maxQ: 6, mode: 'streak'},
   {name: 'Apply', nameZh: '应用', icon: '\u{1F3AF}', qType: 'predict', target: 3, maxQ: 8, mode: 'streak'},
   {name: 'Analyze', nameZh: '分析', icon: '\u{1F50D}', qType: 'scenario', target: 4, maxQ: 10, mode: 'streak'},
-  {name: 'Master', nameZh: '大师', icon: '\u{1F3C6}', qType: 'mixed', target: 6, maxQ: 10, mode: 'accuracy'}
+  /* 1-6: 题型融合过渡阶段 — Stage 4 改为 Fusion（双题型融合过渡），原 Master 后移到 Stage 5 */
+  {name: 'Fusion', nameZh: '融合', icon: '\u{1F500}', qType: 'mixed2', target: 5, maxQ: 10, mode: 'streak'},
+  {name: 'Master', nameZh: '大师', icon: '\u{1F3C6}', qType: 'mixed', target: 12, maxQ: 20, mode: 'accuracy'}
 ];
 
-function pathNodeNum(themeIdx, stageIdx) { return themeIdx * 5 + stageIdx + 1; }
-function pathNodeTheme(nodeNum) { return Math.floor((nodeNum - 1) / 5); }
-function pathNodeStage(nodeNum) { return (nodeNum - 1) % 5; }
+function pathNodeNum(themeIdx, stageIdx) { return themeIdx * PATH_STAGES.length + stageIdx + 1; }
+function pathNodeTheme(nodeNum) { return Math.floor((nodeNum - 1) / PATH_STAGES.length); }
+function pathNodeStage(nodeNum) { return (nodeNum - 1) % PATH_STAGES.length; }
 
 function getUnlockMessage(nodeNum) {
   var zh = currentLang === 'zh';
@@ -5229,68 +5705,282 @@ function buildPath() {
   var allPatterns = ParamQuestionGen.DIFFICULTY_BEGINNER
     .concat(ParamQuestionGen.DIFFICULTY_INTERMEDIATE)
     .concat(ParamQuestionGen.DIFFICULTY_ADVANCED);
-  PATH_THEMES.forEach(function(theme, themeIdx) {
-    var pool = theme.patterns;
-    if (!pool) pool = allPatterns;
-    else {
-      /* DIFF-01 fix: expand distractor pool with same-difficulty patterns so
-         beginner themes never get advanced distractors (RSI, Death Cross, etc.)
-         Theme's own patterns stay first in array so pickPattern() prefers them
-         for question generation; extra patterns are used only as distractors. */
-      var diffKey = themeIdx <= 2 ? 'DIFFICULTY_BEGINNER'
-                  : themeIdx <= 6 ? 'DIFFICULTY_INTERMEDIATE'
-                  : 'DIFFICULTY_ADVANCED';
-      var diffPool = ParamQuestionGen[diffKey] || [];
-      var expanded = pool.slice();
-      for (var di = 0; di < diffPool.length; di++) {
-        if (expanded.indexOf(diffPool[di]) === -1) expanded.push(diffPool[di]);
-      }
-      pool = expanded;
-    }
-    PATH_STAGES.forEach(function(stage, stageIdx) {
-      var nodeNum = pathNodeNum(themeIdx, stageIdx);
-      var rng = makeRng(200000 + nodeNum * 7919);
-      var usedInNode = {};
-      var questions = [];
-      var types = stage.qType === 'mixed' ? ['identify', 'truefalse', 'predict', 'scenario'] : [stage.qType];
-      var qCount = stage.mode === 'accuracy' ? stage.maxQ : Math.max(stage.maxQ, stage.target + 5);
-      function pickPattern() {
-        var sorted = pool.slice().sort(function(x, y) {
-          var cx = usedCount[x] || 0, cy = usedCount[y] || 0;
-          return cx - cy;
-        });
-        var p = sorted[Math.floor(rng() * Math.min(6, sorted.length))];
-        if (usedInNode[p]) {
-          for (var ai = 0; ai < sorted.length; ai++) {
-            if (!usedInNode[sorted[ai]]) { p = sorted[ai]; break; }
+
+  /* 1-5: 预计算每个综合关的形态池（按 comboRange 从正式主题中收集） */
+  PATH_THEMES.forEach(function(theme) {
+    if (theme.isComprehensive && theme._comboRange) {
+      var comboPool = [];
+      for (var ti = theme._comboRange[0]; ti <= theme._comboRange[1]; ti++) {
+        var t = PATH_THEMES[ti];
+        if (!t || !t.patterns) continue;
+        for (var pi = 0; pi < t.patterns.length; pi++) {
+          if (comboPool.indexOf(t.patterns[pi]) === -1) {
+            comboPool.push(t.patterns[pi]);
           }
         }
-        usedCount[p] = (usedCount[p] || 0) + 1;
-        usedInNode[p] = true;
-        return p;
       }
+      theme._comboPatterns = comboPool; /* 缓存计算结果 */
+    }
+  });
+
+  PATH_THEMES.forEach(function(theme, themeIdx) {
+    /* ============================================================
+       1-1 / 1-2 / 1-3: 累积式已学形态池 + 双池强校验
+       ============================================================ */
+    var themePatterns;
+    if (theme.isComprehensive) {
+      /* 综合关：使用预计算的梯度形态池 */
+      themePatterns = theme._comboPatterns || allPatterns;
+    } else {
+      themePatterns = theme.patterns || [];
+    }
+
+    /* 累积式已学形态：每个 Stage 教若干新形态，逐步扩容
+       learnedPoolUpToStage[s] = 截止到 stageIdx = s 时的累积已学形态 */
+    var learnedPoolUpToStage = [];
+    var taughtThisStage = []; /* 每个 stage 新教的形态 */
+    var cumulative = [];
+
+    for (var sIdx = 0; sIdx < PATH_STAGES.length; sIdx++) {
+      var newCount = 0;
+      if (sIdx === 0) {
+        /* Stage 0 教最多 4 个（或主题全部形态，如果少于 4） */
+        newCount = Math.min(4, themePatterns.length);
+      } else {
+        /* 其他 stage 教最多 2 个新形态 */
+        newCount = Math.min(2, themePatterns.length - cumulative.length);
+        if (newCount < 0) newCount = 0;
+      }
+      var newPatterns = themePatterns.slice(cumulative.length, cumulative.length + newCount);
+      taughtThisStage.push(newPatterns);
+      cumulative = cumulative.concat(newPatterns);
+      learnedPoolUpToStage.push(cumulative.slice());
+    }
+
+    PATH_STAGES.forEach(function(stage, stageIdx) {
+      var nodeNum = pathNodeNum(themeIdx, stageIdx);
+
+      /* P0-1: 双池规则（最终定稿 · 口径统一）
+         - 题干池（trainPool）= 已学形态（严格不超纲，所有题型均适用）
+         - 干扰项池（distractPool）= 仅识别题有干扰项概念，规则如下：
+             ① 优先从已学形态中抽取
+             ② 当已学形态不足 3 个时，从同主题/同档未学形态中补充（保证 4 选 1 题量）
+             ③ 兜底仅在极早期节点触发，已学 ≥ 4 时自动不触发
+             ④ 综合关按「本档形态池内已学优先，不足再补同档未学」执行
+             ⑤ 判断 / 预测 / 场景题无干扰项概念，不套用此规则 */
+      var learnedPool = learnedPoolUpToStage[stageIdx] || [];
+      var trainPool = learnedPool.slice();       /* 题干池 = 已学形态（严格不超纲） */
+      var distractPool = learnedPool.slice();    /* 干扰池 = 先放已学形态 */
+
+      /* P0-1: 干扰项补位 — 仅识别题有 4 选 1 干扰项概念
+         已学形态 < 3 个时从同主题/同档未学形态中补充 */
+      var MIN_DISTRACT_FOR_FALLBACK = 3; /* 已学不足 3 个才触发兜底 */
+      var TARGET_DISTRACT_COUNT = 4;     /* 目标：4 选 1 有足够干扰项 */
+      var stage = PATH_STAGES[stageIdx];
+      var isIdentifyStage = stage && stage.qType === 'identify';
+      if (isIdentifyStage && distractPool.length < MIN_DISTRACT_FOR_FALLBACK) {
+        var untaughtInTheme = themePatterns.filter(function(p) {
+          return learnedPool.indexOf(p) < 0;
+        });
+        for (var ui = 0; ui < untaughtInTheme.length && distractPool.length < TARGET_DISTRACT_COUNT; ui++) {
+          distractPool.push(untaughtInTheme[ui]);
+        }
+      }
+
+      /* 综合关：按本档形态池执行 */
+      if (theme.isComprehensive) {
+        var tierPool = theme._comboPatterns || themePatterns;
+        trainPool = learnedPool.length > 0 ? learnedPool.slice() : tierPool.slice();
+        if (isIdentifyStage) {
+          distractPool = learnedPool.slice();
+          if (distractPool.length < MIN_DISTRACT_FOR_FALLBACK) {
+            var untaughtTier = tierPool.filter(function(p) { return learnedPool.indexOf(p) < 0; });
+            for (var ti = 0; ti < untaughtTier.length && distractPool.length < TARGET_DISTRACT_COUNT; ti++) {
+              distractPool.push(untaughtTier[ti]);
+            }
+          }
+        }
+        if (theme.comboTier === 3) {
+          /* Gold 档：已学形态多时，直接用全档形态池 */
+          if (learnedPool.length >= tierPool.length) {
+            trainPool = tierPool.slice();
+            distractPool = tierPool.slice();
+          }
+        }
+      }
+
+      /* 1-3: 本 stage 新教的形态（Tier 1 优先出题）
+         出题比例：70% Tier1（刚学）, 30% Tier2（往期已学） */
+      var newTaught = taughtThisStage[stageIdx] || [];
+      var oldLearned = [];
+      if (stageIdx > 0) {
+        oldLearned = learnedPoolUpToStage[stageIdx - 1] || [];
+      }
+
+      /* P3-2: 过渡首关难度微调 — 平缓新主题开篇难度曲线
+         - 触发条件：每个 Theme 的第 2 关（stageIdx === 1，即首个新旧混合关）
+         - 比例调整：新学 60% / 复习 40%（标准为 70/30）
+         - 前 3 题强制优先从复习形态中抽取（降低上手门槛）
+         - 第 4 题起按 60/40 比例正常出题
+         - 容错机制、连胜规则、难度回落完全沿用通用规则，无特殊豁免 */
+      var isTransitionFirstStage = stageIdx === 1 && oldLearned.length > 0;
+      var transitionNewRatio = isTransitionFirstStage ? 0.6 : 0.7;
+      var transitionReviewCount = isTransitionFirstStage ? 3 : 0;
+      var questionIndex = 0; /* 当前出题序号，用于过渡首关前 3 题判定 */
+
+      /* 4-3: 通关后随机种子 — 用 playCount 变化种子，重玩同一关题目不重复
+       * 第一次玩用 nodeNum 固定种子（保证新玩家体验一致）
+       * 通关后重玩时，种子叠加 playCount，每次题目都不一样 */
+      var progress = appState.pathProgress[nodeNum] || {};
+      var playCount = progress.playCount || 0;
+      var seedBase = 200000 + nodeNum * 7919;
+      var seedOffset = playCount > 0 ? (playCount * 1337 + playCount * playCount * 17) : 0;
+      var rng = makeRng((seedBase + seedOffset) >>> 0);
+      var usedInNode = {};
+      var questions = [];
+
+      /* 题型处理：mixed2 表示双题型融合（从 4 种基础题型中随机选 2 种） */
+      var types;
+      if (stage.qType === 'mixed') {
+        types = ['identify', 'truefalse', 'predict', 'scenario'];
+      } else if (stage.qType === 'mixed2') {
+        /* 1-6: Fusion 阶段 — 双题型融合过渡
+           根据 stageIdx 动态选择 2 种题型，保证渐进式融合 */
+        var baseTypes = ['identify', 'truefalse', 'predict', 'scenario'];
+        var t1 = Math.min(stageIdx - 1, 3);
+        if (t1 < 0) t1 = 0;
+        var t2 = t1 + 1;
+        if (t2 > 3) t2 = 3;
+        types = [baseTypes[t1], baseTypes[t2]];
+      } else {
+        types = [stage.qType];
+      }
+
+      var qCount = stage.mode === 'accuracy' ? stage.maxQ : Math.max(stage.maxQ, stage.target + 5);
+
+      function pickPattern() {
+        /* 1-3: 两层选题，按比例从 Tier 1（刚学的）和 Tier 2（往期已学）取
+           标准比例 70/30；过渡首关 60/40
+           过渡首关前 N 题强制优先从复习形态中抽取（降低上手门槛） */
+        var tier1Available = newTaught.filter(function(p) { return !usedInNode[p]; });
+        var tier2Available = oldLearned.filter(function(p) { return !usedInNode[p]; });
+
+        var chosen = null;
+
+        /* P3-2: 过渡首关前 3 题强制优先复习（从 Tier 2 取）
+           只有当 Tier 2 还有未出现过的形态时才强制 */
+        if (isTransitionFirstStage && questionIndex < transitionReviewCount && tier2Available.length > 0) {
+          var sortedR = tier2Available.slice().sort(function(x, y) {
+            return (usedCount[x] || 0) - (usedCount[y] || 0);
+          });
+          chosen = sortedR[Math.floor(rng() * Math.min(3, sortedR.length))];
+        } else if (tier1Available.length > 0 && tier2Available.length > 0) {
+          /* 两层都有未出现的形态，按比例分配（标准 70/30，过渡首关 60/40） */
+          var roll = rng();
+          if (roll < transitionNewRatio) {
+            /* Tier 1: 按 usedCount 升序，前 min(4) 中随机 */
+            var sortedT = tier1Available.slice().sort(function(x, y) {
+              return (usedCount[x] || 0) - (usedCount[y] || 0);
+            });
+            chosen = sortedT[Math.floor(rng() * Math.min(4, sortedT.length))];
+          } else {
+            /* Tier 2: 按 usedCount 升序，前 min(4) 中随机 */
+            var sortedO = tier2Available.slice().sort(function(x, y) {
+              return (usedCount[x] || 0) - (usedCount[y] || 0);
+            });
+            chosen = sortedO[Math.floor(rng() * Math.min(4, sortedO.length))];
+          }
+        } else if (tier1Available.length > 0) {
+          /* 只有 Tier 1 有新形态 */
+          var sortedT2 = tier1Available.slice().sort(function(x, y) {
+            return (usedCount[x] || 0) - (usedCount[y] || 0);
+          });
+          chosen = sortedT2[Math.floor(rng() * Math.min(4, sortedT2.length))];
+        } else if (tier2Available.length > 0) {
+          /* 只有 Tier 2 有新形态 */
+          var sortedO2 = tier2Available.slice().sort(function(x, y) {
+            return (usedCount[x] || 0) - (usedCount[y] || 0);
+          });
+          chosen = sortedO2[Math.floor(rng() * Math.min(4, sortedO2.length))];
+        } else {
+          /* 所有形态都出过了，从全池中选使用最少的 */
+          var allSorted = trainPool.slice().sort(function(x, y) {
+            return (usedCount[x] || 0) - (usedCount[y] || 0);
+          });
+          chosen = allSorted[Math.floor(rng() * Math.min(6, allSorted.length))];
+        }
+
+        usedCount[chosen] = (usedCount[chosen] || 0) + 1;
+        usedInNode[chosen] = true;
+        return chosen;
+      }
+
       while (questions.length < qCount) {
         var pName = pickPattern();
+        questionIndex++; /* P3-2: 题号递增，用于过渡首关前 3 题判定 */
         var tp = types[Math.floor(rng() * types.length)];
         var seed = (Math.floor(rng() * 1e9) + nodeNum * 7) >>> 0;
-        var q = ParamQuestionGen.generate(pName, tp, seed, pool);
+        var q = ParamQuestionGen.generate(pName, tp, seed, distractPool);
         if (q) {
           q.level = nodeNum;
           q.themeIdx = themeIdx;
           q.stageIdx = stageIdx;
+          /* 1-1 界面层：标记题目所属形态，用于答题页提示 */
+          q.focusPattern = pName;
+          q.isNewTaught = newTaught.indexOf(pName) >= 0;
           questions.push(q);
         }
       }
+
+      /* Fisher-Yates 洗牌 */
       var s2 = nodeNum * 137;
       for (var j = questions.length - 1; j > 0; j--) {
         s2 = (s2 * 1103515245 + 12345) & 0x7fffffff;
         var k = s2 % (j + 1);
         var t2 = questions[j]; questions[j] = questions[k]; questions[k] = t2;
       }
+
+      /* P3-2: 过渡首关 — 洗牌后确保前 3 题是复习形态
+         目的：降低上手门槛，让用户先做熟悉的题目建立信心
+         做法：将前 N 道复习题与前 N 题交换位置 */
+      if (isTransitionFirstStage) {
+        var reviewCount = Math.min(transitionReviewCount, questions.length);
+        var found = 0;
+        for (var ri = 0; ri < questions.length && found < reviewCount; ri++) {
+          if (!questions[ri].isNewTaught) {
+            if (ri !== found) {
+              var tmpQ = questions[found];
+              questions[found] = questions[ri];
+              questions[ri] = tmpQ;
+            }
+            found++;
+          }
+        }
+      }
+
+      /* Fusion 阶段：首题设为不计分热身题
+         - 找一道识别题（最容易上手的题型）换到第一位，标记为热身题
+         - 作用：首次接触混合题型前先练手，避免因不懂规则误答 */
+      var isFusionStage = stage.qType === 'mixed2';
+      if (isFusionStage && questions.length > 1) {
+        var warmupIdx = -1;
+        for (var wi = 0; wi < questions.length; wi++) {
+          if (questions[wi].type === 'identify') { warmupIdx = wi; break; }
+        }
+        if (warmupIdx < 0) warmupIdx = 0; /* 找不到识别题就用第一题 */
+        if (warmupIdx !== 0) {
+          var wt = questions[0]; questions[0] = questions[warmupIdx]; questions[warmupIdx] = wt;
+        }
+        questions[0].isWarmup = true;
+      }
       questions = questions.slice(0, qCount);
+
       nodes.push({
         num: nodeNum, themeIdx: themeIdx, stageIdx: stageIdx,
         theme: theme, stage: stage, questions: questions,
+        taughtPatterns: newTaught,           /* 本 stage 新教形态 */
+        learnedPatterns: learnedPool,        /* 截止当前累积已学形态 */
+        newPatternCount: newTaught.length,   /* 新学形态数量 */
         title: 'T' + (themeIdx + 1) + 'S' + (stageIdx + 1)
       });
     });
@@ -5318,6 +6008,23 @@ function renderLevelPath() {
   var html = '';
   var tutDone = appState.tutorialDone;
   var tutStatus = tutDone ? 'completed' : 'current';
+
+  /* 1-7: 顶部总进度条 */
+  var totalNodes = PATH_THEMES.length * PATH_STAGES.length;
+  var completedCount = 0;
+  for (var ci = 1; ci <= totalNodes; ci++) {
+    if (getPathNodeStatus(ci) === 'completed') completedCount++;
+  }
+  var totalPct = Math.round((completedCount / totalNodes) * 100);
+  html += '<div style="width:100%;background:var(--bg-secondary);border-radius:12px;padding:12px 14px;margin-bottom:16px">';
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">';
+  html += '<span style="font-size:12px;font-weight:700;color:var(--text-primary)">' + (zh ? '📊 总学习进度' : '📊 Overall Progress') + '</span>';
+  html += '<span style="font-size:11px;font-weight:700;color:var(--accent-gold)">' + completedCount + ' / ' + totalNodes + ' (' + totalPct + '%)</span>';
+  html += '</div>';
+  html += '<div style="height:6px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden">';
+  html += '<div style="height:100%;width:' + totalPct + '%;background:linear-gradient(90deg,#22c55e,#fbbf24);border-radius:3px;transition:width .5s ease"></div>';
+  html += '</div></div>';
+
   html += '<div class="ln-stage-0">';
   html += '<div class="stage-icon">\u{1F4DA}</div>';
   html += '<div class="stage-name">' + (zh ? '\u65B0\u624B\u6559\u5B66' : 'Basics') + '</div>';
@@ -5338,15 +6045,39 @@ function renderLevelPath() {
   }
   html += '</div>';
   html += '<div class="ln-wrap pos-c"><div class="ln-conn"></div></div>';
+
   var lastThemeIdx = -1;
   var allDone = tutDone;
+  /* 按主题分组计算进度 */
+  var themeProgress = [];
+  for (var ti = 0; ti < PATH_THEMES.length; ti++) {
+    var themeTotal = PATH_STAGES.length;
+    var themeDone = 0;
+    for (var si = 0; si < PATH_STAGES.length; si++) {
+      var nodeNum = ti * PATH_STAGES.length + si + 1;
+      if (getPathNodeStatus(nodeNum) === 'completed') themeDone++;
+    }
+    themeProgress.push({ total: themeTotal, done: themeDone, pct: Math.round((themeDone / themeTotal) * 100) });
+  }
+
   nodes.forEach(function(node, idx) {
     if (node.themeIdx !== lastThemeIdx) {
       lastThemeIdx = node.themeIdx;
-      html += '<div class="stage-divider">';
-      html += '<div class="stage-icon">' + node.theme.icon + '</div>';
-      html += '<div class="stage-name">' + (zh ? node.theme.nameZh : node.theme.name) + '</div>';
-      html += '<div class="stage-range">' + (zh ? '\u4E3B\u9898 ' + (node.themeIdx + 1) + '/12' : 'Theme ' + (node.themeIdx + 1) + '/12') + '</div>';
+      var tp = themeProgress[node.themeIdx] || { done: 0, total: 6, pct: 0 };
+      var themePatternCount = (node.theme.patterns || []).length;
+      html += '<div class="stage-divider" style="padding:14px 16px">';
+      html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">';
+      html += '<div class="stage-icon" style="margin:0">' + node.theme.icon + '</div>';
+      html += '<div style="flex:1">';
+      html += '<div class="stage-name" style="font-size:14px;text-align:left">' + (zh ? node.theme.nameZh : node.theme.name) + '</div>';
+      html += '<div style="font-size:10px;color:var(--text-muted);text-align:left;margin-top:1px">' + (zh ? '主题 ' + (node.themeIdx + 1) + '/' + PATH_THEMES.length + ' · ' + themePatternCount + ' 个形态' : 'Theme ' + (node.themeIdx + 1) + '/' + PATH_THEMES.length + ' · ' + themePatternCount + ' patterns') + '</div>';
+      html += '</div>';
+      html += '<div style="font-size:11px;font-weight:700;color:' + (tp.pct === 100 ? '#22c55e' : 'var(--accent-gold)') + '">' + tp.pct + '%</div>';
+      html += '</div>';
+      /* 1-7: 主题进度条 */
+      html += '<div style="height:4px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden">';
+      html += '<div style="height:100%;width:' + tp.pct + '%;background:' + (tp.pct === 100 ? '#22c55e' : '#fbbf24') + ';border-radius:2px;transition:width .5s ease"></div>';
+      html += '</div>';
       html += '</div>';
     }
     var status = getPathNodeStatus(node.num);
@@ -5355,13 +6086,18 @@ function renderLevelPath() {
     var showConn = idx > 0 && nodes[idx - 1].themeIdx === node.themeIdx;
     html += '<div class="ln-wrap ' + posClass + '">';
     if (showConn) html += '<div class="ln-conn"></div>';
-    html += '<div class="ln-node ' + status + '" onclick="startPathNode(' + node.num + ')" role="button" tabindex="0" aria-label="' + (zh ? '\u4E3B\u9898' : 'Theme') + ' ' + (node.themeIdx + 1) + ' ' + (zh ? node.stage.nameZh : node.stage.name) + '">';
+    var clickAction = (status === 'completed')
+      ? 'reviewPathNode(' + node.num + ')'
+      : (status === 'locked' ? '' : 'startPathNode(' + node.num + ')');
+    html += '<div class="ln-node ' + status + '" onclick="' + clickAction + '" role="button" tabindex="0" aria-label="' + (zh ? '\u4E3B\u9898' : 'Theme') + ' ' + (node.themeIdx + 1) + ' ' + (zh ? node.stage.nameZh : node.stage.name) + '">';
     if (status === 'completed') {
       html += '<div class="ln-check">\u2713</div>';
       var stars = (appState.pathProgress[node.num] || {}).stars || 0;
       var starHtml = '';
       for (var s = 0; s < 3; s++) starHtml += s < stars ? '<span class="s-on">\u2605</span>' : '<span class="s-off">\u2606</span>';
       html += '<div class="ln-star-row">' + starHtml + '</div>';
+      /* 1-7: 已通关显示「回看」标签 */
+      html += '<div style="font-size:9px;color:var(--accent-blue);font-weight:600;margin-top:2px">👆 ' + (zh ? '回看' : 'Review') + '</div>';
     } else if (status === 'current' || status === 'unlocked') {
       html += '<div class="ln-num" style="font-size:18px">' + node.stage.icon + '</div>';
       html += '<div class="ln-start-label">' + (zh ? node.stage.nameZh : node.stage.name).toUpperCase() + '</div>';
@@ -5377,8 +6113,19 @@ function renderLevelPath() {
   var currentNode = container.querySelector('.ln-node.current');
   if (currentNode) setTimeout(function() { currentNode.scrollIntoView({behavior: 'smooth', block: 'center'}); }, 100);
   document.getElementById('lp-title').textContent = zh ? '\u7CBE\u901A\u4E4B\u8DEF' : 'Mastery Path';
-  document.getElementById('lp-sub').textContent = zh ? '12\u4E2A\u4E3B\u9898 \u00D7 5\u4E2A\u9636\u6BB5 = 60\u4E2A\u8282\u70B9' : '12 Themes \u00D7 5 Stages = 60 Nodes';
+  document.getElementById('lp-sub').textContent = zh ? PATH_THEMES.length + '\u4E2A\u4E3B\u9898 \u00D7 ' + PATH_STAGES.length + '\u4E2A\u9636\u6BB5 = ' + (PATH_THEMES.length * PATH_STAGES.length) + '\u4E2A\u8282\u70B9' : PATH_THEMES.length + ' Themes \u00D7 ' + PATH_STAGES.length + ' Stages = ' + (PATH_THEMES.length * PATH_STAGES.length) + ' Nodes';
   document.getElementById('lp-finish-text').textContent = zh ? '\u5168\u90E8\u901A\u5173\uFF01' : 'All Levels Complete!';
+}
+
+/* 1-7 + 4-5: 回看已通关节点的教学演示 */
+function reviewPathNode(nodeNum) {
+  var zh = currentLang === 'zh';
+  var status = getPathNodeStatus(nodeNum);
+  if (status !== 'completed') return;
+  /* P3-1: 重玩模式 — 强制显示，引导提示恢复默认时长 */
+  showChapterTeachingDemo(nodeNum, function() {
+    /* 看完后不做任何事，回到地图 */
+  }, { force: true, isReplay: true });
 }
 
 function startTutorialFromPath() {
@@ -5428,9 +6175,46 @@ function _getChapterTeachingSlides(nodeNum) {
   if (!theme || !theme.patterns) return [];
   var patternNames = theme.patterns;
   var stageName = zh ? (stage.nameZh || stage.name) : stage.name;
-  var stageIcon = stage.icon || '📚';
+  /* 2-3: 图标视觉统一 — 用统一风格的 emoji，按阶段有清晰递进感 */
+  var stageIconMap = {
+    0: '🔍',  /* Recognize - 放大镜，代表「认形态」 */
+    1: '⚖️',  /* True/False - 天平，代表「判断真假」 */
+    2: '🔮',  /* Predict - 水晶球，代表「预测走势」 */
+    3: '🎯',  /* Scenario - 靶心，代表「场景决策」 */
+    4: '🔀',  /* Fusion - 混合，代表「融合挑战」 */
+    5: '🏆'   /* Mastery - 奖杯，代表「大师级」 */
+  };
+  var stageIcon = stageIconMap[stageIdx] || stage.icon || '📚';
 
   var slides = [];
+
+  /* 2-4: 热身回顾页 — 非首关时先回顾之前学过的内容 */
+  if (stageIdx > 0 && themeIdx >= 0) {
+    /* 计算之前学过的形态（累积到上一阶段） */
+    var prevPatterns = [];
+    var prevStageCount = Math.min(stageIdx, 6); /* 最多回顾 6 个，太多会花眼 */
+    for (var ps = 0; ps < stageIdx && prevPatterns.length < prevStageCount; ps++) {
+      var prevDemoCount = ps === 0 ? Math.min(4, patternNames.length) : Math.min(2, patternNames.length);
+      for (var pp = 0; pp < prevDemoCount && prevPatterns.length < prevStageCount; pp++) {
+        var ppName = patternNames[pp];
+        if (prevPatterns.indexOf(ppName) === -1) prevPatterns.push(ppName);
+      }
+    }
+    if (prevPatterns.length > 0) {
+      var prevNamesZh = prevPatterns.map(function(n) {
+        var po = _findPatternObjByName(n);
+        return po ? (po.nameZh || n) : n;
+      }).join('、');
+      slides.push({
+        type: 'review',
+        icon: '📝',
+        title: zh ? '先复习一下上一关' : 'Quick Review',
+        subtitle: zh ? '这些形态你已经学过了，等下会混着考：' : "You've already learned these — they'll show up in the quiz too:",
+        patterns: prevPatterns,
+        patternNamesZh: prevNamesZh
+      });
+    }
+  }
 
   /* Stage intro slide — what you'll learn in THIS stage */
   var stageIntro = {
@@ -5438,7 +6222,8 @@ function _getChapterTeachingSlides(nodeNum) {
     1: { subtitle: zh ? '判断题图是否符合形态定义' : 'True/False: does the chart match the pattern?' },
     2: { subtitle: zh ? '根据形态预测价格走势方向' : 'Predict where price will likely go next' },
     3: { subtitle: zh ? '在真实行情场景中做出决策' : 'Make decisions in real market scenarios' },
-    4: { subtitle: zh ? '综合挑战 — 所有题型混合考验' : 'Master challenge — mixed question types' }
+    4: { subtitle: zh ? '综合挑战 — 所有题型混合考验' : 'Fusion challenge — mixed question types' },
+    5: { subtitle: zh ? '大师级 — 全部形态综合考验' : 'Master challenge — all patterns mixed' }
   };
   var intro = stageIntro[stageIdx] || { subtitle: '' };
 
@@ -5487,7 +6272,8 @@ function _getChapterTeachingSlides(nodeNum) {
       1: { icon: '⚖️', title: zh ? '真假判断题' : 'True/False', desc: zh ? '看K线图，判断它是否符合某个形态的定义。注意细节！' : 'Look at the chart and decide if it matches the pattern definition. Pay attention to details!' },
       2: { icon: '🔮', title: zh ? '预测走势题' : 'Predict', desc: zh ? '根据形态判断价格接下来最可能怎么走。形态是概率，不是保证。' : 'Based on the pattern, what will price likely do next? Patterns signal probability, not certainty.' },
       3: { icon: '🎯', title: zh ? '场景分析题' : 'Scenario', desc: zh ? '在真实行情背景下做出交易决策。结合趋势、位置、成交量综合判断。' : 'Make trading decisions in real market context. Combine trend, position, and volume for your judgment.' },
-      4: { icon: '🏆', title: zh ? '大师综合挑战' : 'Master Challenge', desc: zh ? '所有题型混合出现。需要连续答对6题才能通过。准备好了吗？' : 'All question types mixed. Need 6 correct to pass. Ready for the challenge?' }
+      4: { icon: '🔀', title: zh ? '融合挑战题' : 'Fusion Challenge', desc: zh ? '所有题型混合出现。学过的形态都会再考到，边学新的边复习旧的。' : 'All question types mixed. Old patterns will appear too — review while learning new ones.' },
+      5: { icon: '🏆', title: zh ? '大师综合挑战' : 'Master Challenge', desc: zh ? '全部形态、所有题型混合考验。准备好了吗？' : 'All patterns and question types mixed. Ready for the final challenge?' }
     };
     var qte = qTypeExplain[stageIdx];
     if (qte) {
@@ -5500,17 +6286,43 @@ function _getChapterTeachingSlides(nodeNum) {
     }
   }
 
+  /* 2-4: 要点总结页 — 本关核心知识点一句话回顾 */
+  var keyPoints = [];
+  for (var kp = 0; kp < demoCount && kp < 3; kp++) {
+    var kpName = patternNames[kp];
+    var kpObj = _findPatternObjByName(kpName);
+    if (kpObj) {
+      var kpMnemonic = getPatternMnemonic(kpName);
+      if (kpMnemonic) keyPoints.push(kpMnemonic);
+    }
+  }
+  if (keyPoints.length > 0) {
+    /* 本关重点形态名（用于显性提示） */
+    var focusNames = patternNames.slice(0, Math.min(demoCount, patternNames.length));
+    slides.push({
+      type: 'summary',
+      icon: '💡',
+      title: zh ? '一句话记住它们' : 'Key Takeaways',
+      subtitle: zh ? '记不住没关系，答题时答错了还会再讲一遍' : "Don't worry if you forget — wrong answers come with explanations",
+      points: keyPoints,
+      focusPatterns: focusNames
+    });
+  }
+
   /* Final slide: transition to quiz with difficulty gradient promise */
   var readySubtitle = stageIdx === 0
     ? (zh ? '先从最简单的识别题开始，熟悉后难度会逐渐增加。加油！' : 'Start with easy recognition questions, then gradually increase difficulty. You got this!')
     : (zh ? '题型你已经了解了，开始挑战吧！' : "You know the drill. Let's do this!");
 
+  var readyFocus = patternNames.slice(0, Math.min(demoCount, patternNames.length));
+
   slides.push({
     type: 'ready',
-    icon: '🎯',
+    icon: '🚀',
     title: zh ? '准备好了吗？' : 'Ready?',
     subtitle: readySubtitle,
-    cta: zh ? '开始练习 →' : 'Start Practice →'
+    cta: zh ? '开始练习 →' : 'Start Practice →',
+    focusPatterns: readyFocus
   });
 
   return slides;
@@ -5531,17 +6343,22 @@ function _sortQuestionsByDifficulty(questions) {
 
 /* Show full-screen chapter teaching demo overlay.
  * Calls onComplete() when demo finishes (or user skips).
- * Shows for EVERY stage's first attempt — different content per stage. */
-function showChapterTeachingDemo(nodeNum, onComplete) {
+ * Shows for EVERY stage's first attempt — different content per stage.
+ * P3-1: options = { force: boolean, isReplay: boolean }
+ *   - force: 跳过已观看检查，强制显示（用于重玩/回看）
+ *   - isReplay: 是否为重玩模式，重玩时引导提示恢复默认时长 */
+function showChapterTeachingDemo(nodeNum, onComplete, options) {
   var zh = currentLang === 'zh';
   var themeIdx = pathNodeTheme(nodeNum);
   var stageIdx = pathNodeStage(nodeNum);
+  var opts = options || {};
+  var isReplay = !!opts.isReplay;
 
   /* Track demos per (theme, stage) pair — each stage gets its own demo.
      This ensures users get a brief intro before every new question type. */
   var demoKey = themeIdx + '_' + stageIdx;
   appState.chapterDemosSeen = appState.chapterDemosSeen || {};
-  if (appState.chapterDemosSeen[demoKey]) {
+  if (appState.chapterDemosSeen[demoKey] && !opts.force) {
     if (onComplete) onComplete({ applyGradient: true });
     return;
   }
@@ -5553,8 +6370,11 @@ function showChapterTeachingDemo(nodeNum, onComplete) {
   }
 
   var currentSlide = 0;
-  var autoTimer = null;
-  var isTransitioning = false; /* P2 fix: prevent race between auto-advance and manual click */
+  var isTransitioning = false; /* prevent race between prev / next / keyboard triggers */
+  /* 2-2: 自动播放模式 — 默认关闭（手动），用户可切换 */
+  var autoPlay = false;
+  var autoPlayTimer = null;
+  var AUTO_PLAY_DELAY = 5000; /* 5 秒自动翻页 */
 
   /* Create overlay */
   var overlay = document.createElement('div');
@@ -5568,23 +6388,76 @@ function showChapterTeachingDemo(nodeNum, onComplete) {
   skipBtn.textContent = zh ? '跳过' : 'Skip';
   skipBtn.setAttribute('aria-label', zh ? '跳过教学演示' : 'Skip teaching demo');
   skipBtn.style.cssText = 'position:absolute;top:calc(20px + env(safe-area-inset-top));right:20px;padding:8px 18px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;color:#94a3b8;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit';
-  skipBtn.onclick = function() { _finishDemo(); };
+  skipBtn.onclick = function() { _showSkipConfirm(); };
   overlay.appendChild(skipBtn);
+
+  /* 2-2: 自动播放切换按钮 */
+  var autoPlayBtn = document.createElement('button');
+  autoPlayBtn.type = 'button';
+  autoPlayBtn.className = 'demo-autoplay-btn';
+  autoPlayBtn.textContent = '▶ ' + (zh ? '自动' : 'Auto');
+  autoPlayBtn.setAttribute('aria-label', zh ? '切换自动播放' : 'Toggle auto-play');
+  autoPlayBtn.style.cssText = 'position:absolute;top:calc(20px + env(safe-area-inset-top));left:20px;padding:8px 14px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;color:#94a3b8;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s ease';
+  autoPlayBtn.onclick = function() { _toggleAutoPlay(); };
+  overlay.appendChild(autoPlayBtn);
+
+  /* 2-5: 跳过二次确认 */
+  var skipConfirmEl = null;
+  function _showSkipConfirm() {
+    if (skipConfirmEl) return;
+    /* P1-6: 弹窗出现时立即暂停自动翻页计时器
+       用户需要时间阅读弹窗内容，不能让它自动翻走 */
+    var wasAutoPlaying = autoPlay;
+    _clearAutoTimer();
+
+    skipConfirmEl = document.createElement('div');
+    skipConfirmEl.style.cssText = 'position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:100;padding:24px';
+    var box = document.createElement('div');
+    box.style.cssText = 'background:#1e293b;border-radius:16px;padding:24px;max-width:320px;width:100%;text-align:center;border:1px solid #334155';
+    box.innerHTML =
+      '<div style="font-size:40px;margin-bottom:12px">🤔</div>' +
+      '<div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px">' + (zh ? '确定要跳过吗？' : 'Skip this lesson?') + '</div>' +
+      '<div style="font-size:13px;color:#94a3b8;margin-bottom:20px;line-height:1.5">' + (zh ? '跳过之后就看不到这关的讲解了，确定已经会了吗？' : 'You won\'t see this explanation again. Are you sure you know this already?') + '</div>' +
+      '<div style="display:flex;gap:10px">' +
+        '<button type="button" id="skip-cancel-btn" style="flex:1;padding:12px;border:1px solid #334155;border-radius:12px;background:transparent;color:#94a3b8;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">' + (zh ? '继续看' : 'Keep watching') + '</button>' +
+        '<button type="button" id="skip-confirm-btn" style="flex:1;padding:12px;border:none;border-radius:12px;background:#ef4444;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">' + (zh ? '确定跳过' : 'Skip') + '</button>' +
+      '</div>';
+    skipConfirmEl.appendChild(box);
+    overlay.appendChild(skipConfirmEl);
+    var cancelBtn = box.querySelector('#skip-cancel-btn');
+    var confirmBtn = box.querySelector('#skip-confirm-btn');
+    cancelBtn.onclick = function() {
+      if (skipConfirmEl && skipConfirmEl.parentNode) skipConfirmEl.parentNode.removeChild(skipConfirmEl);
+      skipConfirmEl = null;
+      /* P1-6: 弹窗关闭（取消）后恢复自动播放计时器
+         如果之前在自动播放，关闭弹窗后从当前页重新计时 */
+      if (wasAutoPlaying) _startAutoTimer();
+    };
+    confirmBtn.onclick = function() { _finishDemo(); };
+  }
 
   /* Content container */
   var content = document.createElement('div');
   content.style.cssText = 'width:100%;max-width:440px;text-align:center;display:flex;flex-direction:column;align-items:center';
 
-  /* Progress dots */
+  /* Progress dots + page number (2-1) */
+  var progressWrap = document.createElement('div');
+  progressWrap.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:20px';
   var dots = document.createElement('div');
-  dots.style.cssText = 'display:flex;gap:6px;justify-content:center;margin-bottom:28px';
+  dots.style.cssText = 'display:flex;gap:6px;justify-content:center';
   for (var d = 0; d < slides.length; d++) {
     var dot = document.createElement('div');
     dot.className = 'demo-dot';
     dot.style.cssText = 'height:6px;border-radius:3px;transition:all .3s ease;background:' + (d === 0 ? '#f59e0b' : 'rgba(255,255,255,0.15)') + ';width:' + (d === 0 ? '24px' : '6px');
     dots.appendChild(dot);
   }
-  content.appendChild(dots);
+  progressWrap.appendChild(dots);
+  var pageLabel = document.createElement('div');
+  pageLabel.id = 'demo-page-label';
+  pageLabel.style.cssText = 'font-size:11px;color:rgba(255,255,255,0.4);font-weight:600;letter-spacing:.5px';
+  pageLabel.textContent = (zh ? '第 ' : 'Page ') + '1' + (zh ? ' / ' : ' / ') + slides.length + (zh ? ' 页' : '');
+  progressWrap.appendChild(pageLabel);
+  content.appendChild(progressWrap);
 
   /* Slide area */
   var slideArea = document.createElement('div');
@@ -5592,14 +6465,27 @@ function showChapterTeachingDemo(nodeNum, onComplete) {
   slideArea.style.cssText = 'width:100%;min-height:380px;display:flex;flex-direction:column;align-items:center;justify-content:center';
   content.appendChild(slideArea);
 
-  /* Primary action button */
+  /* Fix 3: button row with Prev + Next */
+  var btnRow = document.createElement('div');
+  btnRow.style.cssText = 'display:flex;gap:12px;margin-top:28px;width:100%;justify-content:center';
+
+  var prevBtn = document.createElement('button');
+  prevBtn.type = 'button';
+  prevBtn.className = 'demo-prev-btn';
+  prevBtn.textContent = zh ? '← 上一页' : '← Prev';
+  prevBtn.style.cssText = 'padding:16px 24px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:28px;color:#94a3b8;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.3px';
+  prevBtn.onclick = function() { _prevSlide(); };
+  btnRow.appendChild(prevBtn);
+
   var actionBtn = document.createElement('button');
   actionBtn.type = 'button';
   actionBtn.className = 'demo-action-btn';
   actionBtn.textContent = zh ? '下一步 →' : 'Next →';
-  actionBtn.style.cssText = 'margin-top:28px;padding:16px 40px;background:linear-gradient(135deg,#f59e0b,#ef4444);border:none;border-radius:28px;color:#fff;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 0 #b45309,0 8px 20px rgba(245,158,11,0.3);letter-spacing:.5px';
+  actionBtn.style.cssText = 'padding:16px 36px;background:linear-gradient(135deg,#f59e0b,#ef4444);border:none;border-radius:28px;color:#fff;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 0 #b45309,0 8px 20px rgba(245,158,11,0.3);letter-spacing:.5px';
   actionBtn.onclick = function() { _nextSlide(); };
-  content.appendChild(actionBtn);
+  btnRow.appendChild(actionBtn);
+
+  content.appendChild(btnRow);
 
   overlay.appendChild(content);
   document.body.appendChild(overlay);
@@ -5610,13 +6496,25 @@ function showChapterTeachingDemo(nodeNum, onComplete) {
       dotEls[i].style.background = i === idx ? '#f59e0b' : 'rgba(255,255,255,0.15)';
       dotEls[i].style.width = i === idx ? '24px' : '6px';
     }
+    /* 2-1: 更新页码显示 */
+    var pl = document.getElementById('demo-page-label');
+    if (pl) pl.textContent = (zh ? '第 ' : 'Page ') + (idx + 1) + (zh ? ' / ' : ' / ') + slides.length + (zh ? ' 页' : '');
   }
 
   function _updateButton(idx) {
     var isLast = idx === slides.length - 1;
+    var isFirst = idx === 0;
     actionBtn.textContent = isLast
       ? (zh ? '开始练习 →' : 'Start Practice →')
       : (zh ? '下一步 →' : 'Next →');
+    /* Fix 3: disable prev button on first slide */
+    if (isFirst) {
+      prevBtn.style.opacity = '0.3';
+      prevBtn.style.cursor = 'not-allowed';
+    } else {
+      prevBtn.style.opacity = '1';
+      prevBtn.style.cursor = 'pointer';
+    }
   }
 
   function _renderSlide(idx) {
@@ -5625,6 +6523,23 @@ function showChapterTeachingDemo(nodeNum, onComplete) {
 
     _updateDots(idx);
     _updateButton(idx);
+
+    /* P1-5: 翻页过渡 — 显示加载转圈提示（给用户明确的过渡反馈） */
+    var spinner = document.getElementById('demo-spinner');
+    if (!spinner) {
+      spinner = document.createElement('div');
+      spinner.id = 'demo-spinner';
+      spinner.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:32px;height:32px;border:3px solid rgba(255,255,255,0.1);border-top-color:#fbbf24;border-radius:50%;animation:demoSpin 0.8s linear infinite;display:none;z-index:10';
+      slideArea.parentElement.appendChild(spinner);
+      /* 加 spin keyframes（只加一次） */
+      if (!document.getElementById('demo-spin-style')) {
+        var s = document.createElement('style');
+        s.id = 'demo-spin-style';
+        s.textContent = '@keyframes demoSpin { to { transform: translate(-50%, -50%) rotate(360deg); } }';
+        document.head.appendChild(s);
+      }
+    }
+    spinner.style.display = 'block';
 
     /* Fade out current content */
     slideArea.style.opacity = '0';
@@ -5635,15 +6550,34 @@ function showChapterTeachingDemo(nodeNum, onComplete) {
       slideArea.innerHTML = '';
 
       if (slide.type === 'intro') {
+        /* Fix 4: Stage 0 eye icon — 40px, no bounce animation, easier on beginners */
+        var isStage0 = stageIdx === 0;
+        var iconSize = isStage0 ? '40px' : '52px';
+        var iconAnim = ''; /* 2-4: 讲解页图标改为静态，仅 ready 页保留弹跳 */
+        /* 2-6: 过渡阶段置灰 — 在 Fusion/Mastery 等高阶段，区分「本关新学」和「之前已学」的形态 */
+        var isTransitionStage = stageIdx >= 4; /* Fusion & Mastery 是融合阶段 */
+        var newPatternCount = stageIdx === 0 ? Math.min(4, slide.patterns.length) : Math.min(2, slide.patterns.length);
+        var patternsHtml = slide.patterns.map(function(p, pIdx) {
+          var pObj = _findPatternObjByName(p);
+          var dispName = zh ? (pObj ? (pObj.nameZh || p) : p) : p;
+          var isNew = pIdx < newPatternCount;
+          if (isTransitionStage && !isNew) {
+            /* 已学过的形态 — 灰色样式 */
+            return '<span style="padding:6px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:16px;color:#64748b;font-size:12px;font-weight:500;text-decoration:line-through;opacity:.6">' + dispName + ' ✓</span>';
+          } else {
+            /* 新学形态 — 金色高亮 */
+            return '<span style="padding:6px 14px;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.3);border-radius:20px;color:#fbbf24;font-size:13px;font-weight:600">' + dispName + '</span>';
+          }
+        }).join('');
+        var legendHtml = isTransitionStage
+          ? '<div style="margin-top:14px;font-size:11px;color:#64748b;display:flex;gap:12px;justify-content:center"><span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#fbbf24;margin-right:4px"></span>' + (zh ? '本关新学' : 'New this level') + '</span><span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#64748b;margin-right:4px"></span>' + (zh ? '已学过（复习）' : 'Already learned (review)') + '</span></div>'
+          : '';
         slideArea.innerHTML =
-          '<div style="font-size:52px;margin-bottom:16px;animation:demoBounce 1s ease infinite">' + slide.icon + '</div>' +
+          '<div style="font-size:' + iconSize + ';margin-bottom:16px;' + iconAnim + '">' + slide.icon + '</div>' +
           '<h2 style="font-size:26px;font-weight:800;color:#fff;margin-bottom:10px;letter-spacing:.3px">' + slide.title + '</h2>' +
           '<p style="color:#94a3b8;font-size:14px;margin-bottom:20px;line-height:1.5">' + slide.subtitle + '</p>' +
-          '<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:320px">' +
-            slide.patterns.map(function(p) {
-              return '<span style="padding:6px 14px;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.3);border-radius:20px;color:#fbbf24;font-size:13px;font-weight:600">' + p + '</span>';
-            }).join('') +
-          '</div>';
+          '<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:320px">' + patternsHtml + '</div>' +
+          legendHtml;
       } else if (slide.type === 'pattern') {
         var dispName = zh ? slide.patternNameZh : slide.patternName;
         slideArea.innerHTML =
@@ -5667,37 +6601,103 @@ function showChapterTeachingDemo(nodeNum, onComplete) {
         }, 50);
       } else if (slide.type === 'qtype') {
         slideArea.innerHTML =
-          '<div style="font-size:56px;margin-bottom:16px;animation:demoBounce 1s ease infinite">' + slide.icon + '</div>' +
+          '<div style="font-size:56px;margin-bottom:16px">' + slide.icon + '</div>' +
           '<h3 style="font-size:22px;font-weight:800;color:#fff;margin-bottom:12px">' + slide.title + '</h3>' +
           '<div style="background:rgba(245,158,11,0.08);border-left:3px solid #f59e0b;padding:12px 16px;border-radius:0 10px 10px 0;text-align:left;color:#fcd34d;font-size:14px;line-height:1.6;width:100%;box-sizing:border-box">' + slide.desc + '</div>';
+      } else if (slide.type === 'review') {
+        /* 2-4: 热身回顾页 — 展示已经学过的形态 */
+        var reviewNames = zh ? slide.patternNamesZh : slide.patterns.join(', ');
+        slideArea.innerHTML =
+          '<div style="font-size:48px;margin-bottom:16px">' + slide.icon + '</div>' +
+          '<h3 style="font-size:22px;font-weight:800;color:#fff;margin-bottom:10px">' + slide.title + '</h3>' +
+          '<p style="color:#94a3b8;font-size:13px;margin-bottom:16px;line-height:1.5">' + slide.subtitle + '</p>' +
+          '<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:320px">' +
+            slide.patterns.map(function(p) {
+              var pObj = _findPatternObjByName(p);
+              var disp = zh ? (pObj ? (pObj.nameZh || p) : p) : p;
+              return '<span style="padding:6px 12px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:16px;color:#22c55e;font-size:12px;font-weight:600">✓ ' + disp + '</span>';
+            }).join('') +
+          '</div>';
+      } else if (slide.type === 'summary') {
+        /* 2-4: 要点总结页 — 展示本关核心记忆点 + 本关重点形态 */
+        var pointsHtml = slide.points.map(function(pt, idx) {
+          return '<div style="display:flex;gap:10px;align-items:flex-start;text-align:left;margin-bottom:10px;width:100%">' +
+            '<span style="background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;font-size:11px;font-weight:800;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">' + (idx + 1) + '</span>' +
+            '<span style="color:#e2e8f0;font-size:13px;line-height:1.6;flex:1">' + pt + '</span>' +
+          '</div>';
+        }).join('');
+        /* 本关重点：显性列出本关核心形态（把后台出题逻辑前置到界面） */
+        var focusHtml = '';
+        if (slide.focusPatterns && slide.focusPatterns.length > 0) {
+          var zhF = currentLang === 'zh';
+          var focusTags = slide.focusPatterns.map(function(pn) {
+            return '<span style="display:inline-block;padding:4px 12px;background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.3);border-radius:14px;color:#fbbf24;font-size:12px;font-weight:600;margin:3px">' + pn + '</span>';
+          }).join('');
+          focusHtml = '<div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.1);width:100%;max-width:340px">' +
+            '<div style="font-size:11px;font-weight:700;color:#94a3b8;margin-bottom:6px;letter-spacing:0.5px">' + (zhF ? '🎯 本关重点' : '🎯 THIS STAGE FOCUS') + '</div>' +
+            '<div style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center">' + focusTags + '</div>' +
+          '</div>';
+        }
+        slideArea.innerHTML =
+          '<div style="font-size:48px;margin-bottom:12px">' + slide.icon + '</div>' +
+          '<h3 style="font-size:22px;font-weight:800;color:#fff;margin-bottom:8px">' + slide.title + '</h3>' +
+          '<p style="color:#94a3b8;font-size:12px;margin-bottom:16px;line-height:1.5">' + slide.subtitle + '</p>' +
+          '<div style="width:100%;max-width:340px">' + pointsHtml + focusHtml + '</div>';
       } else if (slide.type === 'ready') {
+        /* ready 页显示弹跳动画 + 本关重点形态 */
+        var readyFocusHtml = '';
+        if (slide.focusPatterns && slide.focusPatterns.length > 0) {
+          var zhRF = currentLang === 'zh';
+          var rfTags = slide.focusPatterns.map(function(pn) {
+            return '<span style="display:inline-block;padding:4px 12px;background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.3);border-radius:14px;color:#fbbf24;font-size:12px;font-weight:600;margin:3px">' + pn + '</span>';
+          }).join('');
+          readyFocusHtml = '<div style="margin-top:16px;width:100%;max-width:300px">' +
+            '<div style="font-size:11px;font-weight:700;color:#94a3b8;margin-bottom:6px;letter-spacing:0.5px">' + (zhRF ? '🎯 本关重点' : '🎯 THIS STAGE FOCUS') + '</div>' +
+            '<div style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center">' + rfTags + '</div>' +
+          '</div>';
+        }
         slideArea.innerHTML =
           '<div style="font-size:56px;margin-bottom:16px;animation:demoBounce 1.2s ease infinite">' + slide.icon + '</div>' +
           '<h2 style="font-size:24px;font-weight:800;color:#fff;margin-bottom:12px">' + slide.title + '</h2>' +
-          '<p style="color:#94a3b8;font-size:14px;line-height:1.7;max-width:300px">' + slide.subtitle + '</p>';
+          '<p style="color:#94a3b8;font-size:14px;line-height:1.7;max-width:300px">' + slide.subtitle + '</p>' +
+          readyFocusHtml;
       }
 
       /* Fade in */
       setTimeout(function() {
         slideArea.style.opacity = '1';
         slideArea.style.transform = 'translateY(0)';
-        /* P2 fix: release transition lock after fade-in completes */
-        setTimeout(function() { isTransitioning = false; }, 300);
+        /* release transition lock after fade-in completes */
+        setTimeout(function() {
+          isTransitioning = false;
+          _setNavDisabled(false); /* 翻页过渡结束，恢复按钮状态 */
+          var sp = document.getElementById('demo-spinner');
+          if (sp) sp.style.display = 'none'; /* P1-5: 隐藏加载转圈 */
+          /* 2-2: 自动播放模式下，翻页后重启计时器 */
+          if (autoPlay) _startAutoTimer();
+        }, 300);
       }, 30);
     }, 200);
+    /* Fix 3: no more auto-advance — user controls pace manually */
+  }
 
-    /* Auto-advance for non-final slides */
-    if (autoTimer) clearTimeout(autoTimer);
-    if (idx < slides.length - 1) {
-      autoTimer = setTimeout(function() { _nextSlide(); }, 5000); /* 5s per slide */
-    }
+  function _prevSlide() {
+    /* Fix 3: go to previous slide. Guard with transition lock. */
+    if (isTransitioning) return;
+    if (currentSlide <= 0) return;
+    isTransitioning = true;
+    _setNavDisabled(true); /* 翻页过渡中按钮置灰，防连点 + 视觉反馈 */
+    _clearAutoTimer(); /* 2-2: 手动操作时重置自动计时 */
+    currentSlide--;
+    _renderSlide(currentSlide);
   }
 
   function _nextSlide() {
-    /* P2 fix: guard against double-trigger (auto-timer + manual click racing) */
+    /* Guard against double-trigger (rapid clicks / keyboard + button race) */
     if (isTransitioning) return;
     isTransitioning = true;
-    if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; }
+    _setNavDisabled(true); /* 翻页过渡中按钮置灰，防连点 + 视觉反馈 */
+    _clearAutoTimer(); /* 2-2: 手动操作时重置自动计时 */
     currentSlide++;
     if (currentSlide >= slides.length) {
       _finishDemo();
@@ -5706,12 +6706,56 @@ function showChapterTeachingDemo(nodeNum, onComplete) {
     }
   }
 
+  /* 翻页过渡期间按钮置灰 — 视觉反馈 + 防连点 */
+  function _setNavDisabled(disabled) {
+    var pb = document.querySelector('.demo-prev-btn');
+    var ab = document.querySelector('.demo-action-btn');
+    var op = disabled ? '0.5' : '1';
+    var cursor = disabled ? 'not-allowed' : 'pointer';
+    if (pb) { pb.style.opacity = op; pb.style.cursor = cursor; }
+    if (ab) { ab.style.opacity = op; ab.style.cursor = cursor; }
+  }
+
+  function _toggleAutoPlay() {
+    autoPlay = !autoPlay;
+    if (autoPlayBtn) {
+      autoPlayBtn.textContent = autoPlay ? '⏸ ' + (zh ? '暂停' : 'Pause') : '▶ ' + (zh ? '自动' : 'Auto');
+      autoPlayBtn.style.background = autoPlay ? 'rgba(245,158,11,0.2)' : 'rgba(255,255,255,0.08)';
+      autoPlayBtn.style.borderColor = autoPlay ? 'rgba(245,158,11,0.4)' : 'rgba(255,255,255,0.15)';
+      autoPlayBtn.style.color = autoPlay ? '#fbbf24' : '#94a3b8';
+    }
+    if (autoPlay) {
+      _startAutoTimer();
+    } else {
+      _clearAutoTimer();
+    }
+  }
+
+  function _startAutoTimer() {
+    _clearAutoTimer();
+    if (!autoPlay) return;
+    if (currentSlide >= slides.length - 1) return; /* 最后一页不自动 */
+    autoPlayTimer = setTimeout(function() {
+      if (!isTransitioning) _nextSlide();
+    }, AUTO_PLAY_DELAY);
+  }
+
+  function _clearAutoTimer() {
+    if (autoPlayTimer) {
+      clearTimeout(autoPlayTimer);
+      autoPlayTimer = null;
+    }
+  }
+
   function _finishDemo() {
-    if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; }
+    /* 2-2: 清理自动播放计时器 */
+    _clearAutoTimer();
     /* Mark as seen — use demoKey (theme_stage) so each stage has independent tracking */
     appState.chapterDemosSeen = appState.chapterDemosSeen || {};
     appState.chapterDemosSeen[demoKey] = true;
     saveState();
+    /* Fix 3: remove keyboard listener */
+    document.removeEventListener('keydown', _onKeyDown);
     /* Fade out overlay */
     overlay.style.transition = 'opacity .3s ease';
     overlay.style.opacity = '0';
@@ -5721,6 +6765,18 @@ function showChapterTeachingDemo(nodeNum, onComplete) {
     }, 300);
   }
 
+  /* Fix 3: keyboard navigation (left / right arrows) */
+  function _onKeyDown(e) {
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      _prevSlide();
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      _nextSlide();
+    }
+  }
+  document.addEventListener('keydown', _onKeyDown);
+
   /* Add bounce animation if not present */
   if (!document.getElementById('demo-bounce-style')) {
     var s = document.createElement('style');
@@ -5729,14 +6785,117 @@ function showChapterTeachingDemo(nodeNum, onComplete) {
     document.head.appendChild(s);
   }
 
+  /* P3-1: 教学演示引导提示 — 首次进入加长展示，重玩恢复默认
+     - 首次：3.5s 时长，前 2s 隐藏关闭按钮（强制阅读）
+     - 重玩：2s 默认时长，有关闭按钮可随时关闭
+     - 自动播放模式下提示与翻页计时并行，不阻塞流程 */
+  function _showDemoGuideHint() {
+    var hintMsg = zh
+      ? '👆 点击底部按钮翻页，键盘 ← → 也可以哦'
+      : '👆 Tap the button to continue — or use ← → keys';
+    if (isReplay) {
+      /* 重玩模式：恢复原默认时长（2 秒），正常显示关闭按钮 */
+      showToast(hintMsg, { duration: 2000, showClose: true });
+    } else {
+      /* 首次进入：3.5s 加长展示，前 2s 隐藏关闭按钮（强制阅读） */
+      showToast(hintMsg, {
+        duration: 3500,
+        showClose: true,
+        closeDelay: 2000
+      });
+    }
+  }
+
   /* Render first slide */
   _renderSlide(0);
+
+  /* P3-1: 首屏渲染完成后显示引导提示（延迟一点点，让用户先看到内容） */
+  if (!isReplay) {
+    setTimeout(_showDemoGuideHint, 800);
+  }
 }
 
 /* === END CHAPTER TEACHING DEMO MODULE ===
  * Remember: this module is critical for beginner onboarding.
  * Do not remove or disable without product approval.
  * ========================================================= */
+
+/* 4-1: 3 次容错命数显示更新 */
+function updateLivesDisplay() {
+  var el = document.getElementById('quiz-lives');
+  if (!el || !currentQuiz || !currentQuiz.pathNodeNum) return;
+  if (currentQuiz.stageMode !== 'streak') { el.style.display = 'none'; return; }
+  el.style.display = 'flex';
+  var total = 3;
+  var remaining = currentQuiz.livesRemaining;
+  var html = '';
+  for (var i = 0; i < total; i++) {
+    var lost = i >= remaining;
+    html += '<span class="life-dot' + (lost ? ' lost' : '') + '"></span>';
+  }
+  el.innerHTML = html;
+}
+
+/* 1-1 界面层：本关重点练习形态提示 */
+function updateFocusBanner() {
+  var banner = document.getElementById('quiz-focus-banner');
+  var textEl = document.getElementById('focus-banner-text');
+  if (!banner || !textEl || !currentQuiz || !currentQuiz.pathNodeNum) return;
+  var node = getCurrentNode();
+  if (!node || !node.taughtPatterns || node.taughtPatterns.length === 0) {
+    banner.style.display = 'none';
+    return;
+  }
+  var zh = currentLang === 'zh';
+  var patterns = node.taughtPatterns;
+  /* 只显示前 3 个，多了用"等"省略 */
+  var display = patterns.slice(0, 3).join('、');
+  if (patterns.length > 3) display += ' 等';
+  textEl.textContent = zh
+    ? '本关重点：' + display
+    : 'Focus: ' + display;
+  banner.style.display = 'block';
+}
+
+/* Fusion 阶段热身题横幅控制 */
+function updateWarmupBanner() {
+  var banner = document.getElementById('quiz-warmup-banner');
+  var textEl = document.getElementById('warmup-banner-text');
+  if (!banner || !textEl || !currentQuiz) { banner.style.display = 'none'; return; }
+  var q = currentQuiz.questions[currentQuiz.currentIndex];
+  if (q && q.isWarmup) {
+    var zh = currentLang === 'zh';
+    textEl.textContent = zh
+      ? '热身题 · 不计分 — 熟悉一下题型，正式题马上开始'
+      : 'WARM-UP · NO PENALTY — try the format, real questions next';
+    banner.style.display = 'block';
+  } else {
+    banner.style.display = 'none';
+  }
+}
+
+function getCurrentNode() {
+  if (!currentQuiz || !currentQuiz.pathNodeNum) return null;
+  var allNodes = buildPath();
+  for (var i = 0; i < allNodes.length; i++) {
+    if (allNodes[i].num === currentQuiz.pathNodeNum) return allNodes[i];
+  }
+  return null;
+}
+
+/* 4-5: 回看讲解 — 答错时可以重新看教学演示，不影响答题进度 */
+function replayTeachingDemo() {
+  if (!currentQuiz || !currentQuiz.pathNodeNum) return;
+  var nodeNum = currentQuiz.pathNodeNum;
+  /* 隐藏反馈卡片，避免重叠 */
+  var fb = document.getElementById('inline-fb');
+  if (fb) fb.style.display = 'none';
+  /* P3-1: 重玩模式 — 强制显示，引导提示恢复默认时长 */
+  showChapterTeachingDemo(nodeNum, function() {
+    /* 看完后回到答题，重新显示反馈 */
+    if (fb) fb.style.display = 'block';
+  }, { force: true, isReplay: true });
+}
 
 function startPathNode(nodeNum) {
   var status = getPathNodeStatus(nodeNum);
@@ -5760,6 +6919,14 @@ function startPathNode(nodeNum) {
   if (!node || !node.questions.length) return;
   var stage = node.stage;
   var themeIdx = node.themeIdx;
+
+  /* 4-3: 累计游玩次数，用于随机种子变化 — 重玩时题目不重复
+   * 只有已通关的节点再次游玩时才计数，首次通关不计入（保证首次体验固定） */
+  if (!appState.pathProgress[nodeNum]) appState.pathProgress[nodeNum] = {};
+  if (appState.pathProgress[nodeNum].completed) {
+    appState.pathProgress[nodeNum].playCount = (appState.pathProgress[nodeNum].playCount || 0) + 1;
+    saveState();
+  }
 
   /* === CHAPTER TEACHING DEMO INTEGRATION ===
    * Show full-screen teaching demo before quiz starts (first node of each theme only).
@@ -5805,10 +6972,17 @@ function startPathNode(nodeNum) {
       combo: 0, totalXP: 0, isRetry: false, isInfinite: false, active: true,
       consecutiveCorrect: 0, consecutiveWrong: 0, difficultyTier: 0,
       stageMode: stage.mode, stageTarget: stage.target, stageMaxQ: stage.maxQ,
-      streakAchieved: false, pathThemeIdx: themeIdx, pathStageIdx: node.stageIdx
+      streakAchieved: false, pathThemeIdx: themeIdx, pathStageIdx: node.stageIdx,
+      /* 4-1: 3 次容错机制 */
+      livesRemaining: stage.mode === 'streak' ? 3 : 0,
+      wrongCount: 0,
+      isPerfectRun: true
     };
     showPage('quiz');
     renderQuestion();
+    updateLivesDisplay(); /* 4-1: 初始化容错命数显示 */
+    updateFocusBanner(); /* 1-1: 本关重点练习提示 */
+    updateWarmupBanner(); /* Fusion 阶段热身题提示 */
     startOverallTimer();
   });
 }
@@ -5957,9 +7131,10 @@ function updateHomeContinueCard() {
   var zh = currentLang === 'zh';
   var isReturning = appState.totalXP > 0 || appState.streak > 0 || appState.tutorialDone;
   
-  if (num > 30) {
+  var totalNodes = PATH_THEMES.length * PATH_STAGES.length;
+  if (num > totalNodes) {
     hcTitle.textContent = zh ? '全部完成！' : 'All Done!';
-    hcDesc.textContent = zh ? '60关全部通关，继续刷题巩固' : 'All 60 lessons cleared. Keep practicing!';
+    hcDesc.textContent = zh ? '全部通关，继续刷题巩固' : 'All levels cleared. Keep practicing!';
   } else if (isReturning) {
     /* Returning user: show current level + streak + today's progress */
     var streakText = appState.streak > 0 ? (zh ? ' 🔥' + appState.streak + '天连胜' : ' 🔥' + appState.streak + 'd') : '';
@@ -6071,17 +7246,25 @@ function updateSettingsUI() {
   renderSwitch('set-cb-btn', 'set-cb-knob', !!(appState.colorBlind));
   renderSwitch('set-sfx-btn', 'set-sfx-knob', appState.sfxOn !== false);
   renderSwitch('set-vib-btn', 'set-vib-knob', appState.vibrateOn !== false);
+  /* 3-3: 浅色模式开关 — 动态注入到设置面板 */
+  _ensureLightModeToggle();
+  renderSwitch('set-light-btn', 'set-light-knob', !!appState.lightMode);
   var zh = currentLang === 'zh';
   var cb = document.getElementById('set-cb-label');
   var sfx = document.getElementById('set-sfx-label');
   var vib = document.getElementById('set-vib-label');
   var exp = document.getElementById('exp-label');
   var imp = document.getElementById('imp-label');
+  var light = document.getElementById('set-light-label');
+  var lsh = document.getElementById('lsh-text');
   if (cb) cb.textContent = (appState.colorBlind ? '✅ ' : '🎨 ') + (zh ? '色弱模式（蓝涨橙跌）' : 'Color-blind mode');
   if (sfx) sfx.textContent = (appState.sfxOn !== false ? '🔊 ' : '🔇 ') + (zh ? '音效' : 'Sound');
   if (vib) vib.textContent = (appState.vibrateOn !== false ? '📳 ' : '🔕 ') + (zh ? '震动' : 'Vibration');
+  if (light) light.textContent = (appState.lightMode ? '☀️ ' : '🌙 ') + (zh ? '浅色模式' : 'Light mode');
   if (exp) exp.textContent = zh ? '导出进度' : 'Export Progress';
   if (imp) imp.textContent = zh ? '导入进度' : 'Import Progress';
+  /* 4-4: 本地存储提示 i18n */
+  if (lsh) lsh.textContent = zh ? '你的进度存在这台设备上。清理浏览器数据会删掉进度，建议导出一份备份！' : 'Your progress is saved on this device. Clear browser data will erase it — export a backup to keep it safe!';
 }
 function toggleColorBlind() {
   appState.colorBlind = !appState.colorBlind;
@@ -6104,6 +7287,36 @@ function toggleVibrate() {
   appState.vibrateOn = appState.vibrateOn === false ? true : false;
   saveState(); updateSettingsUI();
   showToast(currentLang === 'zh' ? (appState.vibrateOn ? '📳 震动已开启' : '🔕 震动已关闭') : (appState.vibrateOn ? '📳 Vibration on' : '🔕 Vibration off'));
+}
+
+/* 3-3: 浅色模式切换 */
+function toggleLightMode() {
+  appState.lightMode = !appState.lightMode;
+  _applyLightMode();
+  saveState();
+  updateSettingsUI();
+  showToast(currentLang === 'zh' ? (appState.lightMode ? '☀️ 已切换到浅色模式' : '🌙 已切换到深色模式') : (appState.lightMode ? '☀️ Light mode on' : '🌙 Dark mode on'));
+}
+function _applyLightMode() {
+  if (appState.lightMode) {
+    document.body.classList.add('light-mode');
+  } else {
+    document.body.classList.remove('light-mode');
+  }
+}
+
+/* 3-3: 动态注入浅色模式开关到设置面板（只注入一次） */
+function _ensureLightModeToggle() {
+  if (document.getElementById('set-light-btn')) return; /* 已经注入过了 */
+  var vibRow = document.getElementById('set-vib-btn');
+  if (!vibRow || !vibRow.parentElement || !vibRow.parentElement.parentElement) return;
+  var container = vibRow.parentElement.parentElement; /* settings panel inner div */
+  var newRow = document.createElement('div');
+  newRow.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-top:1px solid var(--border)';
+  newRow.innerHTML =
+    '<span style="font-size:13px;font-weight:600" id="set-light-label">🌙 Light mode</span>' +
+    '<button id="set-light-btn" onclick="toggleLightMode()" aria-label="Toggle light mode" style="width:46px;height:26px;border-radius:13px;border:none;background:#ccc;position:relative;cursor:pointer;transition:background .2s"><span id="set-light-knob" style="position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s"></span></button>';
+  container.appendChild(newRow);
 }
 /* Export progress as JSON (copied to clipboard, or shown in a modal) */
 function exportProgress() {
@@ -6206,9 +7419,23 @@ function renderMistakes() {
     list.innerHTML = '<div class="empty-state"><div class="emoji">🎉</div><div>' + t('noMistakes') + '</div></div>';
     return
   }
-  list.innerHTML = '';
   var zh = currentLang === 'zh';
   var now = Date.now();
+
+  /* 4-7: 错题本筛选 — 全部/待复习/已掌握 */
+  if (!window._mistakeFilter) window._mistakeFilter = 'all';
+  var filter = window._mistakeFilter;
+
+  /* 4-7: 按形态统计错误次数 */
+  var patternStats = {};
+  for (var si = 0; si < appState.mistakes.length; si++) {
+    var mP = appState.mistakes[si].pattern || 'Unknown';
+    patternStats[mP] = (patternStats[mP] || 0) + 1;
+  }
+  var topPatterns = Object.entries(patternStats)
+    .sort(function(a, b) { return b[1] - a[1]; })
+    .slice(0, 3);
+
   /* Spaced-repetition order: due for review first, then unanswered, then timestamp desc */
   var sorted = appState.mistakes.slice().sort(function(a, b) {
     var aDue = (a.nextReview || 0) <= now ? 0 : 1;
@@ -6219,16 +7446,168 @@ function renderMistakes() {
     if (aOpen !== bOpen) return aOpen - bOpen;
     return (b.timestamp || 0) - (a.timestamp || 0);
   });
-  sorted.slice(0, 20).forEach(function(m, i) {
+
+  /* 4-7: 应用筛选 */
+  var filtered = sorted.filter(function(m) {
+    if (filter === 'due') return (m.nextReview || 0) <= now;
+    if (filter === 'mastered') return m.resolved && (m.nextReview || 0) > now;
+    return true;
+  });
+
+  /* 4-7: 筛选标签栏 */
+  var tabsHtml = '<div style="display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:4px">' +
+    '<button type="button" onclick="setMistakeFilter(\'all\')" style="padding:6px 14px;border-radius:16px;border:1px solid ' + (filter === 'all' ? '#f59e0b' : 'var(--border)') + ';background:' + (filter === 'all' ? 'rgba(245,158,11,0.15)' : 'var(--bg-card)') + ';color:' + (filter === 'all' ? '#fbbf24' : 'var(--text-secondary)') + ';font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">' + (zh ? '全部 ' : 'All ') + '(' + appState.mistakes.length + ')</button>' +
+    '<button type="button" onclick="setMistakeFilter(\'due\')" style="padding:6px 14px;border-radius:16px;border:1px solid ' + (filter === 'due' ? '#f59e0b' : 'var(--border)') + ';background:' + (filter === 'due' ? 'rgba(245,158,11,0.15)' : 'var(--bg-card)') + ';color:' + (filter === 'due' ? '#fbbf24' : 'var(--text-secondary)') + ';font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">' + (zh ? '待复习 ' : 'Due ') + '(' + sorted.filter(function(m){return (m.nextReview||0)<=now}).length + ')</button>' +
+    '<button type="button" onclick="setMistakeFilter(\'mastered\')" style="padding:6px 14px;border-radius:16px;border:1px solid ' + (filter === 'mastered' ? '#22c55e' : 'var(--border)') + ';background:' + (filter === 'mastered' ? 'rgba(34,197,94,0.12)' : 'var(--bg-card)') + ';color:' + (filter === 'mastered' ? '#4ade80' : 'var(--text-secondary)') + ';font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">' + (zh ? '已掌握 ' : 'Mastered ') + '(' + sorted.filter(function(m){return m.resolved && (m.nextReview||0)>now}).length + ')</button>' +
+  '</div>';
+
+  /* 4-7: 易错形态 TOP3 */
+  var topHtml = '';
+  if (topPatterns.length >= 2) {
+    topHtml = '<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:14px">' +
+      '<div style="font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:8px">📊 ' + (zh ? '最容易搞错的形态' : 'Your trickiest patterns') + '</div>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:6px">' +
+      topPatterns.map(function(p) {
+        return '<span style="padding:4px 10px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);border-radius:12px;color:#f87171;font-size:11px;font-weight:600">' + p[0] + ' × ' + p[1] + '</span>';
+      }).join('') +
+      '</div></div>';
+  }
+
+  list.innerHTML = '';
+  list.innerHTML = tabsHtml + topHtml;
+
+  if (!filtered.length) {
+    list.innerHTML += '<div style="text-align:center;padding:30px 0;color:var(--text-muted);font-size:13px">' +
+      (filter === 'mastered' ? (zh ? '还没有已掌握的错题，多复习几次吧~' : 'No mastered mistakes yet — keep reviewing!') :
+       filter === 'due' ? (zh ? '太棒了！没有需要复习的错题' : 'Great! No mistakes due for review right now') :
+       (zh ? '暂无错题' : 'No mistakes')) +
+    '</div>';
+    return;
+  }
+
+  filtered.slice(0, 20).forEach(function(m, i) {
     var card = document.createElement('div');
     card.className = 'mistake-card';
     var dueNow = (m.nextReview || 0) <= now;
     var badge = m.resolved
-      ? (dueNow ? '<span style="font-size:10px;color:#f59e0b;font-weight:700;margin-left:6px">⏰ ' + (zh ? '待重测' : 'Review due') + '</span>' : '<span style="font-size:10px;color:#22c55e;font-weight:700;margin-left:6px">✅ ' + (zh ? '已复习' : 'Reviewed') + '</span>')
+      ? (dueNow ? '<span style="font-size:10px;color:#f59e0b;font-weight:700;margin-left:6px">⏰ ' + (zh ? '待重测' : 'Review due') + '</span>' : '<span style="font-size:10px;color:#22c55e;font-weight:700;margin-left:6px">✅ ' + (zh ? '已掌握' : 'Mastered') + '</span>')
       : '<span style="font-size:10px;color:#f59e0b;font-weight:700;margin-left:6px">🟠 ' + (zh ? '未复习' : 'Unreviewed') + '</span>';
-    card.innerHTML = '<div class="mistake-question">' + (i + 1) + '. [' + escapeHtml(m.pattern || '?') + ']' + badge + '<br>' + escapeHtml(m.question) + '</div><div class="mistake-answer"><span class="wrong-ans">' + t('yourAnswer') + escapeHtml(m.yourAnswer) + '</span> | <span class="correct-ans">' + t('correctAnswer') + escapeHtml(m.correctAnswer) + '</span></div><div style="font-size:11px;color:var(--text-muted);margin-top:6px">' + escapeHtml(m.explain) + '</div>';
+    /* 4-7: 加「移除/已掌握」按钮 */
+    var actionBtn = m.resolved
+      ? '<button type="button" onclick="removeMistake(\'' + m.id + '\')" style="float:right;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--text-muted);font-size:10px;padding:3px 8px;cursor:pointer;font-family:inherit">' + (zh ? '移除' : 'Remove') + '</button>'
+      : '<button type="button" onclick="markMistakeMastered(\'' + m.id + '\')" style="float:right;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:8px;color:#22c55e;font-size:10px;padding:3px 8px;cursor:pointer;font-family:inherit">' + (zh ? '我会了' : 'Got it') + '</button>';
+    card.innerHTML = '<div class="mistake-question">' + actionBtn + (i + 1) + '. [' + escapeHtml(m.pattern || '?') + ']' + badge + '<br>' + escapeHtml(m.question) + '</div><div class="mistake-answer"><span class="wrong-ans">' + t('yourAnswer') + escapeHtml(m.yourAnswer) + '</span> | <span class="correct-ans">' + t('correctAnswer') + escapeHtml(m.correctAnswer) + '</span></div><div style="font-size:11px;color:var(--text-muted);margin-top:6px">' + escapeHtml(m.explain) + '</div>';
     list.appendChild(card)
   })
+}
+
+/* 4-7: 错题本筛选切换 */
+function setMistakeFilter(f) {
+  window._mistakeFilter = f;
+  renderMistakes();
+}
+
+/* 4-7: 标记单条错题为已掌握 */
+function markMistakeMastered(id) {
+  var zh = currentLang === 'zh';
+  for (var i = 0; i < appState.mistakes.length; i++) {
+    if (appState.mistakes[i].id === id) {
+      appState.mistakes[i].resolved = true;
+      appState.mistakes[i].nextReview = Date.now() + 3 * 24 * 60 * 60 * 1000; /* 3 天后再复习 */
+      saveState();
+      showToast(zh ? '✅ 标记为已掌握，3天后再测一次' : '✅ Marked as mastered — review in 3 days');
+      renderMistakes();
+      return;
+    }
+  }
+}
+
+/* 4-7: 移除单条错题 */
+function removeMistake(id) {
+  var zh = currentLang === 'zh';
+  appState.mistakes = appState.mistakes.filter(function(m) { return m.id !== id; });
+  saveState();
+  showToast(zh ? '已移除' : 'Removed');
+  renderMistakes();
+}
+
+/* ============================================================
+   🔧 调试命令（开发/测试用，正式环境可通过控制台调用）
+   ============================================================ */
+
+/**
+ * 错题本调试：将指定已掌握错题的 nextReview 设为当前时间，立即变成待复习状态
+ * 用法：打开浏览器控制台，输入 debugMistakeDue('错题ID') 回车
+ * @param {string} id - 错题 ID，不传则把所有已掌握的都设为待复习
+ */
+function debugMistakeDue(id) {
+  var count = 0;
+  for (var i = 0; i < appState.mistakes.length; i++) {
+    var m = appState.mistakes[i];
+    if (!id || m.id === id) {
+      if (m.resolved && (m.nextReview || 0) > Date.now()) {
+        m.nextReview = Date.now();
+        count++;
+      }
+    }
+  }
+  saveState();
+  if (typeof renderMistakes === 'function') renderMistakes();
+  console.log('[debugMistakeDue] 已将 ' + count + ' 条错题设为待复习状态');
+  return count;
+}
+
+/**
+ * 错题本调试：打印所有错题列表（含 id / pattern / nextReview / resolved）
+ * 用法：控制台输入 debugListMistakes() 回车
+ */
+function debugListMistakes() {
+  var list = appState.mistakes.map(function(m) {
+    return {
+      id: m.id,
+      pattern: m.pattern,
+      resolved: !!m.resolved,
+      nextReview: m.nextReview ? new Date(m.nextReview).toLocaleString() : 'never',
+      isDue: (m.nextReview || 0) <= Date.now()
+    };
+  });
+  console.table(list);
+  return list;
+}
+
+/**
+ * 进度调试：解锁全部关卡（用于快速测试后期内容）
+ * 用法：控制台输入 debugUnlockAll() 回车
+ */
+function debugUnlockAll() {
+  var count = 0;
+  for (var k in appState.pathProgress) {
+    if (!appState.pathProgress[k] || !appState.pathProgress[k].passed) {
+      appState.pathProgress[k] = { passed: true, accuracy: 1, time: 60, playCount: 1, perfect: true };
+      count++;
+    }
+  }
+  saveState();
+  if (typeof updateUI === 'function') updateUI();
+  console.log('[debugUnlockAll] 已解锁 ' + count + ' 个关卡');
+  return count;
+}
+
+/**
+ * 进度调试：重置全部进度（用于测试新手体验）
+ * 用法：控制台输入 debugResetAll() 回车
+ */
+function debugResetAll() {
+  appState.pathProgress = {};
+  appState.mistakes = [];
+  appState.weakPatterns = {};
+  appState.xp = 0;
+  appState.level = 1;
+  appState.hearts = 5;
+  appState.coins = 0;
+  saveState();
+  if (typeof updateUI === 'function') updateUI();
+  console.log('[debugResetAll] 进度已全部重置');
 }
 
 function retryMistakes() {
@@ -7118,23 +8497,30 @@ function renderProfile() {
   if (!wl) return;
   wl.innerHTML = '';
   if (!appState.weakPatterns || typeof appState.weakPatterns !== 'object') {
-    wl.innerHTML = '<div style="color:var(--text-muted);font-size:12px;padding:6px 0">' + (currentLang === 'zh' ? '暂无数据' : 'No data yet') + '</div>';
+    wl.innerHTML = '<div style="color:var(--text-muted);font-size:12px;padding:6px 0">' + (currentLang === 'zh' ? '多答题几次就知道你哪些形态容易搞混啦~' : 'Answer more questions to see your weak spots!') + '</div>';
     return;
   }
   var sorted = Object.entries(appState.weakPatterns).sort(function(a, b) {
     return b[1] - a[1]
   }).slice(0, 5);
   if (!sorted.length) {
-    wl.innerHTML = '<div style="color:var(--text-muted);font-size:12px;padding:6px 0">' + (currentLang === 'zh' ? '暂无数据' : 'No data yet') + '</div>';
+    wl.innerHTML = '<div style="color:var(--text-muted);font-size:12px;padding:6px 0">' + (currentLang === 'zh' ? '多答题几次就知道你哪些形态容易搞混啦~' : 'Answer more questions to see your weak spots!') + '</div>';
     return
   }
   var maxV = sorted[0][1];
+  var zh = currentLang === 'zh';
   sorted.forEach(function(pair) {
     var name = pair[0],
       count = pair[1];
     var item = document.createElement('div');
     item.className = 'weakness-item';
-    item.innerHTML = '<span class="weakness-name">' + name + '</span><div class="weakness-bar"><div class="weakness-fill" style="width:' + Math.round(count / maxV * 100) + '%"></div></div>';
+    item.style.cursor = 'pointer';
+    item.onclick = function() {
+      /* 4-6: 点击薄弱形态直接开始针对性练习 */
+      startQuickQuiz('identify', 10, [name]);
+    };
+    item.title = zh ? '点击练习 ' + name : 'Click to practice ' + name;
+    item.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span class="weakness-name">' + name + '</span><span style="font-size:11px;font-weight:700;color:var(--accent-red)">' + count + (zh ? ' 次错' : ' wrong') + '</span></div><div class="weakness-bar"><div class="weakness-fill" style="width:' + Math.round(count / maxV * 100) + '%"></div></div>';
     wl.appendChild(item)
   })
 }
@@ -7469,33 +8855,90 @@ function showCryptoRiskWarning(msg, onConfirm) {
   };
 }
 
-function showToast(msg) {
-  /* Allow multiple toasts to stack vertically instead of overwriting */
+function showToast(msg, options) {
+  /* P3-1: 增强版 toast — 支持自定义时长、关闭按钮、延迟显示关闭
+     options 可以是数字（直接设 duration）或对象：
+     { duration: 毫秒, showClose: boolean, closeDelay: 毫秒 } */
+  var duration = 2500;
+  var showClose = false;
+  var closeDelay = 0;
+  if (typeof options === 'number') {
+    duration = options;
+  } else if (options && typeof options === 'object') {
+    if (options.duration) duration = options.duration;
+    if (options.showClose) showClose = true;
+    if (options.closeDelay) closeDelay = options.closeDelay;
+  }
+
   var existingToasts = document.querySelectorAll('.toast');
   var t = document.createElement('div');
   t.className = 'toast';
   t.setAttribute('role', 'status');
   t.setAttribute('aria-live', 'polite');
-  t.textContent = msg;
-  /* Offset if there are existing toasts — use top only, never set bottom (causes full-screen stretch bug) */
+  t.style.display = 'flex';
+  t.style.alignItems = 'center';
+  t.style.gap = '10px';
+  t.innerHTML = '<span style="flex:1">' + msg + '</span>';
+
+  /* 关闭按钮（可选） */
+  if (showClose) {
+    var closeBtn = document.createElement('span');
+    closeBtn.textContent = '✕';
+    closeBtn.style.cssText = 'cursor:pointer;opacity:0;font-size:12px;font-weight:700;color:#94a3b8;padding:2px 6px;border-radius:4px;transition:opacity .2s ease;flex-shrink:0';
+    closeBtn.onclick = function(e) {
+      e.stopPropagation();
+      if (t.parentNode) t.remove();
+      _repositionToasts();
+    };
+    closeBtn.style.opacity = '0';
+    closeBtn.style.pointerEvents = 'none';
+    t.appendChild(closeBtn);
+
+    /* 延迟显示关闭按钮 */
+    if (closeDelay > 0) {
+      setTimeout(function() {
+        if (closeBtn.parentNode) {
+          closeBtn.style.opacity = '1';
+          closeBtn.style.pointerEvents = 'auto';
+        }
+      }, closeDelay);
+    } else {
+      closeBtn.style.opacity = '1';
+      closeBtn.style.pointerEvents = 'auto';
+    }
+  }
+
+  /* 堆叠定位 */
   if (existingToasts.length > 0) {
     t.style.top = 'calc(' + (60 + existingToasts.length * 52) + 'px + env(safe-area-inset-top))';
     t.style.bottom = 'auto';
   }
   document.body.appendChild(t);
-  /* mobile: light haptic feedback when a toast is shown */
-  if (navigator.vibrate) navigator.vibrate(10);
-  setTimeout(function() {
+
+  /* 自动消失计时器 */
+  var timer = setTimeout(function() {
     if (t.parentNode) t.remove();
-    /* Reposition remaining toasts */
+    _repositionToasts();
+  }, duration);
+
+  /* 鼠标悬停时暂停计时 */
+  t.addEventListener('mouseenter', function() {
+    clearTimeout(timer);
+  });
+  t.addEventListener('mouseleave', function() {
+    timer = setTimeout(function() {
+      if (t.parentNode) t.remove();
+      _repositionToasts();
+    }, duration / 2);
+  });
+
+  function _repositionToasts() {
     var remaining = document.querySelectorAll('.toast');
     remaining.forEach(function(el, idx) {
-      if (idx > 0) {
-        el.style.top = 'calc(' + (60 + idx * 52) + 'px + env(safe-area-inset-top))';
-        el.style.bottom = 'auto';
-      }
+      el.style.top = 'calc(' + (60 + idx * 52) + 'px + env(safe-area-inset-top))';
+      el.style.bottom = 'auto';
     });
-  }, 2500)
+  }
 }
 
 function shuffleArray(arr) {

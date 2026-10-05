@@ -5033,7 +5033,6 @@ function showStageTeachingDemo(levelNum, onComplete) {
   }
 
   var currentSlide = 0;
-  var autoTimer = null;
   var isTransitioning = false;
 
   var overlay = document.createElement('div');
@@ -5067,13 +5066,27 @@ function showStageTeachingDemo(levelNum, onComplete) {
   slideArea.style.cssText = 'width:100%;min-height:380px;display:flex;flex-direction:column;align-items:center;justify-content:center';
   content.appendChild(slideArea);
 
+  /* Fix 3: button row with Prev + Next */
+  var btnRow = document.createElement('div');
+  btnRow.style.cssText = 'display:flex;gap:12px;margin-top:28px;width:100%;justify-content:center';
+
+  var prevBtn = document.createElement('button');
+  prevBtn.type = 'button';
+  prevBtn.className = 'demo-prev-btn';
+  prevBtn.textContent = zh ? '← 上一页' : '← Prev';
+  prevBtn.style.cssText = 'padding:16px 24px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:28px;color:#94a3b8;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.3px';
+  prevBtn.onclick = function() { _prevSlide(); };
+  btnRow.appendChild(prevBtn);
+
   var actionBtn = document.createElement('button');
   actionBtn.type = 'button';
   actionBtn.className = 'demo-action-btn';
   actionBtn.textContent = zh ? '下一步 →' : 'Next →';
-  actionBtn.style.cssText = 'margin-top:28px;padding:16px 40px;background:linear-gradient(135deg,#f59e0b,#ef4444);border:none;border-radius:28px;color:#fff;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 0 #b45309,0 8px 20px rgba(245,158,11,0.3);letter-spacing:.5px';
+  actionBtn.style.cssText = 'padding:16px 36px;background:linear-gradient(135deg,#f59e0b,#ef4444);border:none;border-radius:28px;color:#fff;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 0 #b45309,0 8px 20px rgba(245,158,11,0.3);letter-spacing:.5px';
   actionBtn.onclick = function() { _nextSlide(); };
-  content.appendChild(actionBtn);
+  btnRow.appendChild(actionBtn);
+
+  content.appendChild(btnRow);
 
   overlay.appendChild(content);
   document.body.appendChild(overlay);
@@ -5088,9 +5101,18 @@ function showStageTeachingDemo(levelNum, onComplete) {
 
   function _updateButton(idx) {
     var isLast = idx === slides.length - 1;
+    var isFirst = idx === 0;
     actionBtn.textContent = isLast
       ? (zh ? '开始练习 →' : 'Start Practice →')
       : (zh ? '下一步 →' : 'Next →');
+    /* Fix 3: disable prev button on first slide */
+    if (isFirst) {
+      prevBtn.style.opacity = '0.3';
+      prevBtn.style.cursor = 'not-allowed';
+    } else {
+      prevBtn.style.opacity = '1';
+      prevBtn.style.cursor = 'pointer';
+    }
   }
 
   function _renderSlide(idx) {
@@ -5105,8 +5127,12 @@ function showStageTeachingDemo(levelNum, onComplete) {
     setTimeout(function() {
       slideArea.innerHTML = '';
       if (slide.type === 'intro') {
+        /* Fix 4: beginner stage intro icon — smaller, no bounce animation */
+        var isBeginner = stageIdx === 0;
+        var iconSize = isBeginner ? '40px' : '52px';
+        var iconAnim = isBeginner ? '' : 'animation:demoBounce 1s ease infinite';
         slideArea.innerHTML =
-          '<div style="font-size:52px;margin-bottom:16px;animation:demoBounce 1s ease infinite">' + slide.icon + '</div>' +
+          '<div style="font-size:' + iconSize + ';margin-bottom:16px;' + iconAnim + '">' + slide.icon + '</div>' +
           '<h2 style="font-size:26px;font-weight:800;color:#fff;margin-bottom:10px;letter-spacing:.3px">' + slide.title + '</h2>' +
           '<p style="color:#94a3b8;font-size:14px;margin-bottom:20px;line-height:1.5">' + slide.subtitle + '</p>' +
           '<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:320px">' +
@@ -5144,17 +5170,20 @@ function showStageTeachingDemo(levelNum, onComplete) {
         setTimeout(function() { isTransitioning = false; }, 300);
       }, 30);
     }, 200);
+    /* Fix 3: no more auto-advance — user controls pace manually */
+  }
 
-    if (autoTimer) clearTimeout(autoTimer);
-    if (idx < slides.length - 1) {
-      autoTimer = setTimeout(function() { _nextSlide(); }, 5000);
-    }
+  function _prevSlide() {
+    if (isTransitioning) return;
+    if (currentSlide <= 0) return;
+    isTransitioning = true;
+    currentSlide--;
+    _renderSlide(currentSlide);
   }
 
   function _nextSlide() {
     if (isTransitioning) return;
     isTransitioning = true;
-    if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; }
     currentSlide++;
     if (currentSlide >= slides.length) {
       _finishDemo();
@@ -5164,10 +5193,11 @@ function showStageTeachingDemo(levelNum, onComplete) {
   }
 
   function _finishDemo() {
-    if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; }
     appState.stageDemosSeen = appState.stageDemosSeen || {};
     appState.stageDemosSeen[demoKey] = true;
     saveState();
+    /* Fix 3: remove keyboard listener */
+    document.removeEventListener('keydown', _onKeyDown);
     overlay.style.transition = 'opacity .3s ease';
     overlay.style.opacity = '0';
     setTimeout(function() {
@@ -5175,6 +5205,18 @@ function showStageTeachingDemo(levelNum, onComplete) {
       if (onComplete) onComplete({ applyGradient: true });
     }, 300);
   }
+
+  /* Fix 3: keyboard navigation (left / right arrows) */
+  function _onKeyDown(e) {
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      _prevSlide();
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      _nextSlide();
+    }
+  }
+  document.addEventListener('keydown', _onKeyDown);
 
   if (!document.getElementById('demo-bounce-style')) {
     var st = document.createElement('style');
