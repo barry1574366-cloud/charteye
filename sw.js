@@ -1,6 +1,6 @@
 /* Kline Game Service Worker — offline caching for the single-page app.
  * Cache the app shell + mascot images on install; cache-first for everything. */
-var CACHE = 'klinegame-v3';
+var CACHE = 'klinegame-v2.0.3';
 var ASSETS = [
   './',
   './index.html'
