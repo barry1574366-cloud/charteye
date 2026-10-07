@@ -25,10 +25,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .app-container{max-width:480px;margin:0 auto;min-height:100vh;min-height:100dvh;position:relative}
 .page{display:none;min-height:100vh;min-height:100dvh;padding-bottom:100px}.page.active{display:block}.page-quiz.active{display:flex}
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--bg-secondary);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:1000}
-.app-container.quiz-active{height:100vh;height:100dvh;min-height:0;overflow:hidden}
-.app-container.quiz-active .bottom-nav{display:none!important}
-.app-container.quiz-active .legal-footer{display:none!important}
-.app-container.quiz-active .page-quiz{min-height:0!important;height:100vh;height:100dvh;padding-bottom:0!important}
+body.quiz-active .app-container{height:100vh;height:100dvh;min-height:0;overflow:hidden}
+body.quiz-active .bottom-nav{display:none!important}
+body.quiz-active .legal-footer{display:none!important}
+body.quiz-active .page-quiz{min-height:0!important;height:100vh;height:100dvh;padding-bottom:0!important}
 .nav-item{display:flex;flex-direction:column;align-items:center;padding:4px 8px;color:var(--text-muted);font-size:10px;cursor:pointer;transition:all .2s;border:none;background:none}
 .nav-item.active{color:var(--accent-gold)}.nav-item svg{width:22px;height:22px;margin-bottom:2px}
 .legal-footer{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--bg-secondary);border-top:1px solid var(--border);text-align:center;padding:6px 0 6px;font-size:11px;color:var(--text-muted);z-index:999;padding-bottom:calc(6px + env(safe-area-inset-bottom))}
@@ -260,7 +260,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .why-matters .why-label{display:inline-block;background:rgba(245,158,11,.15);color:var(--accent-gold);font-weight:700;padding:2px 8px;border-radius:8px;margin-right:6px;font-size:11px}
 .feedback-actions{display:flex;gap:10px;margin-top:14px}
 .feedback-actions button{flex:1;padding:13px;border-radius:12px;border:none;font-size:15px;font-weight:600;cursor:pointer}
-.btn-next{background:var(--accent-gold);color:#000}.btn-retry{background:var(--bg-elevated);color:var(--text-primary)}
+.btn-next{background:var(--accent-gold);color:#000;animation:pulse-gold 1.5s ease-in-out infinite}.btn-retry{background:var(--bg-elevated);color:var(--text-primary)}
+@keyframes pulse-gold{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.5)}50%{box-shadow:0 0 0 10px rgba(245,158,11,0)}}
 .result-page{padding:60px 24px 40px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;min-height:100dvh}
 .result-emoji{font-size:64px;margin-bottom:8px}
 .result-title{font-size:32px;font-weight:800;margin-bottom:8px}
@@ -635,8 +636,8 @@ button:focus-visible,.option-btn:focus-visible,.nav-item:focus-visible,.level-ca
 .floating-feedback-btn:active{transform:scale(.95)}
 .floating-feedback-btn .fb-badge{position:absolute;top:-2px;right:-2px;width:18px;height:18px;background:var(--accent-red);color:#fff;font-size:10px;font-weight:700;border-radius:50%;display:flex;align-items:center;justify-content:center}
 
-.user-feedback-overlay{position:fixed;top:0;left:0;right:0;bottom:0;z-index:99999;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s ease}
-.user-feedback-overlay.show{opacity:1;visibility:visible}
+.user-feedback-overlay{position:fixed;top:0;left:0;right:0;bottom:0;z-index:99999;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s ease}
+.user-feedback-overlay.show{display:flex;opacity:1;visibility:visible}
 .user-feedback-card{background:var(--bg-secondary);border-radius:24px;padding:28px 24px 24px;max-width:380px;width:90%;position:relative;transform:translateY(20px) scale(.95);transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
 .user-feedback-overlay.show .user-feedback-card{transform:translateY(0) scale(1)}
 .user-feedback-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:var(--bg-elevated);color:var(--text-muted);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
@@ -1490,8 +1491,11 @@ var ParamQuestionGen = (function () {
     }
     // indicators / complex: append a candle that contradicts the signal
     var b = pattern.build(rng);
-    var cs = b.candles.slice();
+    var cs = b.candles ? b.candles.slice() : [];
+    // Guard: indicator patterns have no candles (they use signal line data)
+    if (!cs.length) return [];
     var last = cs[cs.length - 1];
+    if (!last || last.c == null || last.o == null) return cs;
     var amp = Math.max(2, Math.abs(last.c - last.o) + 1);
     var dir = b.signal === 'bull' ? -1 : b.signal === 'bear' ? 1 : (rng() < 0.5 ? -1 : 1);
     var open = last.c;
@@ -1564,16 +1568,16 @@ var ParamQuestionGen = (function () {
   }
 
   function qScenario(pattern, candles, signal, rng, baseId) {
-    var buy = { en: 'Buy'  };
-    var sell = { en: 'Sell'  };
-    var wait = { en: 'Wait'  };
+    var buy = { en: '🟢 Buy'  };
+    var sell = { en: '🔴 Sell'  };
+    var wait = { en: '⏸️ Wait'  };
     var opts;
     if (signal === 'bull') opts = [buy, wait, sell];
     else if (signal === 'bear') opts = [sell, wait, buy];
     else opts = [wait, buy, sell];
     return {
       id: makeId(baseId, rng), pattern: pattern.name, type: 'scenario', candles: candles,
-      question: { en: 'Given this chart, what should you do?'  },
+      question: { en: 'What should you do?'  },
       options: { en: [opts[0].en, opts[1].en, opts[2].en] },
       correct: 0, explain: pattern.explain, volumeHint: pattern.volumeHint
     };
@@ -1665,6 +1669,11 @@ var ParamQuestionGen = (function () {
     var built = pattern.build(rng);
     var candles = built.candles;
     var signal = built.signal || 'neutral';
+    // Indicator/line patterns have no candles — skip question types that require candlestick display
+    var isIndicator = pattern.category === 'indicator';
+    if (isIndicator && (qtype === 'truefalse' || qtype === 'trap' || qtype === 'identify')) {
+      return null;
+    }
     switch (qtype) {
       case 'identify': return qIdentify(pattern, candles, rng, baseId, pool);
       case 'predict': return qPredict(pattern, candles, signal, rng, baseId);
@@ -2466,6 +2475,23 @@ function startFreeTest() {
 
 /* === RECONSTRUCTED FUNCTIONS (from kline_trainer.html) === */
 
+function getPatternHighlights(q) {
+  if (!q || !q.candles || !q.candles.length) return null;
+  var n = q.candles.length;
+  var last = n - 1;
+  var p = q.pattern || '';
+  var multi3 = ['Morning Star', 'Evening Star', 'Three White Soldiers', 'Three Black Crows', 'Three Inside Up', 'Three Inside Down', 'Abandoned Baby Bullish', 'Abandoned Baby Bearish'];
+  var multi2 = ['Bullish Engulfing', 'Bearish Engulfing', 'Bullish Harami', 'Bearish Harami', 'Dark Cloud Cover', 'Piercing Line', 'Tweezer Top', 'Tweezer Bottom'];
+  var range;
+  if (multi3.indexOf(p) >= 0) range = [Math.max(0, last - 2), last];
+  else if (multi2.indexOf(p) >= 0) range = [Math.max(0, last - 1), last];
+  else range = [last, last];
+  return {
+    index: last,
+    bodyRange: range
+  };
+}
+
 function renderQuestion() {
   var q = currentQuiz.questions[currentQuiz.currentIndex];
   if (!q) {
@@ -2523,8 +2549,16 @@ function renderQuestion() {
   var qtype = q.type || 'identify';
   /* P0: For teach questions, show a "lesson" badge and "Got it" button instead of options */
   if (qtype === 'teach') {
+    /* Calculate lesson progress: count teach questions before current index */
+    var teachTotal = 0, teachCurrent = 0;
+    for (var ti = 0; ti < currentQuiz.questions.length; ti++) {
+      if (currentQuiz.questions[ti].type === 'teach') {
+        teachTotal++;
+        if (ti <= currentQuiz.currentIndex) teachCurrent++;
+      }
+    }
     badge.className = 'q-type-badge q-type-identify';
-    badge.textContent = '📖 Lesson';
+    badge.textContent = '📖 Lesson ' + teachCurrent + ' of ' + teachTotal;
     var oc = document.getElementById('options-container');
     oc.innerHTML = '';
     /* Show explanation text + "Got it" button */
@@ -2594,10 +2628,20 @@ function renderQuestion() {
     badge.className = 'q-type-badge q-type-volume';
     badge.textContent = t('qTypeVolume')
   }
+  /* Beginner encouragement: show "warm-up" hint on first real quiz question after teaching */
+  var hintZone = document.getElementById('pattern-hint-zone');
+  if (hintZone && qtype !== 'teach' && currentQuiz.level30Num && currentQuiz.level30Num <= 3) {
+    var prevWasTeach = currentQuiz.currentIndex > 0 && currentQuiz.questions[currentQuiz.currentIndex - 1].type === 'teach';
+    var isFirstReal = prevWasTeach || (currentQuiz.currentIndex === 0 && currentQuiz.questions.filter(function(x){return x.type==='teach'}).length === 0);
+    if (isFirstReal) {
+      hintZone.innerHTML = '<div style="display:inline-block;padding:6px 14px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);border-radius:999px;font-size:12px;font-weight:600;color:#4ade80;margin-top:6px">🌱 Warm-up — no pressure, just practice!</div>';
+    }
+  }
   /* P0: Pattern hint card — first time a pattern appears that the user hasn't mastered yet */
   appState.patternHintsSeen = appState.patternHintsSeen || {};
-  var hintZone = document.getElementById('pattern-hint-zone');
-  if (hintZone) hintZone.innerHTML = '';
+  if (!hintZone) hintZone = document.getElementById('pattern-hint-zone');
+  if (hintZone && hintZone.innerHTML !== '') { /* already has warm-up hint, don't overwrite */ }
+  else if (hintZone) { hintZone.innerHTML = ''; }
   var zhHint = false;
   if (qtype !== 'teach' && q.pattern && currentQuiz.level30Num >= 6 && !appState.patternHintsSeen[q.pattern] && hintZone) {
     var hintExp = (q.explain && (q.explain['en'] || q.explain.zh)) || '';
@@ -2828,6 +2872,17 @@ function playSound(type) {
     case 'click':
       playTone(440, 0.05, 'sine', 0.06, 0);
       break;
+  }
+}
+
+function clearAllTimers() {
+  if (questionTimer) {
+    clearInterval(questionTimer);
+    questionTimer = null;
+  }
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
   }
 }
 
@@ -3517,8 +3572,15 @@ function showInlineFeedback(q) {
   var div = document.createElement('div');
   div.id = 'inline-fb';
   div.className = 'inline-feedback wrong';
+  var isBeginnerLvl = currentQuiz.level30Num && currentQuiz.level30Num <= 3;
   var html = '<div class="inline-feedback-title">❌ ' + ('Correct: ') + correctText + '</div>';
-  if (ec) html += '<div class="inline-feedback-explain" style="margin-top:6px;white-space:pre-line">' + ec + '</div>';
+  if (ec && !isBeginnerLvl) {
+    html += '<div class="inline-feedback-explain" style="margin-top:6px;white-space:pre-line">' + ec + '</div>';
+  } else if (ec && isBeginnerLvl) {
+    /* For L1-3 beginners: collapse explanation, show "Learn why" toggle */
+    html += '<div id="fb-explain-toggle" style="margin-top:8px;font-size:12px;color:var(--accent-gold);cursor:pointer;font-weight:600" onclick="this.style.display=\'none\';document.getElementById(\'fb-explain-full\').style.display=\'block\';">💡 Learn why ↓</div>';
+    html += '<div id="fb-explain-full" class="inline-feedback-explain" style="display:none;margin-top:6px;white-space:pre-line">' + ec + '</div>';
+  }
   /* P0: Beginner encouragement — show "don't give up" message for Levels 1-5 */
   if (currentQuiz.level30Num && currentQuiz.level30Num <= 5) {
     var encouragements = ['No worries, everyone starts here! 💪', 'Remember this feature, next time you\'ll nail it! 🎯', 'Mistakes are part of learning! 🌱', 'Look at the shape, try again! ✨'];
@@ -4112,13 +4174,13 @@ function buildLevel30() {
     for (var i = 0; i < 10; i++) {
       var num = stage.start + i;
       var mixed = [];
-      /* Difficulty curve: L1-9 beginner, L10-19 intermediate, L20-30 advanced (20+ patterns) */
-      var fullPool = num <= 9 ? ParamQuestionGen.DIFFICULTY_BEGINNER
-                  : num <= 19 ? ParamQuestionGen.DIFFICULTY_INTERMEDIATE
+      /* Difficulty curve: L1-10 beginner, L11-20 intermediate, L21-30 advanced (aligned with LEVEL_STAGES_30) */
+      var fullPool = num <= 10 ? ParamQuestionGen.DIFFICULTY_BEGINNER
+                  : num <= 20 ? ParamQuestionGen.DIFFICULTY_INTERMEDIATE
                   : ParamQuestionGen.DIFFICULTY_ADVANCED;
       /* P2#10: progressive release - new shapes unlock level by level instead of all at once.
          Each stage starts with 4 shapes and adds a few more every level. */
-      var stageStart = num <= 9 ? 1 : num <= 19 ? 10 : 20;
+      var stageStart = num <= 10 ? 1 : num <= 20 ? 11 : 21;
       var step = Math.max(1, Math.ceil((fullPool.length - 4) / 7));
       var pool = fullPool.slice(0, Math.min(fullPool.length, 4 + Math.max(0, num - stageStart) * step));
       /* Question types per stage (Beta): L1-10 Predict/Scenario (rise/fall/wait),
@@ -6279,6 +6341,12 @@ function showPage(name) {
   if (seal) {
     showToast('Complete the current level first!');
     return;
+  }
+  /* Quiz mode: hide bottom nav / legal footer for immersive quiz experience */
+  if (name === 'quiz') {
+    document.body.classList.add('quiz-active');
+  } else {
+    document.body.classList.remove('quiz-active');
   }
   var pages = document.querySelectorAll('.page');
   for (var i = 0; i < pages.length; i++) {
